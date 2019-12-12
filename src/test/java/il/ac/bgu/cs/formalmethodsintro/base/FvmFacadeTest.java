@@ -135,11 +135,11 @@ public class FvmFacadeTest {
 
     private Pair<Pair<TransitionSystem, TransitionSystem>, TransitionSystem> T1T2T12() {
         TransitionSystem t1 = new TransitionSystem();
-        Object s10 = new Object();
-        Object s11 = new Object();
-        Object alpha1 = new Object();
-        Object a1 = new Object();
-        Object b1 = new Object();
+        Object s10 = "s10";
+        Object s11 = "s11";
+        Object alpha1 = "alpha1";
+        Object a1 = "a1";
+        Object b1 = "b1";
         t1.addInitialState(s10);
         t1.addState(s11);
         t1.addAction(alpha1);
@@ -150,11 +150,11 @@ public class FvmFacadeTest {
         t1.addTransition(new TSTransition(s10,alpha1,s11));
 
         TransitionSystem t2 = new TransitionSystem();
-        Object s20 = new Object();
-        Object s21 = new Object();
-        Object alpha2 = new Object();
-        Object a2 = new Object();
-        Object b2 = new Object();
+        Object s20 = "s20";
+        Object s21 = "s21";
+        Object alpha2 = "alpha2";
+        Object a2 = "a2";
+        Object b2 = "b2";
         t2.addInitialState(s20);
         t2.addState(s21);
         t2.addAction(alpha2);
@@ -184,7 +184,7 @@ public class FvmFacadeTest {
         t12.addToLabel(p01,a1);
         t12.addToLabel(p01,b2);
         t12.addToLabel(p10,b1);
-        t12.addToLabel(p10,b1);
+        t12.addToLabel(p10,a2);
         t12.addToLabel(p11,b1);
         t12.addToLabel(p11,b2);
 

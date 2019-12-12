@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/AlternatingSequence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/AlternatingSequence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -49,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2290">
-              <caret line="235" column="5" selection-start-line="235" selection-start-column="5" selection-end-line="235" selection-end-column="5" />
+            <state relative-caret-position="247">
+              <caret line="165" lean-forward="true" selection-start-line="165" selection-end-line="165" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#915#916#0" expanded="true" />
@@ -141,7 +139,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576146447156" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576146954288" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -238,48 +236,47 @@
       <option name="presentableId" value="Default" />
       <updated>1576137623739</updated>
       <workItem from="1576137626731" duration="8001000" />
-      <workItem from="1576146105620" duration="231000" />
+      <workItem from="1576146105620" duration="723000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FvmFacadeTest_isActionDeterministic - 2019.12.12 at 10h 21m 53s.xml">
-      <configuration name="FvmFacadeTest.isActionDeterministic" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 10h 24m 28s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 10h 36m 32s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 08m 06s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 08m 43s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 09m 48s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 10m 34s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 22m 46s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 23m 36s.xml">
       <configuration name="FvmFacadeTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 49m 28s.xml">
       <configuration name="FvmFacadeTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="FvmFacadeTest_testInterleav - 2019.12.12 at 12h 25m 44s.xml">
+      <configuration name="FvmFacadeTest.testInterleav" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 26m 00s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 27m 29s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 29m 15s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 29m 42s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 30m 26s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 31m 12s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 12h 32m 33s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8253000" />
+    <option name="totallyTimeSpent" value="8819000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2534413" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -290,7 +287,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.0" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34991118" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -344,8 +341,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3927">
-          <caret line="235" column="5" selection-start-line="235" selection-start-column="5" selection-end-line="235" selection-end-column="5" />
+        <state relative-caret-position="196">
+          <caret line="186" column="29" selection-start-line="186" selection-start-column="29" selection-end-line="186" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#915#916#0" expanded="true" />

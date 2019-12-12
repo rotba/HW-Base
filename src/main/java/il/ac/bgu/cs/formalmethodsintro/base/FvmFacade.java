@@ -16,6 +16,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
+import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
@@ -89,7 +90,16 @@ public class FvmFacade {
      * @return {@code true} iff {@code e} is an execution of {@code ts}.
      */
     public <S, A, P> boolean isExecution(TransitionSystem<S, A, P> ts, AlternatingSequence<S, A> e) {
-        throw new java.lang.UnsupportedOperationException();
+        if(!isExecutionFragment(ts, e))
+            return false;
+        if(!ts.getInitialStates().contains(e.head()))
+            return false;
+        Set<TSTransition<S, A>> trans = ts.getTransitions();
+        for(TSTransition<S, A> tr : trans){
+            if(tr.getFrom().equals(e.last()))
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -106,7 +116,15 @@ public class FvmFacade {
      * {@code ts}.
      */
     public <S, A, P> boolean isExecutionFragment(TransitionSystem<S, A, P> ts, AlternatingSequence<S, A> e) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> to_states_f = ts.getTransition(e.getStateAt(0), e.getActAt(1));
+        if(!to_states_f.contains(e.getStateAt(2)))
+            return false;
+        for(int i = 2; i < e.size()-3; i+=2){
+            Set<S> to_states = ts.getTransition(e.getStateAt(i), e.getActAt(i+1));
+            if(!to_states.contains(e.getStateAt(i+2)))
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -123,7 +141,9 @@ public class FvmFacade {
      * {@code ts}.
      */
     public <S, A, P> boolean isInitialExecutionFragment(TransitionSystem<S, A, P> ts, AlternatingSequence<S, A> e) {
-        throw new java.lang.UnsupportedOperationException();
+        if(isExecutionFragment(ts, e) && ts.getInitialStates().contains(e.head()))
+            return true;
+        return false;
     }
 
     /**
@@ -139,7 +159,14 @@ public class FvmFacade {
      * @return {@code true} iff {@code e} is a maximal fragment of {@code ts}.
      */
     public <S, A, P> boolean isMaximalExecutionFragment(TransitionSystem<S, A, P> ts, AlternatingSequence<S, A> e) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<TSTransition<S, A>> trans = ts.getTransitions();
+        for(TSTransition<S, A> tr : trans){
+            if(tr.getFrom().equals(e.last()))
+                return false;
+        }
+        if(isExecutionFragment(ts, e))
+            return true;
+        return false;
     }
 
     /**

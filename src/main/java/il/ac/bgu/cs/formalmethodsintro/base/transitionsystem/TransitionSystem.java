@@ -161,6 +161,7 @@ public class TransitionSystem<STATE, ACTION, ATOMIC_PROPOSITION> {
         labelingFunction.remove(state);
     }
 
+
     /**
      * Add a transition. The action and states are added automatically, if they
      * are not already a part of {@code this} transition system.

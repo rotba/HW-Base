@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -17,10 +16,9 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="319" column="8" selection-start-line="319" selection-start-column="8" selection-end-line="319" selection-end-column="60" />
+            <state relative-caret-position="265">
+              <caret line="17" column="68" lean-forward="true" selection-start-line="17" selection-start-column="68" selection-end-line="17" selection-end-column="68" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#6534#6535#0" expanded="true" />
                 <element signature="e#6564#6565#0" expanded="true" />
                 <element signature="e#8247#8248#0" expanded="true" />
@@ -36,11 +34,24 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-397">
+              <caret line="331" column="25" selection-start-line="331" selection-start-column="19" selection-end-line="331" selection-end-column="25" />
+              <folding>
+                <element signature="e#6346#6347#0" expanded="true" />
+                <element signature="e#6409#6410#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="57" column="62" selection-start-line="57" selection-start-column="62" selection-end-line="57" selection-end-column="62" />
+            <state relative-caret-position="-774">
+              <caret line="63" column="31" selection-start-line="63" selection-start-column="31" selection-end-line="63" selection-end-column="31" />
               <folding>
                 <element signature="e#596#597#0" expanded="true" />
                 <element signature="e#667#668#0" expanded="true" />
@@ -63,6 +74,11 @@
         <option value="JUnit4 Test Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>equals</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -125,7 +141,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576144165197" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576145786470" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -156,7 +172,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.FvmFacadeTest">
+  <component name="RunManager" selected="JUnit.FvmFacadeTest.testInterleav">
     <configuration name="FvmFacadeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
@@ -187,8 +203,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="FvmFacadeTest.testInterleav" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FormalMethodsIntro-Base" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="il.ac.bgu.cs.formalmethodsintro.base.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="il.ac.bgu.cs.formalmethodsintro.base" />
+      <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.formalmethodsintro.base.FvmFacadeTest" />
+      <option name="METHOD_NAME" value="testInterleav" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FvmFacadeTest.testInterleav" />
         <item itemvalue="JUnit.FvmFacadeTest" />
         <item itemvalue="JUnit.FvmFacadeTest.isActionDeterministic" />
       </list>
@@ -204,7 +237,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1576137623739</updated>
-      <workItem from="1576137626731" duration="6509000" />
+      <workItem from="1576137626731" duration="8001000" />
     </task>
     <servers />
   </component>
@@ -236,9 +269,12 @@
     <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 23m 36s.xml">
       <configuration name="FvmFacadeTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="FvmFacadeTest - 2019.12.12 at 11h 49m 28s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6509000" />
+    <option name="totallyTimeSpent" value="8001000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
@@ -259,7 +295,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.1669627" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.0" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -279,23 +315,11 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="195" column="44" selection-start-line="195" selection-start-column="44" selection-end-line="195" selection-end-column="44" />
-          <folding>
-            <element signature="e#6346#6347#0" expanded="true" />
-            <element signature="e#6409#6410#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="319" column="8" selection-start-line="319" selection-start-column="8" selection-end-line="319" selection-end-column="60" />
+        <state relative-caret-position="265">
+          <caret line="17" column="68" lean-forward="true" selection-start-line="17" selection-start-column="68" selection-end-line="17" selection-end-column="68" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#6534#6535#0" expanded="true" />
             <element signature="e#6564#6565#0" expanded="true" />
             <element signature="e#8247#8248#0" expanded="true" />
@@ -310,10 +334,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-397">
+          <caret line="331" column="25" selection-start-line="331" selection-start-column="19" selection-end-line="331" selection-end-column="25" />
+          <folding>
+            <element signature="e#6346#6347#0" expanded="true" />
+            <element signature="e#6409#6410#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="57" column="62" selection-start-line="57" selection-start-column="62" selection-end-line="57" selection-end-column="62" />
+        <state relative-caret-position="-774">
+          <caret line="63" column="31" selection-start-line="63" selection-start-column="31" selection-end-line="63" selection-end-column="31" />
           <folding>
             <element signature="e#596#597#0" expanded="true" />
             <element signature="e#667#668#0" expanded="true" />

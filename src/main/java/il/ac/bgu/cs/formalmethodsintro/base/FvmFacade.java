@@ -164,7 +164,7 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S, A> boolean isStateTerminal(TransitionSystem<S, A, ?> ts, S s) {
-        throw new java.lang.UnsupportedOperationException();
+        return post(ts,s).size()==0;
     }
 
     /**

@@ -41,8 +41,62 @@ public class FvmFacadeTest {
         assertTrue(fvm.isAPDeterministic(getDeterAP()));
     }
 
+    @Test
+    public void testIsStateTerminalNo() {
+        TSandState tss = getTSandNoTerminalState();
+        assertFalse(
+                fvm.isStateTerminal(tss.getTs(),tss.getState())
+        );
+    }
 
-    private static TransitionSystem getNonDeterAP() {
+    @Test
+    public void testIsStateTerminalYes() {
+        TSandState tss = getTSandTerminalState();
+        assertTrue(
+                fvm.isStateTerminal(tss.getTs(),tss.getState())
+        );
+    }
+
+    private TSandState getTSandNoTerminalState() {
+        TransitionSystem ts = new TransitionSystem();
+        Object s0 = new Object();
+        Object s1 = new Object();
+        Object s2 = new Object();
+        Object alpha = new Object();
+        Object a = new Object();
+        ts.addInitialState(s0);
+        ts.addState(s1);
+        ts.addState(s2);
+        ts.addAction(alpha);
+        ts.addTransition(new TSTransition(s0,alpha,s1));
+        ts.addTransition(new TSTransition(s0,alpha,s2));
+        ts.addAtomicProposition(a);
+        ts.addToLabel(s1, a);
+        ts.addToLabel(s2, a);
+        return new TSandState(ts, s0);
+    }
+
+
+    private TSandState getTSandTerminalState() {
+        TransitionSystem ts = new TransitionSystem();
+        Object s0 = new Object();
+        Object s1 = new Object();
+        Object s2 = new Object();
+        Object alpha = new Object();
+        Object a = new Object();
+        ts.addInitialState(s0);
+        ts.addState(s1);
+        ts.addState(s2);
+        ts.addAction(alpha);
+        ts.addTransition(new TSTransition(s0,alpha,s1));
+        ts.addTransition(new TSTransition(s0,alpha,s2));
+        ts.addAtomicProposition(a);
+        ts.addToLabel(s1, a);
+        ts.addToLabel(s2, a);
+        return new TSandState(ts, s1);
+    }
+
+    private TransitionSystem getNonDeterAP() {
         TransitionSystem ts = new TransitionSystem();
         Object s0 = new Object();
         Object s1 = new Object();
@@ -61,7 +115,7 @@ public class FvmFacadeTest {
         return ts;
     }
 
-    private static  TransitionSystem getDeterAP() {
+    private TransitionSystem getDeterAP() {
         TransitionSystem ts = new TransitionSystem();
         Object s0 = new Object();
         Object s1 = new Object();
@@ -83,7 +137,7 @@ public class FvmFacadeTest {
     }
 
 
-    private static TransitionSystem getNonDeterAc() {
+    private TransitionSystem getNonDeterAc() {
         TransitionSystem ts = new TransitionSystem();
         Object s0 = new Object();
         Object s1 = new Object();
@@ -97,7 +151,7 @@ public class FvmFacadeTest {
         ts.addTransition(new TSTransition(s0,alpha,s2));
         return ts;
     }
-    private static TransitionSystem getDeterAc() {
+    private TransitionSystem getDeterAc() {
         TransitionSystem ts = new TransitionSystem();
         Object s0 = new Object();
         Object s1 = new Object();
@@ -109,5 +163,23 @@ public class FvmFacadeTest {
         ts.addAction(alpha);
         ts.addTransition(new TSTransition(s0,alpha,s1));
         return ts;
+    }
+
+    private class TSandState{
+        private TransitionSystem ts;
+        private Object state;
+
+        public TSandState(TransitionSystem ts, Object state) {
+            this.ts = ts;
+            this.state = state;
+        }
+
+        public TransitionSystem getTs() {
+            return ts;
+        }
+
+        public Object getState() {
+            return state;
+        }
     }
 }

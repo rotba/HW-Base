@@ -1,9 +1,7 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import il.ac.bgu.cs.formalmethodsintro.base.automata.Automaton;
 import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
@@ -16,6 +14,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
+import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
@@ -74,7 +73,19 @@ public class FvmFacade {
      * @return {@code true} iff the action is ap-deterministic.
      */
     public <S, A, P> boolean isAPDeterministic(TransitionSystem<S, A, P> ts) {
-        throw new java.lang.UnsupportedOperationException();
+        for(S s : ts.getStates()){
+            for(S sTag1 : post(ts,s)){
+                for(S sTag2 : post(ts,s)){
+                    if(!sTag1.equals(sTag2)){
+                        if(ts.getLabel(sTag1).equals(ts.getLabel(sTag2))){
+                            return false;
+                        }
+                    }
+                }
+
+            }
+        }
+        return true;
     }
 
     /**
@@ -164,7 +175,13 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S> Set<S> post(TransitionSystem<S, ?, ?> ts, S s) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<S>();
+        for (TSTransition<S, ?> tran:ts.getTransitions()) {
+            if(tran.getFrom().equals(s)){
+                ans.add(tran.getTo());
+            }
+        }
+        return ans;
     }
 
     /**

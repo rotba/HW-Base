@@ -31,6 +31,57 @@ public class FvmFacadeTest {
         assertTrue(fvm.isActionDeterministic(getDeterAc()));
     }
 
+    @Test
+    public void testIsAPDeterministicNonDeter() {
+        assertFalse(fvm.isAPDeterministic(getNonDeterAP()));
+    }
+
+    @Test
+    public void testIsAPDeterministicYesDeter() {
+        assertTrue(fvm.isAPDeterministic(getDeterAP()));
+    }
+
+
+    private static TransitionSystem getNonDeterAP() {
+        TransitionSystem ts = new TransitionSystem();
+        Object s0 = new Object();
+        Object s1 = new Object();
+        Object s2 = new Object();
+        Object alpha = new Object();
+        Object a = new Object();
+        ts.addInitialState(s0);
+        ts.addState(s1);
+        ts.addState(s2);
+        ts.addAction(alpha);
+        ts.addTransition(new TSTransition(s0,alpha,s1));
+        ts.addTransition(new TSTransition(s0,alpha,s2));
+        ts.addAtomicProposition(a);
+        ts.addToLabel(s1, a);
+        ts.addToLabel(s2, a);
+        return ts;
+    }
+
+    private static  TransitionSystem getDeterAP() {
+        TransitionSystem ts = new TransitionSystem();
+        Object s0 = new Object();
+        Object s1 = new Object();
+        Object s2 = new Object();
+        Object alpha = new Object();
+        Object a = new Object();
+        Object b = new Object();
+        ts.addInitialState(s0);
+        ts.addState(s1);
+        ts.addState(s2);
+        ts.addAction(alpha);
+        ts.addTransition(new TSTransition(s0,alpha,s1));
+        ts.addTransition(new TSTransition(s0,alpha,s2));
+        ts.addAtomicProposition(a);
+        ts.addAtomicProposition(b);
+        ts.addToLabel(s1, a);
+        ts.addToLabel(s2, b);
+        return ts;
+    }
+
 
     private static TransitionSystem getNonDeterAc() {
         TransitionSystem ts = new TransitionSystem();

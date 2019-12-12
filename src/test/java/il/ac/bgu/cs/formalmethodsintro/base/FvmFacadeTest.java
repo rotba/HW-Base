@@ -1,6 +1,8 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.PGTransition;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
@@ -10,9 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -123,14 +123,99 @@ public class FvmFacadeTest {
     }
 
     @Test
-    public void testInterleav() {
+    public void testInterleavTS() {
         Pair<Pair<TransitionSystem, TransitionSystem>,TransitionSystem> p =T1T2T12();
-        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(p.getFirst().getFirst()));
-        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(p.getFirst().getSecond()));
-        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(p.getSecond()));
         assertEquals(
                 fvm.interleave(p.first.first, p.first.second), p.second
         );
+    }
+
+    @Test
+    public void testInterleavPG() {
+        Pair<Pair<ProgramGraph, ProgramGraph>,ProgramGraph> p =P1P2P12();
+        assertEquals(
+                fvm.interleave(p.first.first, p.first.second), p.second
+        );
+    }
+
+    @Test
+    public void testtransitionSystemFromProgramGraph() {
+        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
+        assertEquals(
+                fvm.interleave(p.first.first, p.first.second), p.second
+        );
+    }
+
+    private Pair<ProgramGraph, TransitionSystem> TS1PG1() {
+        ProgramGraph p = new ProgramGraph();
+        Object l0 = "loc0";
+        Object l1 = "loc1";
+        String c0 = "x!=0";
+        Object a0 = "x:=x+1";
+        p.addInitalization(new ArrayList<>(List.of("x:=0")));
+        p.addLocation(l0);
+        p.addLocation(l1);
+        p.addTransition(new PGTransition(l0,c0, a0, l1));
+
+        TransitionSystem ts = new TransitionSystem();
+        HashMap<String, Integer> m0= new HashMap<>();
+        HashMap<String, Integer> m1= new HashMap<>();
+        HashMap<String, Integer> m2= new HashMap<>();
+        m0.put("x",0);
+        m1.put("x",1);
+        m2.put("x",2);
+        Object s00 = new Pair<>(l0,m0);
+        Object s01 = new Pair<>(l0,m1);
+        Object s02 = new Pair<>(l0,m2);
+        Object s10 = new Pair<>(l0,m0);
+        Object s11 = new Pair<>(l0,m1);
+        Object s12 = new Pair<>(l0,m2);
+        ts.addStates(s01,s02,s10,s11,s12);
+        ts.addInitialState(s00);
+        ts.addTransition(new TSTransition(s00,a0, s11));
+        ts.addTransition(new TSTransition(s10,a0, s12));
+
+    }
+
+
+    private Pair<Pair<ProgramGraph, ProgramGraph>, ProgramGraph> P1P2P12() {
+        ProgramGraph p0 = new ProgramGraph();
+        Object l00 = "loc00";
+        Object l01 = "loc01";
+        String c0 = "x!=0";
+        Object a0 = "x:=x+1";
+        p0.addInitalization(new ArrayList<>(List.of("x:=0")));
+        p0.addLocation(l00);
+        p0.addLocation(l01);
+        p0.addTransition(new PGTransition(l00,c0, a0, l01));
+
+        ProgramGraph p1 = new ProgramGraph();
+        Object l10 = "loc10";
+        Object l11 = "loc11";
+        String c1 = "y>1";
+        Object a1 = "y:=y-2";
+        p1.addInitalization(new ArrayList<>(List.of("y:=7")));
+        p1.addLocation(l10);
+        p1.addLocation(l11);
+        p1.addTransition(new PGTransition(l10,c1, a1, l11));
+
+        ProgramGraph pg01 = new ProgramGraph();
+        Pair p00 = new Pair<>(l00,l10);
+        Pair p01 = new Pair<>(l00,l11);
+        Pair p10 = new Pair<>(l01,l10);
+        Pair p11 = new Pair<>(l01,l11);
+        p1.addInitalization(new ArrayList<>(List.of("y:=7", "x:=0")));
+        pg01.addLocation(p00);
+        pg01.addLocation(p01);
+        pg01.addLocation(p10);
+        pg01.addLocation(p11);
+        pg01.addTransition(new PGTransition(p00,c0, a0, p10));
+        pg01.addTransition(new PGTransition(p00,c1, a1, p01));
+        pg01.addTransition(new PGTransition(p10,c1, a1, p11));
+        pg01.addTransition(new PGTransition(p01,c0, a0, p11));
+
+        return new Pair<>(new Pair<>(p0,p1),pg01);
+
     }
 
     private Pair<Pair<TransitionSystem, TransitionSystem>, TransitionSystem> T1T2T12() {

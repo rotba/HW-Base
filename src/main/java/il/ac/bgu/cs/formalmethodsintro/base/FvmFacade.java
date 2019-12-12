@@ -513,7 +513,8 @@ public class FvmFacade {
      * @return Interleaved program graph.
      */
     public <L1, L2, A> ProgramGraph<Pair<L1, L2>, A> interleave(ProgramGraph<L1, A> pg1, ProgramGraph<L2, A> pg2) {
-        throw new java.lang.UnsupportedOperationException();
+        ProgramGraph<Pair<L1, L2>, A> interleaved = createProgramGraph();
+        return interleaved;
     }
 
     /**

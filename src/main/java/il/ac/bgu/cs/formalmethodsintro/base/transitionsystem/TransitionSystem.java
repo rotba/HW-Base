@@ -205,6 +205,14 @@ public class TransitionSystem<STATE, ACTION, ATOMIC_PROPOSITION> {
      *
      * @return A copy of the set of actions.
      */
+    public Set<STATE> getTransition(STATE s, ACTION a){
+        Set<STATE> ret = new HashSet<>();
+        for(TSTransition<STATE, ACTION> transition : transitions){
+            if(transition.getFrom().equals(s))
+                ret.add(transition.getTo());
+        }
+        return ret;
+    }
     public Set<ACTION> getActions() {
         return Collections.unmodifiableSet(actions);
     }

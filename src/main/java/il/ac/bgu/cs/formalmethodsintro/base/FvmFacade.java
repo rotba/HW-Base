@@ -550,7 +550,38 @@ public class FvmFacade {
      */
     public TransitionSystem<Pair<Map<String, Boolean>, Map<String, Boolean>>, Map<String, Boolean>, Object> transitionSystemFromCircuit(
             Circuit c) {
-        throw new java.lang.UnsupportedOperationException();
+        TransitionSystem<Pair<Map<String, Boolean>, Map<String, Boolean>>, Map<String, Boolean>, Object> ts = new TransitionSystem<>();
+        for(String in : c.getInputPortNames()){
+            for(String reg : c.getRegisterNames()){
+                Pair<Map<String, Boolean>, Map<String, Boolean>> intr = new Pair<>(Map.of(reg, false), Map.of(in, true));
+                ts.addInitialState(intr);
+                ts.addToLabel(intr,in);
+                Pair<Map<String, Boolean>, Map<String, Boolean>> infl = new Pair<>(Map.of(reg, false), Map.of(in, false));
+                ts.addInitialState(infl);
+                ts.addToLabel(intr,in);
+                Pair<Map<String, Boolean>, Map<String, Boolean>> refl = new Pair<>(Map.of(reg, true), Map.of(in, false));
+                ts.addState(refl);
+                ts.addToLabel(refl,reg);
+                Pair<Map<String, Boolean>, Map<String, Boolean>> retr = new Pair<>(Map.of(reg, true), Map.of(in, true));
+                ts.addState(retr);
+                ts.addToLabel(retr,reg);
+                ts.addToLabel(retr,in);
+            }
+            ts.addAction(Map.of(in, false));
+            ts.addAction(Map.of(in, true));
+        }
+        ts.addAllAtomicPropositions(c.getOutputPortNames().toArray());
+        ts.addAllAtomicPropositions(c.getInputPortNames().toArray());
+        ts.addAllAtomicPropositions(c.getRegisterNames().toArray());
+        for(Pair<Map<String, Boolean>, Map<String, Boolean>> new_state: ts.getStates()){
+            ts.addTransition(new TSTransition(new_state, new_state.first, c.updateRegisters(new_state.first, new_state.second)));
+            Map<String, Boolean> out = c.computeOutputs(new_state.first, new_state.second);
+            for(String out_port : c.getOutputPortNames()){
+                if(out.get(out_port))
+                    ts.addToLabel(new_state, out_port);
+            }
+        }
+        return ts;
     }
 
     /**

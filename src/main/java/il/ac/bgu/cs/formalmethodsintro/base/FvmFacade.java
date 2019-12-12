@@ -12,6 +12,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.PGTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
@@ -371,41 +372,33 @@ public class FvmFacade {
             for (S2 state2 : ts2.getStates()) {
                 Pair<S1, S2> new_state = new Pair<S1, S2>(state1, state2);
                 interleaved.addState(new_state);
-                for(P ap : ts1.getLabel(state1)){
+                for(P ap : ts1.getLabel(state1))
                     interleaved.addToLabel(new_state, ap);
-                }
-                for(P ap : ts2.getLabel(state2)){
+                for(P ap : ts2.getLabel(state2))
                     interleaved.addToLabel(new_state, ap);
-                }
-                if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2)) {
-                    interleaved.addState(new_state);
-                }
+                if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2))
+                    interleaved.addInitialState(new_state);
             }
         }
         interleaved.addAllActions(ts1.getActions());
         interleaved.addAllActions(ts2.getActions());
         interleaved.addAllAtomicPropositions(ts1.getAtomicPropositions());
         interleaved.addAllAtomicPropositions(ts2.getAtomicPropositions());
-        for(TSTransition<S1, A> transition : ts1.getTransitions()){
-            for(Pair<S1,S2> new_state : interleaved.getStates()){
-                if(new_state.first.equals(transition.getFrom())){
-                    for(Pair<S1,S2> to_state : interleaved.getStates()){
+
+        for(TSTransition<S1, A> transition : ts1.getTransitions())
+            for(Pair<S1,S2> new_state : interleaved.getStates())
+                if(new_state.first.equals(transition.getFrom()))
+                    for(Pair<S1,S2> to_state : interleaved.getStates())
                         if(to_state.first.equals(transition.getTo()))
                             interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
-                    }
-                }
-            }
-        }
-        for(TSTransition<S2, A> transition : ts2.getTransitions()){
-            for(Pair<S1,S2> new_state : interleaved.getStates()){
-                if(new_state.second.equals(transition.getFrom())){
-                    for(Pair<S1,S2> to_state : interleaved.getStates()){
+
+        for(TSTransition<S2, A> transition : ts2.getTransitions())
+            for(Pair<S1,S2> new_state : interleaved.getStates())
+                if(new_state.second.equals(transition.getFrom()))
+                    for(Pair<S1,S2> to_state : interleaved.getStates())
                         if(to_state.second.equals(transition.getTo()))
                             interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
-                    }
-                }
-            }
-        }
+
         return interleaved;
     }
 
@@ -436,7 +429,7 @@ public class FvmFacade {
                     interleaved.addToLabel(new_state, ap);
                 }
                 if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2)) {
-                    interleaved.addState(new_state);
+                    interleaved.addInitialState(new_state);
                 }
             }
         }
@@ -512,24 +505,37 @@ public class FvmFacade {
      * @param pg2 The second program graph.
      * @return Interleaved program graph.
      */
+    // TODO: 12/12/2019 : effect function
     public <L1, L2, A> ProgramGraph<Pair<L1, L2>, A> interleave(ProgramGraph<L1, A> pg1, ProgramGraph<L2, A> pg2) {
         ProgramGraph<Pair<L1, L2>, A> interleaved = createProgramGraph();
-//        for(L1 loc1 : pg1.getLocations()) {
-//            for (L2 loc2 : pg2.getLocations()) {
-//                Pair<S1, S2> new_state = new Pair<S1, S2>(state1, state2);
-//                interleaved.addState(new_state);
-//                for(P ap : ts1.getLabel(state1)){
-//                    interleaved.addToLabel(new_state, ap);
-//                }
-//                for(P ap : ts2.getLabel(state2)){
-//                    interleaved.addToLabel(new_state, ap);
-//                }
-//                if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2)) {
-//                    interleaved.addState(new_state);
-//                }
-//            }
-//        }
-     return interleaved;
+        for(L1 loc1 : pg1.getLocations()) {
+            for (L2 loc2 : pg2.getLocations()) {
+                Pair<L1, L2> new_loc = new Pair<L1,L2>(loc1, loc2);
+                if(pg1.getInitialLocations().contains(loc1) && pg2.getInitialLocations().contains(loc2))
+                    interleaved.setInitial(new_loc, true);
+                else
+                    interleaved.addLocation(new_loc);
+
+            }
+        }
+        Set<List<String>> both_inits= new HashSet<>(pg1.getInitalizations());
+        both_inits.addAll(pg2.getInitalizations());
+        for(List<String> init_list : both_inits)
+            interleaved.addInitalization(init_list);
+        for(PGTransition<L1,A> trans : pg1.getTransitions())
+            for(Pair<L1,L2> from_loc : interleaved.getLocations())
+                if(from_loc.first.equals(trans.getTo()))
+                    for(Pair<L1,L2> to_loc : interleaved.getLocations())
+                        if(to_loc.first.equals(trans.getFrom()))
+                            interleaved.addTransition(new PGTransition<>(from_loc, trans.getCondition(), trans.getAction(),to_loc));
+        for(PGTransition<L2,A> trans : pg2.getTransitions())
+            for(Pair<L1,L2> from_loc : interleaved.getLocations())
+                if(from_loc.second.equals(trans.getTo()))
+                    for(Pair<L1,L2> to_loc : interleaved.getLocations())
+                        if(to_loc.second.equals(trans.getFrom()))
+                            interleaved.addTransition(new PGTransition<>(from_loc, trans.getCondition(), trans.getAction(),to_loc));
+
+        return interleaved;
     }
 
     /**

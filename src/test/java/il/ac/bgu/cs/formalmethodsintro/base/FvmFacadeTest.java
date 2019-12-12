@@ -1,8 +1,7 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
-import il.ac.bgu.cs.formalmethodsintro.base.programgraph.PGTransition;
-import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
@@ -142,7 +141,12 @@ public class FvmFacadeTest {
     public void testtransitionSystemFromProgramGraph() {
         Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
         assertEquals(
-                fvm.interleave(p.first.first, p.first.second), p.second
+                fvm.transitionSystemFromProgramGraph(
+                        p.first,
+                        new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
+                        new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
+                ),
+                p.second
         );
     }
 
@@ -150,11 +154,12 @@ public class FvmFacadeTest {
         ProgramGraph p = new ProgramGraph();
         Object l0 = "loc0";
         Object l1 = "loc1";
-        String c0 = "x!=0";
+        String c0 = "x==0";
         Object a0 = "x:=x+1";
         p.addInitalization(new ArrayList<>(List.of("x:=0")));
         p.addLocation(l0);
         p.addLocation(l1);
+        p.setInitial(l0,true);
         p.addTransition(new PGTransition(l0,c0, a0, l1));
 
         TransitionSystem ts = new TransitionSystem();
@@ -174,7 +179,7 @@ public class FvmFacadeTest {
         ts.addInitialState(s00);
         ts.addTransition(new TSTransition(s00,a0, s11));
         ts.addTransition(new TSTransition(s10,a0, s12));
-
+        return new Pair<>(p,ts);
     }
 
 

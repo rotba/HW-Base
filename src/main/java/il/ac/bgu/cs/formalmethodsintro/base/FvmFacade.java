@@ -8,7 +8,6 @@ import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
-import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
@@ -19,6 +18,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
+import org.antlr.runtime.ANTLRStringStream;
 
 /**
  * Interface for the entry point class to the HW in this class. Our
@@ -39,6 +39,10 @@ public class FvmFacade {
             INSTANCE = new FvmFacade();
         }
         return INSTANCE;
+    }
+
+    public static FvmFacade createInstance() {
+        return get();
     }
 
     /**
@@ -562,7 +566,49 @@ public class FvmFacade {
      */
     public <L, A> TransitionSystem<Pair<L, Map<String, Object>>, A, String> transitionSystemFromProgramGraph(
             ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs) {
-        throw new java.lang.UnsupportedOperationException();
+        TransitionSystem<Pair<L, Map<String, Object>>,A, String> ts = createTransitionSystem();
+        for (L initLoc:pg.getInitialLocations()) {
+            for (List<String> init: pg.getInitalizations()) {
+                for (String initialDef: init) {
+                    for (ActionDef ad: actionDefs) {
+                        if (ad.isMatchingAction(initialDef)){
+                            ts.addInitialState(new Pair<>(initLoc, ad.effect(new HashMap<>(),initialDef)));
+                        }
+                    }
+                }
+            }
+
+        }
+
+        for (Pair<L, Map<String, Object>> initialState: ts.getInitialStates()) {
+            for (Pair<L, Map<String, Object>> reachable:
+                    lazyGetReachables(initialState,pg,actionDefs,conditionDefs )) {
+                ts.addState(reachable);
+            }
+        }
+        return null;
+    }
+
+    private <L, A>  Set<Pair<L, Map<String, Object>>> lazyGetReachables(Pair<L, Map<String, Object>> currState, ProgramGraph<L,A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs) {
+        HashSet<Pair<L, Map<String, Object>>> ans = new HashSet<>();
+        for (PGTransition tran: pg.getTransitions()) {
+            if(tran.getFrom().equals(currState.getFirst())){
+                for (ConditionDef cd: conditionDefs) {
+                    if(cd.evaluate(currState.getSecond(), tran.getCondition())){
+                        for (ActionDef ad: actionDefs) {
+                            if(ad.isMatchingAction(tran.getAction())){
+                                Pair<L, Map<String, Object>> newState = new Pair(tran.getTo(), ad.effect(currState.getSecond(), tran.getAction()));
+                                ans.add(newState);
+                                for (Pair<L, Map<String, Object>> reachable: lazyGetReachables(newState,pg,actionDefs,conditionDefs)) {
+                                    ans.add(reachable);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return ans;
     }
 
     /**
@@ -671,4 +717,7 @@ public class FvmFacade {
         throw new java.lang.UnsupportedOperationException();
     }
 
+    public <S, A, AP>TransitionSystem<S, A, AP> createTransitionSystem() {
+        return new TransitionSystem<>();
+    }
 }

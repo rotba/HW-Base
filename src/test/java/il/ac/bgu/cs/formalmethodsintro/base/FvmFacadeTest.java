@@ -24,7 +24,7 @@ public class FvmFacadeTest {
 
     @Test
     public void testIsActionDeterministicNonDeter() {
-        assertFalse(fvm.isActionDeterministic(getDeterAc()));
+        assertFalse(fvm.isActionDeterministic(getNonDeterAc()));
     }
     @Test
     public void testIsActionDeterministicYesDeter() {

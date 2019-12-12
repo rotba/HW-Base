@@ -1,7 +1,9 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
+import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
+import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,21 +45,21 @@ public class FvmFacadeTest {
 
     @Test
     public void testIsStateTerminalNo() {
-        TSandState tss = getTSandNoTerminalState();
+        Pair<TransitionSystem, Object> p  = getTSandNoTerminalState();
         assertFalse(
-                fvm.isStateTerminal(tss.getTs(),tss.getState())
+                fvm.isStateTerminal(p.getFirst(),p.getSecond())
         );
     }
 
     @Test
     public void testIsStateTerminalYes() {
-        TSandState tss = getTSandTerminalState();
+        Pair<TransitionSystem, Object> p =getTSandTerminalState();
         assertTrue(
-                fvm.isStateTerminal(tss.getTs(),tss.getState())
+                fvm.isStateTerminal(p.getFirst(),p.getSecond())
         );
     }
 
-    private TSandState getTSandNoTerminalState() {
+    private Pair<TransitionSystem, Object> getTSandNoTerminalState() {
         TransitionSystem ts = new TransitionSystem();
         Object s0 = new Object();
         Object s1 = new Object();
@@ -73,11 +75,11 @@ public class FvmFacadeTest {
         ts.addAtomicProposition(a);
         ts.addToLabel(s1, a);
         ts.addToLabel(s2, a);
-        return new TSandState(ts, s0);
+        return new Pair<>(ts,s0);
     }
 
 
-    private TSandState getTSandTerminalState() {
+    private Pair<TransitionSystem, Object> getTSandTerminalState() {
         TransitionSystem ts = new TransitionSystem();
         Object s0 = new Object();
         Object s1 = new Object();
@@ -93,7 +95,7 @@ public class FvmFacadeTest {
         ts.addAtomicProposition(a);
         ts.addToLabel(s1, a);
         ts.addToLabel(s2, a);
-        return new TSandState(ts, s1);
+        return new Pair<>(ts, s1);
     }
 
     private TransitionSystem getNonDeterAP() {
@@ -165,21 +167,4 @@ public class FvmFacadeTest {
         return ts;
     }
 
-    private class TSandState{
-        private TransitionSystem ts;
-        private Object state;
-
-        public TSandState(TransitionSystem ts, Object state) {
-            this.ts = ts;
-            this.state = state;
-        }
-
-        public TransitionSystem getTs() {
-            return ts;
-        }
-
-        public Object getState() {
-            return state;
-        }
-    }
 }

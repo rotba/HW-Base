@@ -193,7 +193,13 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S> Set<S> post(TransitionSystem<S, ?, ?> ts, Set<S> c) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<>();
+        for (S s: c) {
+            for (S sTag: post(ts, s)) {
+                ans.add(sTag);
+            }
+        }
+        return ans;
     }
 
     /**
@@ -207,7 +213,7 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S, A> Set<S> post(TransitionSystem<S, A, ?> ts, S s, A a) {
-        throw new java.lang.UnsupportedOperationException();
+        return ts.getTransition(s,a);
     }
 
     /**
@@ -220,7 +226,13 @@ public class FvmFacade {
      * in {@code c}, when action {@code a} is selected.
      */
     public <S, A> Set<S> post(TransitionSystem<S, A, ?> ts, Set<S> c, A a) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<>();
+        for (S s:c) {
+            for (S sTag: post(ts,s,a)) {
+                ans.add(sTag);
+            }
+        }
+        return ans;
     }
 
     /**
@@ -230,7 +242,13 @@ public class FvmFacade {
      * @return All the states in {@code Pre(s)}, in the context of {@code ts}.
      */
     public <S> Set<S> pre(TransitionSystem<S, ?, ?> ts, S s) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<S>();
+        for (TSTransition<S, ?> tran:ts.getTransitions()) {
+            if(tran.getTo().equals(s)){
+                ans.add(tran.getFrom());
+            }
+        }
+        return ans;
     }
 
     /**
@@ -242,7 +260,13 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S> Set<S> pre(TransitionSystem<S, ?, ?> ts, Set<S> c) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<>();
+        for (S s: c) {
+            for (S sTag: pre(ts, s)) {
+                ans.add(sTag);
+            }
+        }
+        return ans;
     }
 
     /**
@@ -256,7 +280,12 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S, A> Set<S> pre(TransitionSystem<S, A, ?> ts, S s, A a) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<>();
+        for (S sTag: ts.getStates()) {
+            if(post(ts,sTag,a).contains(s))
+                ans.add(s);
+        }
+        return ans;
     }
 
     /**
@@ -270,7 +299,13 @@ public class FvmFacade {
      * @throws StateNotFoundException if {@code s} is not a state of {@code ts}.
      */
     public <S, A> Set<S> pre(TransitionSystem<S, A, ?> ts, Set<S> c, A a) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> ans = new HashSet<>();
+        for (S s: c) {
+            for (S sTag: pre(ts,s,a)) {
+                ans.add(sTag);
+            }
+        }
+        return ans;
     }
 
     /**

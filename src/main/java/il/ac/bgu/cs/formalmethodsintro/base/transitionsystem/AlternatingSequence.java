@@ -90,6 +90,13 @@ public class AlternatingSequence<S, A> {
     public S last() {
         return (S) items.get(items.size() - 1);
     }
+    public S getStateAt(int pos){
+        return (S) items.get(pos);
+    }
+
+    public A getActAt(int pos)  {
+        return (A) items.get(pos);
+    }
 
     public int size() {
         return items.size();

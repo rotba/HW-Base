@@ -10,6 +10,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
+import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
@@ -51,8 +52,15 @@ public class FvmFacade {
      * @param ts The transition system being tested.
      * @return {@code true} iff the action is deterministic.
      */
+
     public <S, A, P> boolean isActionDeterministic(TransitionSystem<S, A, P> ts) {
-        throw new java.lang.UnsupportedOperationException();
+        for(S s : ts.getStates()){
+            for(A a : ts.getActions()){
+                if(ts.getTransition(s, a).size() > 1)
+                    return false;
+            }
+        }
+        return true;
     }
 
     /**

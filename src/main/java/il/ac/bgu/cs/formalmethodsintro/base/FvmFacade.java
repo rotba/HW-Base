@@ -343,7 +343,13 @@ public class FvmFacade {
      * @return All states reachable in {@code ts}.
      */
     public <S, A> Set<S> reach(TransitionSystem<S, A, ?> ts) {
-        throw new java.lang.UnsupportedOperationException();
+        Set<S> reachable = new HashSet<>();
+        for(TSTransition<S, A> tr : ts.getTransitions()){
+            reachable.add(tr.getTo());
+            if(ts.getInitialStates().contains(tr.getFrom()))
+                reachable.add(tr.getFrom());
+        }
+        return reachable;
     }
 
     /**
@@ -360,7 +366,48 @@ public class FvmFacade {
      */
     public <S1, S2, A, P> TransitionSystem<Pair<S1, S2>, A, P> interleave(TransitionSystem<S1, A, P> ts1,
             TransitionSystem<S2, A, P> ts2) {
-        throw new java.lang.UnsupportedOperationException();
+        TransitionSystem<Pair<S1, S2>, A, P> interleaved = new TransitionSystem();
+        for(S1 state1 : ts1.getStates()) {
+            for (S2 state2 : ts2.getStates()) {
+                Pair<S1, S2> new_state = new Pair<S1, S2>(state1, state2);
+                interleaved.addState(new_state);
+                for(P ap : ts1.getLabel(state1)){
+                    interleaved.addToLabel(new_state, ap);
+                }
+                for(P ap : ts2.getLabel(state2)){
+                    interleaved.addToLabel(new_state, ap);
+                }
+                if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2)) {
+                    interleaved.addState(new_state);
+                }
+            }
+        }
+        interleaved.addAllActions(ts1.getActions());
+        interleaved.addAllActions(ts2.getActions());
+        interleaved.addAllAtomicPropositions(ts1.getAtomicPropositions());
+        interleaved.addAllAtomicPropositions(ts2.getAtomicPropositions());
+        Set<TSTransition<S1, A>> tr1 = ts1.getTransitions();
+        for(TSTransition<S1, A> transition : tr1){
+            for(Pair<S1,S2> new_state : interleaved.getStates()){
+                if(new_state.first.equals(transition.getFrom())){
+                    for(Pair<S1,S2> to_state : interleaved.getStates()){
+                        if(to_state.first.equals(transition.getTo()))
+                            interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
+                    }
+                }
+            }
+        }
+        for(TSTransition<S2, A> transition : tr2){
+            for(Pair<S1,S2> new_state : interleaved.getStates()){
+                if(new_state.second.equals(transition.getFrom())){
+                    for(Pair<S1,S2> to_state : interleaved.getStates()){
+                        if(to_state.second.equals(transition.getTo()))
+                            interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
+                    }
+                }
+            }
+        }
+        return interleaved;
     }
 
     /**

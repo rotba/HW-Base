@@ -514,7 +514,22 @@ public class FvmFacade {
      */
     public <L1, L2, A> ProgramGraph<Pair<L1, L2>, A> interleave(ProgramGraph<L1, A> pg1, ProgramGraph<L2, A> pg2) {
         ProgramGraph<Pair<L1, L2>, A> interleaved = createProgramGraph();
-        return interleaved;
+//        for(L1 loc1 : pg1.getLocations()) {
+//            for (L2 loc2 : pg2.getLocations()) {
+//                Pair<S1, S2> new_state = new Pair<S1, S2>(state1, state2);
+//                interleaved.addState(new_state);
+//                for(P ap : ts1.getLabel(state1)){
+//                    interleaved.addToLabel(new_state, ap);
+//                }
+//                for(P ap : ts2.getLabel(state2)){
+//                    interleaved.addToLabel(new_state, ap);
+//                }
+//                if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2)) {
+//                    interleaved.addState(new_state);
+//                }
+//            }
+//        }
+     return interleaved;
     }
 
     /**

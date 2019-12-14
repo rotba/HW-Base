@@ -1,5 +1,6 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
+import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
@@ -160,16 +161,23 @@ public class FvmFacadeTest {
     }
 
 
+    @Test
+    public void testInterleavPG() {
+        Pair<Pair<ProgramGraph, ProgramGraph>,ProgramGraph> p =P1P2P12();
+        assertEquals(
+                fvm.interleave(p.first.first, p.first.second), p.second
+        );
+    }
 
+    @Test
+    public void testCircuit() {
+        Pair<Circuit, TransitionSystem> p =circuit();
+        TransitionSystem ts = fvm.transitionSystemFromCircuit(p.first);
+        assertEquals(
+                fvm.transitionSystemFromCircuit(p.first), p.second
+        );
+    }
 
-//    @Test
-//    public void testInterleavPG() {
-//        Pair<Pair<ProgramGraph, ProgramGraph>,ProgramGraph> p =P1P2P12();
-//        assertEquals(
-//                fvm.interleave(p.first.first, p.first.second), p.second
-//        );
-//    }
-//
 //    @Test
 //    public void testtransitionSystemFromProgramGraph() {
 //        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
@@ -225,6 +233,7 @@ public class FvmFacadeTest {
         p0.addInitalization(new ArrayList<>(List.of("x:=0")));
         p0.addLocation(l00);
         p0.addLocation(l01);
+        p0.setInitial(l00, true);
         p0.addTransition(new PGTransition(l00,c0, a0, l01));
 
         ProgramGraph p1 = new ProgramGraph();
@@ -232,9 +241,10 @@ public class FvmFacadeTest {
         Object l11 = "loc11";
         String c1 = "y>1";
         Object a1 = "y:=y-2";
-        p1.addInitalization(new ArrayList<>(List.of("y:=7")));
+        p1.addInitalization((List.of("y:=7")));
         p1.addLocation(l10);
         p1.addLocation(l11);
+        p1.setInitial(l10, true);
         p1.addTransition(new PGTransition(l10,c1, a1, l11));
 
         ProgramGraph pg01 = new ProgramGraph();
@@ -242,11 +252,13 @@ public class FvmFacadeTest {
         Pair p01 = new Pair<>(l00,l11);
         Pair p10 = new Pair<>(l01,l10);
         Pair p11 = new Pair<>(l01,l11);
-        p1.addInitalization(new ArrayList<>(List.of("y:=7", "x:=0")));
+        pg01.addInitalization(List.of("y:=7"));
+        pg01.addInitalization(List.of("x:=0"));
         pg01.addLocation(p00);
         pg01.addLocation(p01);
         pg01.addLocation(p10);
         pg01.addLocation(p11);
+        pg01.setInitial(p00, true);
         pg01.addTransition(new PGTransition(p00,c0, a0, p10));
         pg01.addTransition(new PGTransition(p00,c1, a1, p01));
         pg01.addTransition(new PGTransition(p10,c1, a1, p11));
@@ -641,6 +653,106 @@ public class FvmFacadeTest {
         ret.addFirst(as);
         ret.addFirst(ts);
         return ret;
+    }
+
+    // from lecture 3
+    class CircuitImpl implements Circuit{
+
+        private Set<String> inputPortNames;
+        private Set<String> registersNames;
+        private Set<String> outputsNames;
+
+        public CircuitImpl(Set<String> inputPort, Set<String> registers,Set<String> outputs){
+            this.inputPortNames = inputPort;
+            this.registersNames = registers;
+            this.outputsNames = outputs;
+        }
+        @Override
+        public Set<String> getInputPortNames() {
+            return inputPortNames;
+        }
+
+        @Override
+        public Set<String> getRegisterNames() {
+            return registersNames;
+        }
+
+        @Override
+        public Set<String> getOutputPortNames() {
+            return outputsNames;
+        }
+
+        @Override
+        public Map<String, Boolean> updateRegisters(Map<String, Boolean> inputs, Map<String, Boolean> registers) {
+            Map<String, Boolean> updated = new HashMap<>();
+            for (Map.Entry<String,Boolean> entry : registers.entrySet()){
+                if(entry.getKey().equals("r1"))
+                    updated.put("r1", (inputs.get("x") && registers.get("r2")) ^ entry.getValue());
+                else
+                    updated.put(entry.getKey(), inputs.get("x") ^ entry.getValue());
+            }
+            return updated;
+        }
+
+        @Override
+        public Map<String, Boolean> computeOutputs(Map<String, Boolean> inputs, Map<String, Boolean> registers) {
+            Map<String, Boolean> updated = new HashMap<>();
+            for(String out : outputsNames){
+                HashSet<Boolean> all = new HashSet<Boolean>(registers.values()) ;
+                all.addAll(inputs.values());
+                updated.put(out, all.stream().reduce((a,b)-> a && b).orElse(true));
+            }
+            return updated;
+        }
+    }
+
+    private Pair<Circuit, TransitionSystem> circuit(){
+        Circuit circuit = new CircuitImpl(Set.of("x"), Set.of("r1", "r2"), Set.of("y"));
+        TransitionSystem ts = new TransitionSystem();
+        Pair<Map, Map> s000 = new Pair(Map.of("r1", false, "r2", false), Map.of("x", false));
+        Pair<Map, Map> s010 = new Pair(Map.of("r1", false, "r2", true), Map.of("x", false));
+        Pair<Map, Map> s100 = new Pair(Map.of("r1", true, "r2", false), Map.of("x", false));
+        Pair<Map, Map> s110 = new Pair(Map.of("r1", true, "r2", true), Map.of("x", false));
+        Pair<Map, Map> s001 = new Pair(Map.of("r1", false, "r2", false), Map.of("x", true));
+        Pair<Map, Map> s011 = new Pair(Map.of("r1", false, "r2", true), Map.of("x", true));
+        Pair<Map, Map> s101 =  new Pair(Map.of("r1", true, "r2", false), Map.of("x", true));
+        Pair<Map, Map> s111 = new Pair(Map.of("r1", true, "r2", true), Map.of("x", true));
+        ts.addStates(s010, s100, s110, s011, s101, s111);
+        ts.addInitialState(s000);
+        ts.addInitialState(s001);
+        ts.addTransition(new TSTransition(s000, Map.of("x", false),s000));
+        ts.addTransition(new TSTransition(s000, Map.of("x", true),s001));
+        ts.addTransition(new TSTransition(s001, Map.of("x", false),s010));
+        ts.addTransition(new TSTransition(s001, Map.of("x", true),s011));
+        ts.addTransition(new TSTransition(s010, Map.of("x", false),s010));
+        ts.addTransition(new TSTransition(s010, Map.of("x", true),s011));
+        ts.addTransition(new TSTransition(s011, Map.of("x", false),s100));
+        ts.addTransition(new TSTransition(s011, Map.of("x", true),s101));
+        ts.addTransition(new TSTransition(s100, Map.of("x", false),s100));
+        ts.addTransition(new TSTransition(s100, Map.of("x", true),s101));
+        ts.addTransition(new TSTransition(s110, Map.of("x", false),s110));
+        ts.addTransition(new TSTransition(s110, Map.of("x", true),s111));
+        ts.addTransition(new TSTransition(s111, Map.of("x", false),s000));
+        ts.addTransition(new TSTransition(s111, Map.of("x", true),s001));
+        ts.addTransition(new TSTransition(s101, Map.of("x", false),s110));
+        ts.addTransition(new TSTransition(s101, Map.of("x", true),s111));
+        ts.addToLabel(s010, "r2");
+        ts.addToLabel(s100, "r1");
+        ts.addToLabel(s110, "r1");
+        ts.addToLabel(s110, "r2");
+        ts.addToLabel(s001, "x");
+        ts.addToLabel(s011, "x");
+        ts.addToLabel(s011, "r2");
+        ts.addToLabel(s101, "r1");
+        ts.addToLabel(s101, "x");
+        ts.addToLabel(s111, "y");
+        ts.addToLabel(s111, "x");
+        ts.addToLabel(s111, "r1");
+        ts.addToLabel(s111, "r2");
+
+
+        return new Pair(circuit, ts);
+
     }
 
 }

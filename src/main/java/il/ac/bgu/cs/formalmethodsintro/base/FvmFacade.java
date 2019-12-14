@@ -496,6 +496,7 @@ public class FvmFacade {
     // TODO: 12/12/2019 : effect function
     public <L1, L2, A> ProgramGraph<Pair<L1, L2>, A> interleave(ProgramGraph<L1, A> pg1, ProgramGraph<L2, A> pg2) {
         ProgramGraph<Pair<L1, L2>, A> interleaved = createProgramGraph();
+        // create all new states and set initials
         for (L1 loc1 : pg1.getLocations()) {
             for (L2 loc2 : pg2.getLocations()) {
                 Pair<L1, L2> new_loc = new Pair<L1, L2>(loc1, loc2);
@@ -503,29 +504,48 @@ public class FvmFacade {
                     interleaved.setInitial(new_loc, true);
                 else
                     interleaved.addLocation(new_loc);
-
             }
         }
         Set<List<String>> both_inits = new HashSet<>(pg1.getInitalizations());
         both_inits.addAll(pg2.getInitalizations());
+        // set the initialization for the new PG
         for (List<String> init_list : both_inits)
             interleaved.addInitalization(init_list);
+        //
         for (PGTransition<L1, A> trans : pg1.getTransitions())
             for (Pair<L1, L2> from_loc : interleaved.getLocations())
-                if (from_loc.first.equals(trans.getTo()))
+                if (from_loc.first.equals(trans.getFrom()))
                     for (Pair<L1, L2> to_loc : interleaved.getLocations())
-                        if (to_loc.first.equals(trans.getFrom()))
+                        if (to_loc.first.equals(trans.getTo()) && to_loc.second.equals(from_loc.second))
                             interleaved.addTransition(new PGTransition<>(from_loc, trans.getCondition(), trans.getAction(), to_loc));
         for (PGTransition<L2, A> trans : pg2.getTransitions())
             for (Pair<L1, L2> from_loc : interleaved.getLocations())
-                if (from_loc.second.equals(trans.getTo()))
+                if (from_loc.second.equals(trans.getFrom()))
                     for (Pair<L1, L2> to_loc : interleaved.getLocations())
-                        if (to_loc.second.equals(trans.getFrom()))
+                        if (to_loc.second.equals(trans.getTo()) && to_loc.first.equals(from_loc.first))
                             interleaved.addTransition(new PGTransition<>(from_loc, trans.getCondition(), trans.getAction(), to_loc));
 
         return interleaved;
     }
 
+    private ArrayList<ArrayList<Boolean>> createBoolCombinations(int n){
+        ArrayList ret = new ArrayList();
+        for (int i = 0; i < Math.pow(2, n); i++) {
+            String bin = Integer.toBinaryString(i);
+            while (bin.length() < n)
+                bin = "0" + bin;
+            char[] chars = bin.toCharArray();
+            ArrayList<Boolean> boolArray = new ArrayList<>(n);
+            for (int j = 0; j < chars.length; j++) {
+                if(chars[j] == '0')
+                    boolArray.add(j, true);
+                else
+                    boolArray.add(j, false);
+            }
+            ret.add(boolArray);
+        }
+        return ret;
+    }
     /**
      * Creates a {@link TransitionSystem} representing the passed circuit.
      *
@@ -535,35 +555,59 @@ public class FvmFacade {
     public TransitionSystem<Pair<Map<String, Boolean>, Map<String, Boolean>>, Map<String, Boolean>, Object> transitionSystemFromCircuit(
             Circuit c) {
         TransitionSystem<Pair<Map<String, Boolean>, Map<String, Boolean>>, Map<String, Boolean>, Object> ts = new TransitionSystem<>();
-        for (String in : c.getInputPortNames()) {
-            for (String reg : c.getRegisterNames()) {
-                Pair<Map<String, Boolean>, Map<String, Boolean>> intr = new Pair<>(Map.of(reg, false), Map.of(in, true));
-                ts.addInitialState(intr);
-                ts.addToLabel(intr, in);
-                Pair<Map<String, Boolean>, Map<String, Boolean>> infl = new Pair<>(Map.of(reg, false), Map.of(in, false));
-                ts.addInitialState(infl);
-                ts.addToLabel(intr, in);
-                Pair<Map<String, Boolean>, Map<String, Boolean>> refl = new Pair<>(Map.of(reg, true), Map.of(in, false));
-                ts.addState(refl);
-                ts.addToLabel(refl, reg);
-                Pair<Map<String, Boolean>, Map<String, Boolean>> retr = new Pair<>(Map.of(reg, true), Map.of(in, true));
-                ts.addState(retr);
-                ts.addToLabel(retr, reg);
-                ts.addToLabel(retr, in);
+        // create all bool combinations for ts states
+        ArrayList combinations = createBoolCombinations( (int) (Math.pow(2, c.getRegisterNames().size()) * Math.pow(2, c.getInputPortNames().size())));
+        // create a new state for every combination
+        for(Object boolarr : combinations){
+            //split the combination to get the registers and inputs separated
+            List<Boolean> reg = ((ArrayList)boolarr).subList(0, c.getRegisterNames().size());
+            Map<String, Boolean> regMap = new HashMap<>();
+            int i =0;
+            for(String regname : c.getRegisterNames()){
+                regMap.put(regname, reg.get(i));
+                i++;
             }
-            ts.addAction(Map.of(in, false));
-            ts.addAction(Map.of(in, true));
+            List<Boolean> in = ((ArrayList)boolarr).subList(c.getRegisterNames().size(), c.getRegisterNames().size() + c.getInputPortNames().size());
+            Map<String, Boolean> inpMap = new HashMap<>();
+            i =0;
+            for(String inpname : c.getInputPortNames()){
+                inpMap.put(inpname, in.get(i));
+                i++;
+            }
+            //all combinations of input is also the ts actions
+            ts.addAction(inpMap);
+            Pair<Map<String, Boolean>, Map<String, Boolean>> new_state = new Pair<>(regMap, inpMap);
+            // check if all registers are false -> initial state
+            if(reg.stream().reduce(false, (a,b)->a || b))
+               ts.addState(new_state);
+            else
+                ts.addInitialState(new_state);
         }
         ts.addAllAtomicPropositions(c.getOutputPortNames().toArray());
         ts.addAllAtomicPropositions(c.getInputPortNames().toArray());
         ts.addAllAtomicPropositions(c.getRegisterNames().toArray());
-        for (Pair<Map<String, Boolean>, Map<String, Boolean>> new_state : ts.getStates()) {
-            ts.addTransition(new TSTransition(new_state, new_state.first, c.updateRegisters(new_state.first, new_state.second)));
-            Map<String, Boolean> out = c.computeOutputs(new_state.first, new_state.second);
-            for (String out_port : c.getOutputPortNames()) {
-                if (out.get(out_port))
-                    ts.addToLabel(new_state, out_port);
+        // for every state and every action add transition
+        for (Pair<Map<String, Boolean>, Map<String, Boolean>> from_state : ts.getStates()) {
+           for(Map<String,Boolean> action : ts.getActions()){
+               Map<String, Boolean> upd = c.updateRegisters(from_state.second, from_state.first);
+               ts.addTransition(new TSTransition(from_state, action, new Pair<>(upd, action)));
+           }
+           // add labels for output
+            for(Map.Entry entry : c.computeOutputs(from_state.second, from_state.first).entrySet()){
+                if((Boolean) entry.getValue())
+                    ts.addToLabel(from_state, entry.getKey());
             }
+            // add labels for registers
+            for(Map.Entry entry : from_state.first.entrySet()){
+                if((Boolean) entry.getValue())
+                    ts.addToLabel(from_state, entry.getKey());
+            }
+            // add labels for input
+            for(Map.Entry entry : from_state.second.entrySet()){
+                if((Boolean) entry.getValue())
+                    ts.addToLabel(from_state, entry.getKey());
+            }
+
         }
         return ts;
     }

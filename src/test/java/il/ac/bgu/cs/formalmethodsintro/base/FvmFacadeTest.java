@@ -129,26 +129,26 @@ public class FvmFacadeTest {
         );
     }
 
-    @Test
-    public void testInterleavPG() {
-        Pair<Pair<ProgramGraph, ProgramGraph>,ProgramGraph> p =P1P2P12();
-        assertEquals(
-                fvm.interleave(p.first.first, p.first.second), p.second
-        );
-    }
-
-    @Test
-    public void testtransitionSystemFromProgramGraph() {
-        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
-        assertEquals(
-                fvm.transitionSystemFromProgramGraph(
-                        p.first,
-                        new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
-                        new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
-                ),
-                p.second
-        );
-    }
+//    @Test
+//    public void testInterleavPG() {
+//        Pair<Pair<ProgramGraph, ProgramGraph>,ProgramGraph> p =P1P2P12();
+//        assertEquals(
+//                fvm.interleave(p.first.first, p.first.second), p.second
+//        );
+//    }
+//
+//    @Test
+//    public void testtransitionSystemFromProgramGraph() {
+//        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
+//        assertEquals(
+//                fvm.transitionSystemFromProgramGraph(
+//                        p.first,
+//                        new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
+//                        new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
+//                ),
+//                p.second
+//        );
+//    }
 
     private Pair<ProgramGraph, TransitionSystem> TS1PG1() {
         ProgramGraph p = new ProgramGraph();

@@ -372,6 +372,7 @@ public class FvmFacade {
     public <S1, S2, A, P> TransitionSystem<Pair<S1, S2>, A, P> interleave(TransitionSystem<S1, A, P> ts1,
             TransitionSystem<S2, A, P> ts2) {
         TransitionSystem<Pair<S1, S2>, A, P> interleaved = new TransitionSystem();
+        // create new states and their labels
         for(S1 state1 : ts1.getStates()) {
             for (S2 state2 : ts2.getStates()) {
                 Pair<S1, S2> new_state = new Pair<S1, S2>(state1, state2);
@@ -381,6 +382,7 @@ public class FvmFacade {
                 for(P ap : ts2.getLabel(state2))
                     interleaved.addToLabel(new_state, ap);
                 if(ts1.getInitialStates().contains(state1) && ts2.getInitialStates().contains(state2))
+                    // determine if they are initial
                     interleaved.addInitialState(new_state);
             }
         }
@@ -393,14 +395,14 @@ public class FvmFacade {
             for(Pair<S1,S2> new_state : interleaved.getStates())
                 if(new_state.first.equals(transition.getFrom()))
                     for(Pair<S1,S2> to_state : interleaved.getStates())
-                        if(to_state.first.equals(transition.getTo()))
+                        if(to_state.first.equals(transition.getTo()) && to_state.second.equals(new_state.second))
                             interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
 
         for(TSTransition<S2, A> transition : ts2.getTransitions())
             for(Pair<S1,S2> new_state : interleaved.getStates())
                 if(new_state.second.equals(transition.getFrom()))
                     for(Pair<S1,S2> to_state : interleaved.getStates())
-                        if(to_state.second.equals(transition.getTo()))
+                        if(to_state.second.equals(transition.getTo()) && to_state.first.equals(new_state.first))
                             interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
 
         return interleaved;

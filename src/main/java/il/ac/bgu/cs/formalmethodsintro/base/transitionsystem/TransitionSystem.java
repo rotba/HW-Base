@@ -209,7 +209,7 @@ public class TransitionSystem<STATE, ACTION, ATOMIC_PROPOSITION> {
     public Set<STATE> getTransition(STATE s, ACTION a){
         Set<STATE> ret = new HashSet<>();
         for(TSTransition<STATE, ACTION> transition : transitions){
-            if(transition.getFrom().equals(s))
+            if(transition.getFrom().equals(s) && transition.getAction().equals(a))
                 ret.add(transition.getTo());
         }
         return ret;

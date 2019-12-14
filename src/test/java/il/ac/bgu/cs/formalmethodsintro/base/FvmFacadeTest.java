@@ -1,5 +1,6 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
+import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
@@ -122,12 +123,44 @@ public class FvmFacadeTest {
     }
 
     @Test
-    public void testInterleavTS() {
+    public void testInterleavTS1() {
         Pair<Pair<TransitionSystem, TransitionSystem>,TransitionSystem> p =T1T2T12();
         assertEquals(
                 fvm.interleave(p.first.first, p.first.second), p.second
         );
     }
+
+    @Test
+    public void testInterleavTS2() {
+        Pair<Pair<TransitionSystem, TransitionSystem>,TransitionSystem> p =ts_interleave_2();
+        assertEquals(
+                fvm.interleave(p.first.first, p.first.second), p.second
+        );
+    }
+
+    @Test
+    public void isStateTerminal() {
+        try{
+            Pair<TransitionSystem, Object> data = getTSandTerminalState();
+            Object no_state = "no state of ts";
+            fvm.isStateTerminal(data.first, no_state);
+            assertTrue(false);
+        }
+        catch (StateNotFoundException e){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void testInterleavHS() {
+        Pair<Object[],TransitionSystem> p =ts_interleave_hs();
+        assertEquals(
+                fvm.interleave((TransitionSystem) p.first[0], (TransitionSystem)p.first[1], (Set) Set.of(p.first[2]) ), p.second
+        );
+    }
+
+
+
 
 //    @Test
 //    public void testInterleavPG() {
@@ -284,6 +317,125 @@ public class FvmFacadeTest {
         t12.addTransition(new TSTransition(p10,alpha2,p11));
 
         return new Pair<>(new Pair<>(t1,t2), t12);
+    }
+
+    private Pair<Pair<TransitionSystem, TransitionSystem>, TransitionSystem> ts_interleave_2() {
+        TransitionSystem t1 = new TransitionSystem();
+        Object l1 = "l1";
+        Object l2 = "l2";
+        Object l3 = "l3";
+        Object alpha = "alpha";
+        Object beta = "beta";
+        t1.addInitialState(l1);
+        t1.addStates(l2, l3);
+        t1.addTransition(new TSTransition(l1,alpha,l2));
+        t1.addTransition(new TSTransition(l3,alpha,l1));
+        t1.addTransition(new TSTransition(l1,beta,l3));
+
+        TransitionSystem t2 = new TransitionSystem();
+        Object q1 = "q1";
+        Object q2 = "q2";
+        t2.addInitialState(q1);
+        t2.addState(q2);
+        t2.addTransition(new TSTransition(q1, alpha, q2));
+        t2.addTransition(new TSTransition(q2, beta, q1));
+
+
+        TransitionSystem t12 = new TransitionSystem();
+        Pair<Object,Object>  l1q1  = new Pair<>(l1,q1);
+        Pair<Object,Object>  l1q2  = new Pair<>(l1,q2);
+        Pair<Object,Object>  l2q1  = new Pair<>(l2,q1);
+        Pair<Object,Object>  l2q2  = new Pair<>(l2,q2);
+        Pair<Object,Object>  l3q1  = new Pair<>(l3,q1);
+        Pair<Object,Object>  l3q2  = new Pair<>(l3,q2);
+        t12.addInitialState(l1q1);
+        t12.addStates(l1q2, l2q1, l2q2, l3q1, l3q2);
+        t12.addTransition(new TSTransition(l1q1,alpha,l1q2));
+        t12.addTransition(new TSTransition(l1q1,alpha,l2q1));
+        t12.addTransition(new TSTransition(l1q1,beta,l3q1));
+        t12.addTransition(new TSTransition(l1q2,alpha,l2q2));
+        t12.addTransition(new TSTransition(l1q2,beta,l1q1));
+        t12.addTransition(new TSTransition(l2q1,alpha,l2q2));
+        t12.addTransition(new TSTransition(l2q2,beta,l2q1));
+        t12.addTransition(new TSTransition(l3q1,alpha,l1q1));
+        t12.addTransition(new TSTransition(l3q1,alpha,l3q2));
+        t12.addTransition(new TSTransition(l3q2,alpha,l1q2));
+        t12.addTransition(new TSTransition(l3q2,beta,l3q1));
+        t12.addTransition(new TSTransition(l1q2,beta,l3q2));
+
+
+        return new Pair<>(new Pair<>(t1,t2), t12);
+    }
+
+    private Pair<Object[], TransitionSystem> ts_interleave_hs() {
+        TransitionSystem t1 = new TransitionSystem();
+        Object l1 = "l1";
+        Object l2 = "l2";
+        Object l3 = "l3";
+        Object l4 = "l4";
+        Object alpha1 = "alpha1";
+        Object alpha2 = "alpha2";
+        Object gama= "gama";
+        t1.addInitialState(l1);
+        t1.addStates(l2, l3, l4);
+        t1.addTransition(new TSTransition(l1,alpha1,l2));
+        t1.addTransition(new TSTransition(l2,gama,l3));
+        t1.addTransition(new TSTransition(l3,alpha2,l4));
+
+        TransitionSystem t2 = new TransitionSystem();
+        Object m1 = "l1";
+        Object m2 = "l2";
+        Object m3 = "l3";
+        Object m4 = "l4";
+        Object beta1 = "beta1";
+        Object beta2 = "beta2";
+        t2.addInitialState(m1);
+        t2.addStates(m2, m3, m4);
+        t2.addTransition(new TSTransition(m1,beta1,m2));
+        t2.addTransition(new TSTransition(m2,gama,m3));
+        t2.addTransition(new TSTransition(m3,beta2,m4));
+
+
+        TransitionSystem t12 = new TransitionSystem();
+        Pair<Object,Object>  l1m1  = new Pair<>(l1,m1);
+        Pair<Object,Object>  l1m2  = new Pair<>(l1,m2);
+        Pair<Object,Object>  l2m1  = new Pair<>(l2,m1);
+        Pair<Object,Object>  l2m2  = new Pair<>(l2,m2);
+        Pair<Object,Object>  l3m3  = new Pair<>(l3,m3);
+        Pair<Object,Object>  l4m3  = new Pair<>(l4,m3);
+        Pair<Object,Object>  l3m4  = new Pair<>(l3,m4);
+        Pair<Object,Object>  l4m4  = new Pair<>(l4,m4);
+        Pair<Object,Object>  l1m3  = new Pair<>(l1,m3);
+        Pair<Object,Object>  l1m4  = new Pair<>(l1,m4);
+        Pair<Object,Object>  l2m3  = new Pair<>(l2,m3);
+        Pair<Object,Object>  l2m4  = new Pair<>(l2,m4);
+        Pair<Object,Object>  l3m1  = new Pair<>(l3,m1);
+        Pair<Object,Object>  l3m2  = new Pair<>(l3,m2);
+        Pair<Object,Object>  l4m1  = new Pair<>(l4,m1);
+        Pair<Object,Object>  l4m2  = new Pair<>(l4,m2);
+        t12.addInitialState(l1m1);
+        t12.addStates(l1m2,l2m1,l2m2,l3m3,l4m3,l3m4,l4m4,l1m3,l1m4,l2m3,l2m4,l3m1,l3m2,l4m1,l4m2);
+        t12.addTransition(new TSTransition(l1m1,alpha1,l2m1));
+        t12.addTransition(new TSTransition(l1m1,beta1,l1m2));
+        t12.addTransition(new TSTransition(l2m1,beta1,l2m2));
+        t12.addTransition(new TSTransition(l1m2,alpha1,l2m2));
+        t12.addTransition(new TSTransition(l2m2,gama,l3m3));
+        t12.addTransition(new TSTransition(l3m3,alpha2,l4m3));
+        t12.addTransition(new TSTransition(l3m3,beta2,l3m4));
+        t12.addTransition(new TSTransition(l4m3,beta2,l4m4));
+        t12.addTransition(new TSTransition(l3m4,alpha2,l4m4));
+
+        t12.addTransition(new TSTransition(l1m3,beta2,l1m4));
+        t12.addTransition(new TSTransition(l1m3,alpha1,l2m3));
+        t12.addTransition(new TSTransition(l1m4,alpha1,l2m4));
+        t12.addTransition(new TSTransition(l2m3,beta2,l2m4));
+        t12.addTransition(new TSTransition(l3m1,beta1,l3m2));
+        t12.addTransition(new TSTransition(l3m1,alpha2,l4m1));
+        t12.addTransition(new TSTransition(l3m2,alpha2,l4m2));
+        t12.addTransition(new TSTransition(l4m1,beta1,l4m2));
+
+        Object[] ret = {t1, t2, gama};
+        return new Pair<>(ret, t12);
     }
 
     private Pair<TransitionSystem, Object> getTSandNoTerminalState() {

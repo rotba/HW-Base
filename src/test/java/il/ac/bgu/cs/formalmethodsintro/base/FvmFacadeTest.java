@@ -3,6 +3,8 @@ package il.ac.bgu.cs.formalmethodsintro.base;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
+import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
+import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
@@ -177,6 +179,23 @@ public class FvmFacadeTest {
                 fvm.transitionSystemFromCircuit(p.first), p.second
         );
     }
+
+    @Test
+    public void testNanoPromela() {
+        String code = "if :: x > 1 -> y := x + y ; x := 9   :: true  -> x := 0; y := x fi";
+        try {
+            assertEquals(fvm.programGraphFromNanoPromela(code), pgnp());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //todo: complete function
+    private ProgramGraph<String, String> pgnp() {
+        ProgramGraph pg = new ProgramGraph();
+        return pg;
+    }
+
 
 //    @Test
 //    public void testtransitionSystemFromProgramGraph() {
@@ -754,5 +773,7 @@ public class FvmFacadeTest {
         return new Pair(circuit, ts);
 
     }
+
+
 
 }

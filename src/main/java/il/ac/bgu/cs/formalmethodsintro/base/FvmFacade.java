@@ -9,6 +9,9 @@ import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
+import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaBaseListener;
+import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
+import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.PGTransition;
@@ -19,6 +22,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
 import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 /**
  * Interface for the entry point class to the HW in this class. Our
@@ -683,6 +687,7 @@ public class FvmFacade {
         throw new java.lang.UnsupportedOperationException();
     }
 
+
     /**
      * Construct a program graph from nanopromela code.
      *
@@ -691,7 +696,10 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromela(String filename) throws Exception {
-        throw new java.lang.UnsupportedOperationException();
+        ProgramGraph<String, String> pg = createProgramGraph();
+        NanoPromelaParser.StmtContext context = NanoPromelaFileReader.pareseNanoPromelaFile(filename);
+        addLocationsFromNP(pg, context);
+        return pg;
     }
 
     /**
@@ -702,8 +710,12 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromelaString(String nanopromela) throws Exception {
-        throw new java.lang.UnsupportedOperationException();
+        ProgramGraph<String, String> pg = createProgramGraph();
+        NanoPromelaParser.StmtContext context = NanoPromelaFileReader.pareseNanoPromelaString(nanopromela);
+        addLocationsFromNP(pg, context);
+        return pg;
     }
+
 
     /**
      * Construct a program graph from nanopromela code.
@@ -713,7 +725,16 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromela(InputStream inputStream) throws Exception {
-        throw new java.lang.UnsupportedOperationException();
+        ProgramGraph<String, String> pg = createProgramGraph();
+        NanoPromelaParser.StmtContext context = NanoPromelaFileReader.parseNanoPromelaStream(inputStream);
+        addLocationsFromNP(pg, context);
+        return pg;
+    }
+
+    private void addLocationsFromNP(ProgramGraph<String, String> pg, NanoPromelaParser.StmtContext context) {
+        ParseTreeWalker walker = new ParseTreeWalker();
+        NanoPromelaBaseListener listener = new NanoPromelaBaseListener();
+        walker.walk(listener,context);
     }
 
     /**

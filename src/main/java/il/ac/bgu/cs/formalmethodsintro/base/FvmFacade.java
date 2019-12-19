@@ -390,7 +390,7 @@ public class FvmFacade {
         // for every transition which not included in handShakingActions we create a new transition in
         // the interleaved system
         for (TSTransition<S1, A> transition : ts1.getTransitions())
-            if(!handShakingActions.contains(transition.getAction()))
+            if (!handShakingActions.contains(transition.getAction()))
                 for (Pair<S1, S2> new_state : interleaved.getStates())
                     if (new_state.first.equals(transition.getFrom()))
                         for (Pair<S1, S2> to_state : interleaved.getStates())
@@ -398,7 +398,7 @@ public class FvmFacade {
                                 interleaved.addTransition(new TSTransition<>(new_state, transition.getAction(), to_state));
 
         for (TSTransition<S2, A> transition : ts2.getTransitions())
-            if(!handShakingActions.contains(transition.getAction()))
+            if (!handShakingActions.contains(transition.getAction()))
                 for (Pair<S1, S2> new_state : interleaved.getStates())
                     if (new_state.second.equals(transition.getFrom()))
                         for (Pair<S1, S2> to_state : interleaved.getStates())
@@ -532,7 +532,7 @@ public class FvmFacade {
         return interleaved;
     }
 
-    private ArrayList<ArrayList<Boolean>> createBoolCombinations(int n){
+    private ArrayList<ArrayList<Boolean>> createBoolCombinations(int n) {
         ArrayList ret = new ArrayList();
         for (int i = 0; i < Math.pow(2, n); i++) {
             String bin = Integer.toBinaryString(i);
@@ -541,7 +541,7 @@ public class FvmFacade {
             char[] chars = bin.toCharArray();
             ArrayList<Boolean> boolArray = new ArrayList<>(n);
             for (int j = 0; j < chars.length; j++) {
-                if(chars[j] == '0')
+                if (chars[j] == '0')
                     boolArray.add(j, true);
                 else
                     boolArray.add(j, false);
@@ -550,6 +550,7 @@ public class FvmFacade {
         }
         return ret;
     }
+
     /**
      * Creates a {@link TransitionSystem} representing the passed circuit.
      *
@@ -560,21 +561,21 @@ public class FvmFacade {
             Circuit c) {
         TransitionSystem<Pair<Map<String, Boolean>, Map<String, Boolean>>, Map<String, Boolean>, Object> ts = new TransitionSystem<>();
         // create all bool combinations for ts states
-        ArrayList combinations = createBoolCombinations( (int) (Math.pow(2, c.getRegisterNames().size()) * Math.pow(2, c.getInputPortNames().size())));
+        ArrayList combinations = createBoolCombinations((int) (Math.pow(2, c.getRegisterNames().size()) * Math.pow(2, c.getInputPortNames().size())));
         // create a new state for every combination
-        for(Object boolarr : combinations){
+        for (Object boolarr : combinations) {
             //split the combination to get the registers and inputs separated
-            List<Boolean> reg = ((ArrayList)boolarr).subList(0, c.getRegisterNames().size());
+            List<Boolean> reg = ((ArrayList) boolarr).subList(0, c.getRegisterNames().size());
             Map<String, Boolean> regMap = new HashMap<>();
-            int i =0;
-            for(String regname : c.getRegisterNames()){
+            int i = 0;
+            for (String regname : c.getRegisterNames()) {
                 regMap.put(regname, reg.get(i));
                 i++;
             }
-            List<Boolean> in = ((ArrayList)boolarr).subList(c.getRegisterNames().size(), c.getRegisterNames().size() + c.getInputPortNames().size());
+            List<Boolean> in = ((ArrayList) boolarr).subList(c.getRegisterNames().size(), c.getRegisterNames().size() + c.getInputPortNames().size());
             Map<String, Boolean> inpMap = new HashMap<>();
-            i =0;
-            for(String inpname : c.getInputPortNames()){
+            i = 0;
+            for (String inpname : c.getInputPortNames()) {
                 inpMap.put(inpname, in.get(i));
                 i++;
             }
@@ -582,8 +583,8 @@ public class FvmFacade {
             ts.addAction(inpMap);
             Pair<Map<String, Boolean>, Map<String, Boolean>> new_state = new Pair<>(regMap, inpMap);
             // check if all registers are false -> initial state
-            if(reg.stream().reduce(false, (a,b)->a || b))
-               ts.addState(new_state);
+            if (reg.stream().reduce(false, (a, b) -> a || b))
+                ts.addState(new_state);
             else
                 ts.addInitialState(new_state);
         }
@@ -592,23 +593,23 @@ public class FvmFacade {
         ts.addAllAtomicPropositions(c.getRegisterNames().toArray());
         // for every state and every action add transition
         for (Pair<Map<String, Boolean>, Map<String, Boolean>> from_state : ts.getStates()) {
-           for(Map<String,Boolean> action : ts.getActions()){
-               Map<String, Boolean> upd = c.updateRegisters(from_state.second, from_state.first);
-               ts.addTransition(new TSTransition(from_state, action, new Pair<>(upd, action)));
-           }
-           // add labels for output
-            for(Map.Entry entry : c.computeOutputs(from_state.second, from_state.first).entrySet()){
-                if((Boolean) entry.getValue())
+            for (Map<String, Boolean> action : ts.getActions()) {
+                Map<String, Boolean> upd = c.updateRegisters(from_state.second, from_state.first);
+                ts.addTransition(new TSTransition(from_state, action, new Pair<>(upd, action)));
+            }
+            // add labels for output
+            for (Map.Entry entry : c.computeOutputs(from_state.second, from_state.first).entrySet()) {
+                if ((Boolean) entry.getValue())
                     ts.addToLabel(from_state, entry.getKey());
             }
             // add labels for registers
-            for(Map.Entry entry : from_state.first.entrySet()){
-                if((Boolean) entry.getValue())
+            for (Map.Entry entry : from_state.first.entrySet()) {
+                if ((Boolean) entry.getValue())
                     ts.addToLabel(from_state, entry.getKey());
             }
             // add labels for input
-            for(Map.Entry entry : from_state.second.entrySet()){
-                if((Boolean) entry.getValue())
+            for (Map.Entry entry : from_state.second.entrySet()) {
+                if ((Boolean) entry.getValue())
                     ts.addToLabel(from_state, entry.getKey());
             }
 
@@ -697,8 +698,8 @@ public class FvmFacade {
      */
     public ProgramGraph<String, String> programGraphFromNanoPromela(String filename) throws Exception {
         ProgramGraph<String, String> pg = createProgramGraph();
-        NanoPromelaParser.StmtContext context = NanoPromelaFileReader.pareseNanoPromelaFile(filename);
-        addLocationsFromNP(pg, context);
+        NanoPromelaParser.StmtContext root = NanoPromelaFileReader.pareseNanoPromelaFile(filename);
+        addLocationsFromNP(pg, root);
         return pg;
     }
 
@@ -711,8 +712,8 @@ public class FvmFacade {
      */
     public ProgramGraph<String, String> programGraphFromNanoPromelaString(String nanopromela) throws Exception {
         ProgramGraph<String, String> pg = createProgramGraph();
-        NanoPromelaParser.StmtContext context = NanoPromelaFileReader.pareseNanoPromelaString(nanopromela);
-        addLocationsFromNP(pg, context);
+        NanoPromelaParser.StmtContext root = NanoPromelaFileReader.pareseNanoPromelaString(nanopromela);
+        addLocationsFromNP(pg, root);
         return pg;
     }
 
@@ -726,15 +727,28 @@ public class FvmFacade {
      */
     public ProgramGraph<String, String> programGraphFromNanoPromela(InputStream inputStream) throws Exception {
         ProgramGraph<String, String> pg = createProgramGraph();
-        NanoPromelaParser.StmtContext context = NanoPromelaFileReader.parseNanoPromelaStream(inputStream);
-        addLocationsFromNP(pg, context);
+        NanoPromelaParser.StmtContext root = NanoPromelaFileReader.parseNanoPromelaStream(inputStream);
+        addLocationsFromNP(pg, root);
         return pg;
     }
 
-    private void addLocationsFromNP(ProgramGraph<String, String> pg, NanoPromelaParser.StmtContext context) {
+    private void addLocationsFromNP(ProgramGraph<String, String> pg, NanoPromelaParser.StmtContext root) {
         ParseTreeWalker walker = new ParseTreeWalker();
         NanoPromelaBaseListener listener = new NanoPromelaBaseListener();
-        walker.walk(listener,context);
+        walker.walk(listener, root);
+        if (root.assstmt() != null || root.chanreadstmt() != null ||
+                root.chanwritestmt() != null || root.atomicstmt() != null ||
+                root.skipstmt() != null) {
+            /* The sub-statements are only [root] and [exit]                    */
+        } else if (root.ifstmt() != null) {
+        /* The sub-statements are [root], [exit], and the sub-statements of
+        all op.stmt() where op is a member of root.ifstmt().option() */
+        } else if (root.dostmt() != null) {
+        /* The sub-statements are [root], [exit], and locations [𝑠𝑢𝑏;root]
+        where 𝑠𝑢𝑏 is a sub-statement of some op in root.dostmt().option() */
+        } else { // ;
+            /* The sub-statements are locations of the form [𝑠𝑢𝑏;root.stmt(1)] where 𝑠𝑢𝑏 is a sub-statement of root.stmt(0) plus all the substatements of root.stmt(1) */
+        }
     }
 
     /**

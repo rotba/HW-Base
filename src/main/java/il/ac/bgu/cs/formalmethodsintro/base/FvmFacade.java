@@ -22,7 +22,6 @@ import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
 import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 /**
  * Interface for the entry point class to the HW in this class. Our
@@ -733,12 +732,7 @@ public class FvmFacade {
     }
 
     private void addLocationsFromNP(ProgramGraph<String, String> pg, NanoPromelaParser.StmtContext root) {
-        ParseTreeWalker walker = new ParseTreeWalker();
-        NanoPromelaBaseListener listener = new NanoPromelaBaseListener();
-        walker.walk(listener, root);
-        if (root.assstmt() != null || root.chanreadstmt() != null ||
-                root.chanwritestmt() != null || root.atomicstmt() != null ||
-                root.skipstmt() != null) {
+        if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {
             /* The sub-statements are only [root] and [exit]                    */
         } else if (root.ifstmt() != null) {
         /* The sub-statements are [root], [exit], and the sub-statements of

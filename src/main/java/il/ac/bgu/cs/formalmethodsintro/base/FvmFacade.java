@@ -696,10 +696,8 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromela(String filename) throws Exception {
-        ProgramGraph<String, String> pg = createProgramGraph();
         NanoPromelaParser.StmtContext root = NanoPromelaFileReader.pareseNanoPromelaFile(filename);
-        addLocationsFromNP(pg, root);
-        return pg;
+        return createPGFromNP(root);
     }
 
     /**
@@ -710,10 +708,8 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromelaString(String nanopromela) throws Exception {
-        ProgramGraph<String, String> pg = createProgramGraph();
         NanoPromelaParser.StmtContext root = NanoPromelaFileReader.pareseNanoPromelaString(nanopromela);
-        addLocationsFromNP(pg, root);
-        return pg;
+        return createPGFromNP(root);
     }
 
 
@@ -725,23 +721,104 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromela(InputStream inputStream) throws Exception {
-        ProgramGraph<String, String> pg = createProgramGraph();
         NanoPromelaParser.StmtContext root = NanoPromelaFileReader.parseNanoPromelaStream(inputStream);
-        addLocationsFromNP(pg, root);
+        return createPGFromNP(root);
+    }
+
+    private ProgramGraph<String, String> createPGFromNP(NanoPromelaParser.StmtContext root){
+        ProgramGraph<String,String> pg = createProgramGraph();
+        Set<String> locations = new HashSet<>();
+        Set<PGTransition<String, String>> transitions = new HashSet<>();
+        createPGFromNP(root, locations, transitions);
+        // the whole program is the initial location of the pg
+        pg.setInitial(root.getText(), true);
+        for(String loc : locations)
+            pg.addLocation(loc);
+        for(PGTransition trans : transitions)
+            pg.addTransition(trans);
         return pg;
     }
 
-    private void addLocationsFromNP(ProgramGraph<String, String> pg, NanoPromelaParser.StmtContext root) {
+
+    private void createPGFromNP(NanoPromelaParser.StmtContext root, Set<String> locations, Set<PGTransition<String, String>> transitions) {
         if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {
             /* The sub-statements are only [root] and [exit]                    */
+            String exit = "exit";
+            String base = root.getText();
+            locations.add(exit);
+            locations.add(base);
+            if(base.equals("skip"))
+                transitions.add(new PGTransition<>(base, "true", "nothing", exit));
+            else
+                transitions.add(new PGTransition<>(base, "true", base, exit));
         } else if (root.ifstmt() != null) {
         /* The sub-statements are [root], [exit], and the sub-statements of
         all op.stmt() where op is a member of root.ifstmt().option() */
+            String exit = "exit";
+            String base = root.getText();
+            locations.add(exit);
+            locations.add(base);
+            List<NanoPromelaParser.OptionContext> options = root.ifstmt().option();
+            for(NanoPromelaParser.OptionContext option : options){
+                Set<String> locOfOpt = new HashSet<>();
+                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
+                createPGFromNP(option.stmt(), locOfOpt, transOfOpt);
+                locations.addAll(locOfOpt);
+                transitions.addAll(transOfOpt);
+                for(PGTransition trans_of_opt : transOfOpt){
+                    if(trans_of_opt.getFrom().equals(option.stmt().getText()))
+                        transitions.add(new PGTransition<String, String>(base, option.boolexpr().getText() + " && " + trans_of_opt.getCondition(), (String)trans_of_opt.getAction(), (String)trans_of_opt.getTo()));
+                }
+            }
         } else if (root.dostmt() != null) {
         /* The sub-statements are [root], [exit], and locations [𝑠𝑢𝑏;root]
         where 𝑠𝑢𝑏 is a sub-statement of some op in root.dostmt().option() */
+            String exit = "exit";
+            String base = root.getText();
+            locations.add(exit);
+            locations.add(base);
+            List<NanoPromelaParser.OptionContext> options = root.dostmt().option();
+            String none_of_conds = "";
+            for(NanoPromelaParser.OptionContext option : options){
+                none_of_conds = none_of_conds + "!" + option.boolexpr().getText() + " && ";
+                Set<String> locOfOpt = new HashSet<>();
+                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
+                createPGFromNP(option.stmt(), locOfOpt, transOfOpt);
+                for(String loc : locOfOpt)
+                    if(!loc.equals("exit"))
+                        locations.add(loc + ";" + base);
+                for(PGTransition trans :transOfOpt) {
+                    if (trans.getFrom().equals(option.stmt().getText()) && trans.getTo().equals(exit))
+                        transitions.add(new PGTransition<>(base, option.boolexpr().getText() + " && " + trans.getCondition(), (String) trans.getAction(), base));
+                    else if(trans.getFrom().equals(option.stmt().getText()))
+                        transitions.add(new PGTransition<>(base, option.boolexpr().getText() + " && " + trans.getCondition(), (String) trans.getAction(), trans.getTo() + ";" +base));
+                   // transitions.add(new PGTransition<String, String>((String)trans.getFrom(), trans.getCondition(), (String)trans.getAction(), trans.getTo() + ";" + base));
+                }
+            }
+            none_of_conds.substring(0, none_of_conds.length()-4);
+            transitions.add(new PGTransition<>(base, none_of_conds, "nothing", exit));
         } else { // ;
             /* The sub-statements are locations of the form [𝑠𝑢𝑏;root.stmt(1)] where 𝑠𝑢𝑏 is a sub-statement of root.stmt(0) plus all the substatements of root.stmt(1) */
+            NanoPromelaParser.StmtContext first = root.stmt(0);
+            NanoPromelaParser.StmtContext second = root.stmt(1);
+            Set<String> locOfFirst = new HashSet<>();
+            Set<String> locOfSecond = new HashSet<>();
+            Set<PGTransition<String, String>> transOfFirst = new HashSet<>();
+            Set<PGTransition<String, String>> transOfSecond = new HashSet<>();
+            createPGFromNP(second, locOfSecond, transOfSecond);
+            createPGFromNP(first, locOfFirst, transOfFirst);
+            locations.addAll(locOfSecond);
+            transitions.addAll(transOfSecond);
+            for(String loc : locOfFirst)
+                if (!loc.equals("exit")) {
+                    String new_loc = loc + ";" + second.getText();
+                    locations.add(new_loc);
+                    for (PGTransition trans_of_first : transOfFirst)
+                        if (trans_of_first.getFrom().equals(loc) && trans_of_first.getTo().equals("exit"))
+                            transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), second.getText()));
+                        else if(trans_of_first.getFrom().equals(loc))
+                            transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), trans_of_first.getTo() + ";" + second.getText()));
+                    }
         }
     }
 

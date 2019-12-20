@@ -182,7 +182,7 @@ public class FvmFacadeTest {
 
     @Test
     public void testNanoPromela() {
-        String code = "x := 5";
+        String code = "do :: x > 1 -> C!5 ; C!6 :: x > 1 -> C!30 od";
         try {
             ProgramGraph pg = fvm.programGraphFromNanoPromelaString(code);
            // assertEquals(fvm.programGraphFromNanoPromela(code), pgnp());
@@ -190,6 +190,7 @@ public class FvmFacadeTest {
             e.printStackTrace();
         }
     }
+
 
     //todo: complete function
     private ProgramGraph<String, String> pgnp() {

@@ -687,6 +687,11 @@ public class FvmFacade {
         throw new java.lang.UnsupportedOperationException();
     }
 
+    public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
+            ChannelSystem<L, A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions) {
+        throw new java.lang.UnsupportedOperationException();
+    }
+
 
     /**
      * Construct a program graph from nanopromela code.

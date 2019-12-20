@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="692" column="5" selection-start-line="692" selection-start-column="5" selection-end-line="692" selection-end-column="5" />
+            <state relative-caret-position="136">
+              <caret line="680" column="17" lean-forward="true" selection-start-line="680" selection-start-column="17" selection-end-line="680" selection-end-column="17" />
               <folding>
                 <element signature="e#2008#2009#0" expanded="true" />
                 <element signature="e#2036#2037#0" expanded="true" />
@@ -64,20 +65,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/ParserBasedActDef.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="67" selection-start-line="67" selection-end-line="67" />
+            <state relative-caret-position="-204">
+              <caret line="31" column="38" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
               <folding>
+                <element signature="e#2248#2249#0" expanded="true" />
                 <element signature="e#2328#2329#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
+            <state relative-caret-position="272">
+              <caret line="260" column="40" selection-start-line="260" selection-start-column="40" selection-end-line="260" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1216#1217#0" expanded="true" />
@@ -88,6 +90,10 @@
                 <element signature="e#1546#1547#0" expanded="true" />
                 <element signature="e#4231#4232#0" expanded="true" />
                 <element signature="e#4294#4295#0" expanded="true" />
+                <element signature="e#6979#6980#0" expanded="true" />
+                <element signature="e#7026#7027#0" expanded="true" />
+                <element signature="e#7258#7259#0" expanded="true" />
+                <element signature="e#7305#7306#0" expanded="true" />
                 <element signature="e#24961#24962#0" expanded="true" />
                 <element signature="e#25006#25007#0" expanded="true" />
                 <element signature="e#25073#25074#0" expanded="true" />
@@ -95,7 +101,40 @@
                 <element signature="e#25187#25188#0" expanded="true" />
                 <element signature="e#25230#25231#0" expanded="true" />
                 <element signature="e#26093#26102#0" expanded="true" />
+                <element signature="e#35569#35570#0" expanded="true" />
+                <element signature="e#35603#35604#0" expanded="true" />
+                <element signature="e#35781#35782#0" expanded="true" />
+                <element signature="e#35813#35814#0" expanded="true" />
+                <element signature="e#35724#35725#0" expanded="true" />
+                <element signature="e#35760#35761#0" expanded="true" />
+                <element signature="e#35817#35818#0" expanded="true" />
+                <element signature="e#35853#35854#0" expanded="true" />
+                <element signature="e#36079#36080#0" expanded="true" />
+                <element signature="e#36111#36112#0" expanded="true" />
+                <element signature="e#35956#35957#0" expanded="true" />
+                <element signature="e#35991#35992#0" expanded="true" />
+                <element signature="e#36048#36049#0" expanded="true" />
+                <element signature="e#36084#36085#0" expanded="true" />
+                <element signature="e#36392#36393#0" expanded="true" />
+                <element signature="e#36426#36427#0" expanded="true" />
+                <element signature="e#36912#36913#0" expanded="true" />
+                <element signature="e#36944#36945#0" expanded="true" />
+                <element signature="e#37050#37051#0" expanded="true" />
+                <element signature="e#37115#37116#0" expanded="true" />
+                <element signature="e#37208#37209#0" expanded="true" />
+                <element signature="e#37254#37255#0" expanded="true" />
+                <element signature="e#36705#36706#0" expanded="true" />
+                <element signature="e#36737#36738#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="193">
+              <caret line="265" column="16" selection-start-line="265" selection-start-column="16" selection-end-line="265" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -103,20 +142,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/nanopromela/Evaluator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1054">
-              <caret line="73" selection-start-line="73" selection-end-line="73" />
+            <state relative-caret-position="3485">
+              <caret line="216" column="38" lean-forward="true" selection-start-line="216" selection-start-column="38" selection-end-line="216" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/ProgramGraph.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/nanopromela/NanoPromelaParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2907">
-              <caret line="195" column="19" selection-start-line="195" selection-start-column="19" selection-end-line="195" selection-end-column="19" />
+            <state relative-caret-position="6974">
+              <caret line="1323" column="24" selection-start-line="1323" selection-start-column="24" selection-end-line="1323" selection-end-column="24" />
               <folding>
-                <element signature="e#1677#1678#0" expanded="true" />
-                <element signature="e#1715#1716#0" expanded="true" />
+                <element signature="e#45542#45543#0" expanded="true" />
+                <element signature="e#45607#45608#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -128,6 +167,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit4 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -140,6 +180,12 @@
       <find>implements .*ActionDef</find>
       <find>Map</find>
       <find>getVa</find>
+      <find>addLa</find>
+      <find>graph</find>
+      <find>dot</find>
+      <find>print</find>
+      <find>new HashMap</find>
+      <find>row</find>
     </findStrings>
     <replaceStrings>
       <replace>il.ac.bgu.cs.formalmethodsintro.base</replace>
@@ -172,12 +218,24 @@
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/PostTests.java" />
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/Ex1ConsistencyTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/Ex1FragmentsTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" />
+        <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ASyncAction.java" />
+        <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="FormalMethodsIntro-Base" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="976" />
@@ -257,9 +315,10 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576853223479" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576865205509" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -275,6 +334,9 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="il.ac.bgu.cs.formalmethodsintro.base" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -288,7 +350,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.FvmFacadeTest.testtransitionSystemFromProgramGraph">
+  <component name="RunManager" selected="JUnit.FvmFacadeTest.testTransitionSystemChannelSystem">
     <configuration name="FvmFacadeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
@@ -303,7 +365,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FvmFacadeTest.isActionDeterministic" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
         <pattern>
@@ -313,13 +375,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="il.ac.bgu.cs.formalmethodsintro.base" />
       <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.formalmethodsintro.base.FvmFacadeTest" />
-      <option name="METHOD_NAME" value="isActionDeterministic" />
+      <option name="METHOD_NAME" value="testTransitionSystemChannelSystem" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FvmFacadeTest.testInterleav" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="FvmFacadeTest.testTransitionSystemFromProgramGraph" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
         <pattern>
@@ -329,7 +391,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="il.ac.bgu.cs.formalmethodsintro.base" />
       <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.formalmethodsintro.base.FvmFacadeTest" />
-      <option name="METHOD_NAME" value="testInterleav" />
+      <option name="METHOD_NAME" value="testTransitionSystemFromProgramGraph" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -367,11 +429,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FvmFacadeTest.testTransitionSystemChannelSystem" />
+        <item itemvalue="JUnit.FvmFacadeTest.testTransitionSystemFromProgramGraph" />
         <item itemvalue="JUnit.FvmFacadeTest.testtransitionSystemFromProgramGraph" />
         <item itemvalue="JUnit.FvmFacadeTest" />
         <item itemvalue="JUnit.ProgramGraphTest" />
-        <item itemvalue="JUnit.FvmFacadeTest.testInterleav" />
-        <item itemvalue="JUnit.FvmFacadeTest.isActionDeterministic" />
       </list>
     </recent_temporary>
   </component>
@@ -392,45 +454,45 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 03m 29s.xml">
+    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.20 at 17h 54m 53s.xml">
       <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 04m 04s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemFromProgramGraph - 2019.12.20 at 18h 12m 27s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemFromProgramGraph" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 06m 05s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemFromChannelSystem - 2019.12.20 at 19h 17m 38s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemFromChannelSystem" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 24m 48s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemFromProgramGraph - 2019.12.20 at 19h 18m 29s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemFromProgramGraph" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 25m 35s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.20 at 19h 19m 12s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 26m 31s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.20 at 19h 20m 11s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.12 at 23h 26m 59s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.20 at 19h 20m 41s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.20 at 16h 44m 11s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.20 at 19h 21m 57s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest - 2019.12.20 at 16h 44m 22s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.20 at 19h 22m 57s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testtransitionSystemFromProgramGraph - 2019.12.20 at 16h 45m 28s.xml">
-      <configuration name="FvmFacadeTest.testtransitionSystemFromProgramGraph" configurationId="JUnit" />
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.20 at 19h 23m 37s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26824000" />
+    <option name="totallyTimeSpent" value="40780000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="976" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26279318" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.26279318" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -439,8 +501,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.39219934" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.34019503" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.39219934" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.34019503" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -456,25 +518,63 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Maven" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven" order="8" weight="0.32995737" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java</url>
-          <line>651</line>
-          <properties />
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>ad.isMatchingAction(&quot;x:=2*x&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ad.isMatchingAction(&quot;x:=2x&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tran.getAction()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>{tran.getAction(),ad.isMatchingAction(tran.getAction())}</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tran.getAction(),ad.isMatchingAction(tran.getAction())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>//tran.getAction(),//ad.isMatchingAction(tran.getAction())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tran.getAction(),//ad.isMatchingAction(tran.getAction())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>//ad.isMatchingAction(tran.getAction())
+tran.getAction()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ad.isMatchingAction(tran.getAction())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/PGTransition.java">
@@ -500,13 +600,6 @@
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/Ex1ConsistencyTest.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/Ex1FragmentsTest.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/examples/VendingmachineInNanopromela.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2212">
-          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/ActionDef.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="513">
@@ -550,23 +643,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/nanopromela/Evaluator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="73" selection-start-line="73" selection-end-line="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/ParserBasedActDef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#2328#2329#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/ConditionDef.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -574,35 +650,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
+        <state relative-caret-position="193">
+          <caret line="265" column="16" selection-start-line="265" selection-start-column="16" selection-end-line="265" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/nanopromela/NanoPromelaParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6974">
+          <caret line="1323" column="24" selection-start-line="1323" selection-start-column="24" selection-end-line="1323" selection-end-column="24" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1216#1217#0" expanded="true" />
-            <element signature="e#1287#1288#0" expanded="true" />
-            <element signature="e#1351#1352#0" expanded="true" />
-            <element signature="e#1418#1419#0" expanded="true" />
-            <element signature="e#1479#1480#0" expanded="true" />
-            <element signature="e#1546#1547#0" expanded="true" />
-            <element signature="e#4231#4232#0" expanded="true" />
-            <element signature="e#4294#4295#0" expanded="true" />
-            <element signature="e#24961#24962#0" expanded="true" />
-            <element signature="e#25006#25007#0" expanded="true" />
-            <element signature="e#25073#25074#0" expanded="true" />
-            <element signature="e#25118#25119#0" expanded="true" />
-            <element signature="e#25187#25188#0" expanded="true" />
-            <element signature="e#25230#25231#0" expanded="true" />
-            <element signature="e#26093#26102#0" expanded="true" />
+            <element signature="e#45542#45543#0" expanded="true" />
+            <element signature="e#45607#45608#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/nanopromela/Evaluator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3485">
+          <caret line="216" column="38" lean-forward="true" selection-start-line="216" selection-start-column="38" selection-end-line="216" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="692" column="5" selection-start-line="692" selection-start-column="5" selection-end-line="692" selection-end-column="5" />
+        <state relative-caret-position="136">
+          <caret line="680" column="17" lean-forward="true" selection-start-line="680" selection-start-column="17" selection-end-line="680" selection-end-column="17" />
           <folding>
             <element signature="e#2008#2009#0" expanded="true" />
             <element signature="e#2036#2037#0" expanded="true" />
@@ -614,6 +690,73 @@
             <element signature="e#21097#21105#0" expanded="true" />
             <element signature="e#41184#41185#0" expanded="true" />
             <element signature="e#41251#41252#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ASyncAction.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/programgraph/ParserBasedActDef.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-204">
+          <caret line="31" column="38" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+          <folding>
+            <element signature="e#2248#2249#0" expanded="true" />
+            <element signature="e#2328#2329#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="260" column="40" selection-start-line="260" selection-start-column="40" selection-end-line="260" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1216#1217#0" expanded="true" />
+            <element signature="e#1287#1288#0" expanded="true" />
+            <element signature="e#1351#1352#0" expanded="true" />
+            <element signature="e#1418#1419#0" expanded="true" />
+            <element signature="e#1479#1480#0" expanded="true" />
+            <element signature="e#1546#1547#0" expanded="true" />
+            <element signature="e#4231#4232#0" expanded="true" />
+            <element signature="e#4294#4295#0" expanded="true" />
+            <element signature="e#6979#6980#0" expanded="true" />
+            <element signature="e#7026#7027#0" expanded="true" />
+            <element signature="e#7258#7259#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+            <element signature="e#24961#24962#0" expanded="true" />
+            <element signature="e#25006#25007#0" expanded="true" />
+            <element signature="e#25073#25074#0" expanded="true" />
+            <element signature="e#25118#25119#0" expanded="true" />
+            <element signature="e#25187#25188#0" expanded="true" />
+            <element signature="e#25230#25231#0" expanded="true" />
+            <element signature="e#26093#26102#0" expanded="true" />
+            <element signature="e#35569#35570#0" expanded="true" />
+            <element signature="e#35603#35604#0" expanded="true" />
+            <element signature="e#35781#35782#0" expanded="true" />
+            <element signature="e#35813#35814#0" expanded="true" />
+            <element signature="e#35724#35725#0" expanded="true" />
+            <element signature="e#35760#35761#0" expanded="true" />
+            <element signature="e#35817#35818#0" expanded="true" />
+            <element signature="e#35853#35854#0" expanded="true" />
+            <element signature="e#36079#36080#0" expanded="true" />
+            <element signature="e#36111#36112#0" expanded="true" />
+            <element signature="e#35956#35957#0" expanded="true" />
+            <element signature="e#35991#35992#0" expanded="true" />
+            <element signature="e#36048#36049#0" expanded="true" />
+            <element signature="e#36084#36085#0" expanded="true" />
+            <element signature="e#36392#36393#0" expanded="true" />
+            <element signature="e#36426#36427#0" expanded="true" />
+            <element signature="e#36912#36913#0" expanded="true" />
+            <element signature="e#36944#36945#0" expanded="true" />
+            <element signature="e#37050#37051#0" expanded="true" />
+            <element signature="e#37115#37116#0" expanded="true" />
+            <element signature="e#37208#37209#0" expanded="true" />
+            <element signature="e#37254#37255#0" expanded="true" />
+            <element signature="e#36705#36706#0" expanded="true" />
+            <element signature="e#36737#36738#0" expanded="true" />
           </folding>
         </state>
       </provider>

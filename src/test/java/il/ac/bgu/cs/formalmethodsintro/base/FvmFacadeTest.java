@@ -1,10 +1,8 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
+import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
-import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
-import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
-import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
@@ -200,15 +198,187 @@ public class FvmFacadeTest {
 
 
     @Test
-    public void testtransitionSystemFromProgramGraph() {
-        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
-        assertEquals(
-                fvm.transitionSystemFromProgramGraph(
-                        p.first,
-                        new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
-                        new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
+    public void testTransitionSystemFromProgramGraph() {
+        testTransitionSystemFromProgramGraph(new pgAndts() {
+            @Override
+            public Pair<ProgramGraph, TransitionSystem> get() {
+                return TS1PG1();
+            }
+        });
+    }
+
+    @Test
+    public void testTransitionSystemChannelSystem() {
+        testTransitionSystemFromChannelSystem(new csAndts() {
+            @Override
+            public Pair<ChannelSystem, TransitionSystem> get() {
+                return CH1PG1();
+            }
+        });
+    }
+
+    private void testTransitionSystemFromChannelSystem(csAndts csAndts) {
+        Pair<ChannelSystem, TransitionSystem> p = csAndts.get();
+        TransitionSystem expected = p.getSecond();
+        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(expected));
+        ChannelSystem input = p.getFirst();
+        TransitionSystem actual = fvm.transitionSystemFromChannelSystem(
+                input,
+                new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
+                new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
+        );
+        assertEquals(expected,actual);
+    }
+
+    private void testTransitionSystemFromProgramGraph(pgAndts pgAndts) {
+        Pair<ProgramGraph, TransitionSystem> p = pgAndts.get();
+        TransitionSystem expected = p.getSecond();
+        ProgramGraph input = p.getFirst();
+        TransitionSystem actual = fvm.transitionSystemFromProgramGraph(
+                input,
+                new HashSet<ActionDef>(
+                        Set.of(
+                                new ParserBasedActDef(),
+                                new ActionDef() {
+                                    @Override
+                                    public boolean isMatchingAction(Object candidate) {
+                                        return candidate instanceof ChannelAction;
+                                    }
+
+                                    @Override
+                                    public Map<String, Object> effect(Map<String, Object> eval, Object action) {
+                                        return ((ChannelAction)action).exectue(eval);
+                                    }
+                                }
+                        )
                 ),
-                p.second
+                new HashSet<ConditionDef>(
+                        Set.of(
+                                new ParserBasedCondDef(),
+                                new ConditionDef() {
+                                    @Override
+                                    public boolean evaluate(Map<String, Object> eval, String condition) {
+                                        return false;
+                                    }
+                                }
+                        )
+                )
+        );
+        assertEquals(expected,actual);
+    }
+
+
+    private Pair<ChannelSystem, TransitionSystem> CH1PG1() {
+        InfChannel c1 = new InfChannel("C1");
+        InfChannel c2 = new InfChannel("C2");
+        DataLess d = new DataLess("D");
+        Object m = "m";
+        String c1bang = "C1!";
+        String c2q = "C2?";
+        String _dbang= "_D!";
+        String c2bang = "C2!";
+        String c1q = "C1?";
+        String _dq = "_D?";
+        ProgramGraph p1 = new ProgramGraph();
+        Object loc11 = "loc11";
+        Object loc12 = "loc12";
+        Object loc13 = "loc13";
+        Object loc14 = "loc14";
+        p1.addLocation(loc11);
+        p1.addLocation(loc12);
+        p1.addLocation(loc13);
+        p1.addLocation(loc14);
+        p1.setInitial(loc11,true);
+        p1.addTransition(new PGTransition(loc11,"true",c1bang, loc12));
+        p1.addTransition(new PGTransition(loc12,"true",c2q, loc13));
+        p1.addTransition(new PGTransition(loc13,"true",_dbang, loc14));
+
+        ProgramGraph p2 = new ProgramGraph();
+        Object loc21 = "loc21";
+        Object loc22 = "loc22";
+        Object loc23 = "loc23";
+        Object loc24 = "loc24";
+        p2.addLocation(loc21);
+        p2.addLocation(loc22);
+        p2.addLocation(loc23);
+        p2.addLocation(loc24);
+        p2.setInitial(loc21,true);
+        p2.addTransition(new PGTransition(loc21,"true",c2bang, loc22));
+        p2.addTransition(new PGTransition(loc22,"true",c1q, loc23));
+        p2.addTransition(new PGTransition(loc23,"true",_dq, loc24));
+        ChannelSystem cs =new ChannelSystem(new ArrayList<>(List.of(p1,p2)));
+
+        TransitionSystem ts = new TransitionSystem();
+        Map theEmptyEta = new HashMap();
+        Map theEmptyKsi = new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>());
+            put(d, new LinkedList<>());
+        }};
+        Pair s11e = genPair(loc11,loc21,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>());
+            put(d, new LinkedList<>());
+        }});
+        Pair s21c1m = genPair(loc12,loc21,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>(Arrays.asList(m)));
+            put(c2, new LinkedList<>());
+            put(d, new LinkedList<>());
+        }});
+        Pair s22c1mc2m = genPair(loc12,loc22,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>(Arrays.asList(m)));
+            put(c2, new LinkedList<>(Arrays.asList(m)));
+            put(d, new LinkedList<>());
+        }});
+        Pair s12c2m = genPair(loc11,loc22,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>(Arrays.asList(m)));
+            put(d, new LinkedList<>());
+        }});
+        Pair s32c2m = genPair(loc13,loc22,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>(Arrays.asList(m)));
+            put(d, new LinkedList<>());
+        }});
+        Pair s23c1m = genPair(loc12,loc23,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>(Arrays.asList(m)));
+            put(c2, new LinkedList<>());
+            put(d, new LinkedList<>());
+        }});
+        Pair s33e = genPair(loc13,loc23,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>());
+            put(d, new LinkedList<>());
+        }});
+        Pair s44e = genPair(loc14,loc24,theEmptyEta, new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>());
+            put(d, new LinkedList<>());
+        }});
+        ts.addInitialState(s11e);
+        ts.addStates(s21c1m,s12c2m,s22c1mc2m,s32c2m,s23c1m,s33e,s44e);
+        ts.addTransition(new TSTransition(s11e,new WriteAction(c1, m), s21c1m));
+        ts.addTransition(new TSTransition(s11e,new WriteAction(c2, m), s12c2m));
+        ts.addTransition(new TSTransition(s21c1m,new WriteAction(c1, m), s22c1mc2m));
+        ts.addTransition(new TSTransition(s12c2m,new WriteAction(c2, m), s22c1mc2m));
+        ts.addTransition(new TSTransition(s22c1mc2m,new ReadAction(c1), s32c2m));
+        ts.addTransition(new TSTransition(s22c1mc2m,new ReadAction(c2), s23c1m));
+        ts.addTransition(new TSTransition(s23c1m,new ReadAction(c1), s33e));
+        ts.addTransition(new TSTransition(s32c2m,new ReadAction(c2), s33e));
+        ts.addTransition(new TSTransition(s33e,new ASyncAction(c2), s44e));
+        return new Pair<>(cs,ts);
+    }
+
+    private Pair genPair(Object from, Object to, Map eta, Map ksi) {
+        return new Pair(
+                from,
+                new Pair<>(
+                        to,
+                        new Pair<>(
+                                eta,
+                                ksi
+                        )
+                )
         );
     }
 
@@ -216,31 +386,28 @@ public class FvmFacadeTest {
         ProgramGraph p = new ProgramGraph();
         Object l0 = "loc0";
         Object l1 = "loc1";
-        String c0 = "x==0";
-        Object a0 = "x:=x+1";
-        p.addInitalization(new ArrayList<>(List.of("x:=0")));
+        String c0 = "true";
+        Object a0 = "x:=2*x";
+        p.addInitalization(new ArrayList<>(List.of("x:=3")));
         p.addLocation(l0);
         p.addLocation(l1);
         p.setInitial(l0,true);
         p.addTransition(new PGTransition(l0,c0, a0, l1));
 
         TransitionSystem ts = new TransitionSystem();
-        HashMap<String, Integer> m0= new HashMap<>();
-        HashMap<String, Integer> m1= new HashMap<>();
-        HashMap<String, Integer> m2= new HashMap<>();
-        m0.put("x",0);
-        m1.put("x",1);
-        m2.put("x",2);
-        Object s00 = new Pair<>(l0,m0);
-        Object s01 = new Pair<>(l0,m1);
-        Object s02 = new Pair<>(l0,m2);
-        Object s10 = new Pair<>(l0,m0);
-        Object s11 = new Pair<>(l0,m1);
-        Object s12 = new Pair<>(l0,m2);
-        ts.addStates(s01,s02,s10,s11,s12);
-        ts.addInitialState(s00);
-        ts.addTransition(new TSTransition(s00,a0, s11));
-        ts.addTransition(new TSTransition(s10,a0, s12));
+        HashMap<String, Integer> m3= new HashMap<>();
+        HashMap<String, Integer> m6= new HashMap<>();
+        m3.put("x",3);
+        m6.put("x",6);
+        Object s03 = new Pair<>(l0,m3);
+        Object s16 = new Pair<>(l1,m6);
+        ts.addState(s16);
+        ts.addInitialState(s03);
+        ts.addTransition(new TSTransition(s03,a0, s16));
+        ts.addToLabel(s03, "x=3");
+        ts.addToLabel(s03, "loc0");
+        ts.addToLabel(s16, "x=6");
+        ts.addToLabel(s16, "loc1");
         return new Pair<>(p,ts);
     }
 
@@ -775,7 +942,120 @@ public class FvmFacadeTest {
         return new Pair(circuit, ts);
 
     }
+    private interface pgAndts {
+        public Pair<ProgramGraph, TransitionSystem> get();
+    }
 
+    private interface csAndts {
+        public Pair<ChannelSystem, TransitionSystem> get();
+    }
+    private abstract class Channel{
+        Object c;
 
+        public Channel(Object c) {
+            this.c = c;
+        }
 
+        public abstract boolean isInf();
+        public abstract boolean isDataLess();
+    }
+    private class InfChannel extends Channel{
+        public InfChannel(Object c) {
+            super(c);
+        }
+
+        @Override
+        public boolean isInf() {
+            return true;
+        }
+
+        @Override
+        public boolean isDataLess() {
+            return false;
+        }
+    }
+    private class DataLess extends Channel{
+        public DataLess(Object c) {
+            super(c);
+        }
+
+        @Override
+        public boolean isInf() {
+            return false;
+        }
+
+        @Override
+        public boolean isDataLess() {
+            return true;
+        }
+    }
+
+    private abstract class ChannelAction {
+        protected Channel c;
+
+        public ChannelAction(Channel c) {
+            this.c = c;
+        }
+
+        public abstract boolean canExecute(Map<Object, Object> ksi);
+        public abstract Map<String, Object> exectue(Map<String, Object> ksi);
+    }
+
+    private class ASyncAction extends ChannelAction {
+
+        public ASyncAction(Channel c) {
+            super(c);
+        }
+
+        @Override
+        public boolean canExecute(Map<Object, Object> ksi) {
+            return ((LinkedList)ksi.get(c)).size()==0;
+        }
+
+        @Override
+        public Map<String, Object> exectue(Map<String, Object> ksi) {
+            return ksi;
+        }
+    }
+
+    private class ReadAction extends ChannelAction {
+
+        public ReadAction(Channel c) {
+            super(c);
+        }
+
+        @Override
+        public boolean canExecute(Map<Object, Object> ksi) {
+            return !c.isDataLess() && ((LinkedList)ksi.get(c)).size()>0;
+        }
+
+        @Override
+        public Map<String, Object> exectue(Map<String, Object> ksi) {
+            ((LinkedList)ksi.get(c)).poll();
+            return ksi;
+        }
+    }
+
+    private class WriteAction extends ChannelAction {
+        Object message;
+        public WriteAction(Channel c, Object message) {
+            super(c);
+            this.message = message;
+        }
+
+        @Override
+        public boolean canExecute(Map<Object, Object> ksi) {
+            if (c.isInf()){
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        @Override
+        public Map<String, Object> exectue(Map<String, Object> ksi) {
+            ((LinkedList)ksi.get(c)).add(message);
+            return ksi;
+        }
+    }
 }

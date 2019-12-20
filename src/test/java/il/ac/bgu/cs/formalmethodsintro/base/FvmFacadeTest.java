@@ -199,18 +199,18 @@ public class FvmFacadeTest {
     }
 
 
-//    @Test
-//    public void testtransitionSystemFromProgramGraph() {
-//        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
-//        assertEquals(
-//                fvm.transitionSystemFromProgramGraph(
-//                        p.first,
-//                        new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
-//                        new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
-//                ),
-//                p.second
-//        );
-//    }
+    @Test
+    public void testtransitionSystemFromProgramGraph() {
+        Pair<ProgramGraph, TransitionSystem> p = TS1PG1();
+        assertEquals(
+                fvm.transitionSystemFromProgramGraph(
+                        p.first,
+                        new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
+                        new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
+                ),
+                p.second
+        );
+    }
 
     private Pair<ProgramGraph, TransitionSystem> TS1PG1() {
         ProgramGraph p = new ProgramGraph();

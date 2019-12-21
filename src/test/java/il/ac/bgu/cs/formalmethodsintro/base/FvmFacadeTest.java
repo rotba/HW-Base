@@ -1,6 +1,7 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
+import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
@@ -14,10 +15,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
 public class FvmFacadeTest {
+
+    private static final Object TAU ="tau";
 
     private FvmFacade fvm = new FvmFacade();
 
@@ -220,13 +224,14 @@ public class FvmFacadeTest {
     private void testTransitionSystemFromChannelSystem(csAndts csAndts) {
         Pair<ChannelSystem, TransitionSystem> p = csAndts.get();
         TransitionSystem expected = p.getSecond();
-        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(expected));
         ChannelSystem input = p.getFirst();
         TransitionSystem actual = fvm.transitionSystemFromChannelSystem(
                 input,
-                new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
+                new HashSet<ActionDef>(Set.of(new ParserBasedActDef(),new ParserBasedInterleavingActDef())),
                 new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
         );
+        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(expected));
+        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(actual));
         assertEquals(expected,actual);
     }
 
@@ -236,48 +241,23 @@ public class FvmFacadeTest {
         ProgramGraph input = p.getFirst();
         TransitionSystem actual = fvm.transitionSystemFromProgramGraph(
                 input,
-                new HashSet<ActionDef>(
-                        Set.of(
-                                new ParserBasedActDef(),
-                                new ActionDef() {
-                                    @Override
-                                    public boolean isMatchingAction(Object candidate) {
-                                        return candidate instanceof ChannelAction;
-                                    }
-
-                                    @Override
-                                    public Map<String, Object> effect(Map<String, Object> eval, Object action) {
-                                        return ((ChannelAction)action).exectue(eval);
-                                    }
-                                }
-                        )
-                ),
-                new HashSet<ConditionDef>(
-                        Set.of(
-                                new ParserBasedCondDef(),
-                                new ConditionDef() {
-                                    @Override
-                                    public boolean evaluate(Map<String, Object> eval, String condition) {
-                                        return false;
-                                    }
-                                }
-                        )
-                )
+                new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
+                new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
         );
         assertEquals(expected,actual);
     }
 
 
     private Pair<ChannelSystem, TransitionSystem> CH1PG1() {
-        InfChannel c1 = new InfChannel("C1");
-        InfChannel c2 = new InfChannel("C2");
-        DataLess d = new DataLess("D");
+        Object c1 = "C1";
+        Object c2 = "C2";
+        Object d = "_D";
         Object m = "m";
-        String c1bang = "C1!";
-        String c2q = "C2?";
+        String c1bang = "C1!x";
+        String c2q = "C2?y";
         String _dbang= "_D!";
-        String c2bang = "C2!";
-        String c1q = "C1?";
+        String c2bang = "C2!y";
+        String c1q = "C1?x";
         String _dq = "_D?";
         ProgramGraph p1 = new ProgramGraph();
         Object loc11 = "loc11";
@@ -292,6 +272,7 @@ public class FvmFacadeTest {
         p1.addTransition(new PGTransition(loc11,"true",c1bang, loc12));
         p1.addTransition(new PGTransition(loc12,"true",c2q, loc13));
         p1.addTransition(new PGTransition(loc13,"true",_dbang, loc14));
+        p1.addInitalization(new ArrayList<>(List.of("x:=1")));
 
         ProgramGraph p2 = new ProgramGraph();
         Object loc21 = "loc21";
@@ -306,57 +287,67 @@ public class FvmFacadeTest {
         p2.addTransition(new PGTransition(loc21,"true",c2bang, loc22));
         p2.addTransition(new PGTransition(loc22,"true",c1q, loc23));
         p2.addTransition(new PGTransition(loc23,"true",_dq, loc24));
+        p2.addInitalization(new ArrayList<>(List.of("y:=0")));
         ChannelSystem cs =new ChannelSystem(new ArrayList<>(List.of(p1,p2)));
 
         TransitionSystem ts = new TransitionSystem();
-        Map theEmptyEta = new HashMap();
-        Map theEmptyKsi = new HashMap<>() {{
+        Map theEmptyEval = new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>());
             put(d, new LinkedList<>());
         }};
-        Pair s11e = genPair(loc11,loc21,theEmptyEta, new HashMap<>() {{
+        Pair s11e = genPair(loc11,loc21, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>());
             put(d, new LinkedList<>());
         }});
-        Pair s21c1m = genPair(loc12,loc21,theEmptyEta, new HashMap<>() {{
+        Pair s21c1m = genPair(loc12,loc21, new HashMap<>() {{
             put(c1, new LinkedList<>(Arrays.asList(m)));
             put(c2, new LinkedList<>());
             put(d, new LinkedList<>());
         }});
-        Pair s22c1mc2m = genPair(loc12,loc22,theEmptyEta, new HashMap<>() {{
+        Pair s22c1mc2m = genPair(loc12,loc22, new HashMap<>() {{
             put(c1, new LinkedList<>(Arrays.asList(m)));
             put(c2, new LinkedList<>(Arrays.asList(m)));
             put(d, new LinkedList<>());
         }});
-        Pair s12c2m = genPair(loc11,loc22,theEmptyEta, new HashMap<>() {{
+        Pair s12c2m = genPair(loc11,loc22, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>(Arrays.asList(m)));
             put(d, new LinkedList<>());
         }});
-        Pair s32c2m = genPair(loc13,loc22,theEmptyEta, new HashMap<>() {{
+        Pair s32c2m = genPair(loc13,loc22, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>(Arrays.asList(m)));
             put(d, new LinkedList<>());
         }});
-        Pair s23c1m = genPair(loc12,loc23,theEmptyEta, new HashMap<>() {{
+        Pair s23c1m = genPair(loc12,loc23, new HashMap<>() {{
             put(c1, new LinkedList<>(Arrays.asList(m)));
             put(c2, new LinkedList<>());
             put(d, new LinkedList<>());
         }});
-        Pair s33e = genPair(loc13,loc23,theEmptyEta, new HashMap<>() {{
+        Pair s33e = genPair(loc13,loc23, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>());
             put(d, new LinkedList<>());
         }});
-        Pair s44e = genPair(loc14,loc24,theEmptyEta, new HashMap<>() {{
+        Pair s44e = genPair(loc14,loc24, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>());
             put(d, new LinkedList<>());
         }});
         ts.addInitialState(s11e);
         ts.addStates(s21c1m,s12c2m,s22c1mc2m,s32c2m,s23c1m,s33e,s44e);
+        ts.addTransition(new TSTransition(s11e,TAU, s21c1m));
+        ts.addTransition(new TSTransition(s11e,TAU, s12c2m));
+        ts.addTransition(new TSTransition(s21c1m,TAU, s22c1mc2m));
+        ts.addTransition(new TSTransition(s12c2m,TAU, s22c1mc2m));
+        ts.addTransition(new TSTransition(s22c1mc2m,TAU, s32c2m));
+        ts.addTransition(new TSTransition(s22c1mc2m,TAU, s23c1m));
+        ts.addTransition(new TSTransition(s23c1m,TAU, s33e));
+        ts.addTransition(new TSTransition(s32c2m,TAU, s33e));
+        ts.addTransition(new TSTransition(s33e,TAU, s44e));
+        /*
         ts.addTransition(new TSTransition(s11e,new WriteAction(c1, m), s21c1m));
         ts.addTransition(new TSTransition(s11e,new WriteAction(c2, m), s12c2m));
         ts.addTransition(new TSTransition(s21c1m,new WriteAction(c1, m), s22c1mc2m));
@@ -366,19 +357,15 @@ public class FvmFacadeTest {
         ts.addTransition(new TSTransition(s23c1m,new ReadAction(c1), s33e));
         ts.addTransition(new TSTransition(s32c2m,new ReadAction(c2), s33e));
         ts.addTransition(new TSTransition(s33e,new ASyncAction(c2), s44e));
+        */
         return new Pair<>(cs,ts);
     }
 
-    private Pair genPair(Object from, Object to, Map eta, Map ksi) {
+    private Pair genPair(Object s1, Object s2, Map eval) {
+
         return new Pair(
-                from,
-                new Pair<>(
-                        to,
-                        new Pair<>(
-                                eta,
-                                ksi
-                        )
-                )
+                new ArrayList<>(List.of(s1,s2)),
+                eval
         );
     }
 

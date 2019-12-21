@@ -182,10 +182,27 @@ public class FvmFacadeTest {
 
     @Test
     public void testNanoPromela() {
-        String code = "do :: x > 1 -> C!5 ; C!6 :: x > 1 -> C!30 od";
+        String code ="do:: x> 5 -> x:= 4 :: x < 8 -> if :: x <9 ->y :=x fi od";
+
+
+//                "atomic{x:=5; y:=0};" +
+//                "do :: x > 2 -> x:=x-1" +
+//                ":: x < 2 -> if" +
+//                ":: x == 2 -> y:=x; x:=x+1" +
+//                "fi" +
+//                "od";
+
+//                " atomic{x:=5;y:=0};\n" +
+//                "  do \n" +
+//                "  :: x > 2 -> x:=x-1\n" +
+//                "  :: x <= 2 -> \n" +
+//                "\t\tif \n" +
+//                "      \t:: x ==2 -> y:=x; x:=x+1 \n" +
+//                "\t\tfi\t\n" +
+//                "  od\n";
         try {
             ProgramGraph pg = fvm.programGraphFromNanoPromelaString(code);
-           // assertEquals(fvm.programGraphFromNanoPromela(code), pgnp());
+            assertEquals(fvm.programGraphFromNanoPromela(code), pgnp());
         } catch (Exception e) {
             e.printStackTrace();
         }

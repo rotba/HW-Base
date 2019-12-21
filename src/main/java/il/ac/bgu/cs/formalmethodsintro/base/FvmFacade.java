@@ -126,6 +126,11 @@ public class FvmFacade {
      * {@code ts}.
      */
     public <S, A, P> boolean isExecutionFragment(TransitionSystem<S, A, P> ts, AlternatingSequence<S, A> e) {
+        if(e.size() % 2 == 0)
+            return false;
+        else if (e.size() == 1){
+            return ts.getStates().contains(e.head());
+        }
         // check if first transition is valid
         Set<S> to_states_f = ts.getTransition(e.getStateAt(0), e.getActAt(1));
         if (!to_states_f.contains(e.getStateAt(2)))
@@ -319,7 +324,7 @@ public class FvmFacade {
         Set<S> ans = new HashSet<>();
         for (S sTag : ts.getStates()) {
             if (post(ts, sTag, a).contains(s))
-                ans.add(s);
+                ans.add(sTag);
         }
         return ans;
     }
@@ -354,10 +359,19 @@ public class FvmFacade {
      */
     public <S, A> Set<S> reach(TransitionSystem<S, A, ?> ts) {
         Set<S> reachable = new HashSet<>();
-        for (TSTransition<S, A> tr : ts.getTransitions()) {
-            reachable.add(tr.getTo());
-            if (ts.getInitialStates().contains(tr.getFrom()))
-                reachable.add(tr.getFrom());
+        for(S initial_state : ts.getInitialStates()){
+            reachable.add(initial_state);
+            reachable = rec_reach(ts, initial_state, reachable);
+        }
+        return reachable;
+    }
+
+    private <S,A> Set<S> rec_reach(TransitionSystem<S, A, ?> ts, S s,  Set<S> reachable){
+        for(S post_state : post(ts, s)){
+            if(!reachable.contains(post_state)) {
+                reachable.add(post_state);
+                reachable = rec_reach(ts, post_state, reachable);
+            }
         }
         return reachable;
     }
@@ -441,7 +455,27 @@ public class FvmFacade {
                                                                           TransitionSystem<S2, A, P> ts2, Set<A> handShakingActions) {
         TransitionSystem<Pair<S1, S2>, A, P> interleaved = createInterleavedBase(ts1, ts2, handShakingActions);
 
-        for (A action : handShakingActions) {
+        for(TSTransition ts1_trans : ts1.getTransitions()){
+            if(handShakingActions.contains(ts1_trans.getAction())){
+                S1 ts1_from = (S1) ts1_trans.getFrom();
+                S1 ts1_to = (S1) ts1_trans.getTo();
+                for(S2 state_of_2 : ts2.getStates()){
+                    Set<S2> post2 = post(ts2, state_of_2, (A)ts1_trans.getAction());
+                    for(Pair<S1,S2> new_state : interleaved.getStates()){
+                        if(new_state.first.equals(ts1_from) && new_state.second.equals(state_of_2)){
+                            for(S2 p2 : post2){
+                                for(Pair<S1,S2> to_state : interleaved.getStates()){
+                                    if(to_state.first.equals(ts1_to) && to_state.second.equals(p2)){
+                                        interleaved.addTransition(new TSTransition<>(new_state, (A)ts1_trans.getAction(), to_state));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /*for (A action : handShakingActions) {
             List<S1> orig1 = new LinkedList<>();
             List<S2> orig2 = new LinkedList<>();
             Set<S1> allpost1 = new HashSet<>();
@@ -471,7 +505,7 @@ public class FvmFacade {
                     }
                 }
             }
-        }
+        }*/
         return interleaved;
     }
 
@@ -496,7 +530,6 @@ public class FvmFacade {
      * @param pg2  The second program graph.
      * @return Interleaved program graph.
      */
-    // TODO: 12/12/2019 : effect function
     public <L1, L2, A> ProgramGraph<Pair<L1, L2>, A> interleave(ProgramGraph<L1, A> pg1, ProgramGraph<L2, A> pg2) {
         ProgramGraph<Pair<L1, L2>, A> interleaved = createProgramGraph();
         // create all new states and set initials
@@ -509,11 +542,20 @@ public class FvmFacade {
                     interleaved.addLocation(new_loc);
             }
         }
-        Set<List<String>> both_inits = new HashSet<>(pg1.getInitalizations());
-        both_inits.addAll(pg2.getInitalizations());
-        // set the initialization for the new PG
-        for (List<String> init_list : both_inits)
-            interleaved.addInitalization(init_list);
+//        Set<List<String>> both_inits = new HashSet<>(pg1.getInitalizations());
+//        both_inits.addAll(pg2.getInitalizations());
+//        // set the initialization for the new PG
+//        for (List<String> init_list : both_inits)
+//            interleaved.addInitalization(init_list);
+         Set<List<String>> inits1 = pg1.getInitalizations();
+         Set<List<String>> inits2 = pg2.getInitalizations();
+         for(List<String> in1 : inits1) {
+             for (List<String> in2 : inits2) {
+                 List<String> toadd = new ArrayList(in1);
+                 toadd.addAll(in2);
+                 interleaved.addInitalization(toadd);
+             }
+         }
         //
         for (PGTransition<L1, A> trans : pg1.getTransitions())
             for (Pair<L1, L2> from_loc : interleaved.getLocations())
@@ -727,18 +769,65 @@ public class FvmFacade {
 
     private ProgramGraph<String, String> createPGFromNP(NanoPromelaParser.StmtContext root){
         ProgramGraph<String,String> pg = createProgramGraph();
-        Set<String> locations = new HashSet<>();
+        Set<NanoPromelaParser.StmtContext> locations = new HashSet<>();
         Set<PGTransition<String, String>> transitions = new HashSet<>();
-        createPGFromNP(root, locations, transitions);
+        createLocationsFromNP(root, locations);
         // the whole program is the initial location of the pg
         pg.setInitial(root.getText(), true);
-        for(String loc : locations)
-            pg.addLocation(loc);
+        for(NanoPromelaParser.StmtContext loc : locations)
+            pg.addLocation(loc.getText());
         for(PGTransition trans : transitions)
             pg.addTransition(trans);
         return pg;
     }
 
+
+    private void createLocationsFromNP(NanoPromelaParser.StmtContext root, Set<NanoPromelaParser.StmtContext> locations){
+        if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {
+            /* The sub-statements are only [root] and [exit]                    */
+            locations.add(root);
+            locations.add(NanoPromelaFileReader.pareseNanoPromelaString("exit"));
+        }
+        else if (root.ifstmt() != null) {
+        /* The sub-statements are [root], [exit], and the sub-statements of
+        all op.stmt() where op is a member of root.ifstmt().option() */
+            locations.add(NanoPromelaFileReader.pareseNanoPromelaString("exit"));
+            locations.add(root);
+            List<NanoPromelaParser.OptionContext> options = root.ifstmt().option();
+            for(NanoPromelaParser.OptionContext option : options){
+                createLocationsFromNP(option.stmt(), locations);
+            }
+        }
+        else if (root.dostmt() != null) {
+        /* The sub-statements are [root], [exit], and locations [𝑠𝑢𝑏;root]
+        where 𝑠𝑢𝑏 is a sub-statement of some op in root.dostmt().option() */
+            locations.add(NanoPromelaFileReader.pareseNanoPromelaString("exit"));
+            locations.add(root);
+            List<NanoPromelaParser.OptionContext> options = root.dostmt().option();
+            for(NanoPromelaParser.OptionContext option : options){
+                Set<NanoPromelaParser.StmtContext> subs = new HashSet<>();
+                createLocationsFromNP(option.stmt(), subs);
+                for(NanoPromelaParser.StmtContext sub : subs){
+                    if(!sub.getText().equals("exit"))
+                      locations.add(NanoPromelaFileReader.pareseNanoPromelaString(sub.getText() + ";" +root.getText()));
+                }
+            }
+        }
+        else { // ;
+            /* The sub-statements are locations of the form [𝑠𝑢𝑏;root.stmt(1)] where 𝑠𝑢𝑏 is a sub-statement of root.stmt(0) plus all the substatements of root.stmt(1) */
+            NanoPromelaParser.StmtContext first = root.stmt(0);
+            NanoPromelaParser.StmtContext second = root.stmt(1);
+            Set<NanoPromelaParser.StmtContext> sub_of_first = new HashSet<>();
+            createLocationsFromNP(first, sub_of_first);
+            for(NanoPromelaParser.StmtContext sub : sub_of_first){
+                if(!sub.getText().equals("exit"))
+                locations.add(NanoPromelaFileReader.pareseNanoPromelaString(sub.getText() + ";" +second.getText()));
+            }
+            Set<NanoPromelaParser.StmtContext> sub_of_second = new HashSet<>();
+            createLocationsFromNP(second, sub_of_second);
+            locations.addAll(sub_of_second);
+        }
+    }
 
     private void createPGFromNP(NanoPromelaParser.StmtContext root, Set<String> locations, Set<PGTransition<String, String>> transitions) {
         if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {

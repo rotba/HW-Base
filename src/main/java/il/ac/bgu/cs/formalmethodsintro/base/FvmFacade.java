@@ -21,6 +21,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 /**
  * Interface for the entry point class to the HW in this class. Our
@@ -668,28 +669,46 @@ public class FvmFacade {
                                                     locations.remove(tran2.getFrom());
                                                     locations.add(tran1.getTo());
                                                     locations.add(tran2.getTo());
+                                                    locations.sort(new Comparator<L>() {
+                                                        @Override
+                                                        public int compare(L o1, L o2) {
+                                                            return o1.toString().compareTo(o2.toString());
+                                                        }
+                                                    });
+                                                    String action = tran1.getAction() + "|"+tran2.getAction();
                                                     Pair<List<L>, Map<String,Object>> newState =
                                                             new Pair<>(
                                                                     locations,
-                                                                    ad1.effect(currState.getSecond(),tran1.getAction())
+                                                                    ad1.effect(currState.getSecond(),action)
                                                             );
-                                                    tagNewState(ts,newState);
+                                                    ts.addTransition(new TSTransition<>(currState, null, newState));
+                                                    tagCSNewState(ts, newState);
                                                     ts.addState(newState);
                                                     spreadToReachables(newState,cs,actions,conditions,ts);
                                                 }else if(canExecute(currState,tran1,cd1,ad1)){
                                                     List<L> locations = new ArrayList<>(currState.first);
                                                     locations.remove(tran1.getFrom());
                                                     locations.add(tran1.getTo());
+                                                    locations.sort(new Comparator<L>() {
+                                                        @Override
+                                                        public int compare(L o1, L o2) {
+                                                            return o1.toString().compareTo(o2.toString());
+                                                        }
+                                                    });
                                                     Pair<List<L>, Map<String,Object>> newState =
                                                             new Pair<>(
                                                                     locations,
                                                                     ad1.effect(currState.getSecond(),tran1.getAction())
                                                             );
-                                                    if(! (newState.second==null)){
-                                                        tagNewState(ts,newState);
-                                                        ts.addState(newState);
-                                                        spreadToReachables(newState,cs,actions,conditions,ts);
+
+                                                    if(isChannelAction(tran1.getAction())){
+                                                        ts.addTransition(new TSTransition<>(currState, null, newState));
+                                                    }else{
+                                                        ts.addTransition(new TSTransition<>(currState, tran1.getAction(), newState));
                                                     }
+                                                    tagCSNewState(ts, newState);
+                                                    ts.addState(newState);
+                                                    spreadToReachables(newState,cs,actions,conditions,ts);
                                                 }
                                             }
                                         }
@@ -704,18 +723,47 @@ public class FvmFacade {
         }
     }
 
+    private <L, A> void tagCSNewState(TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> ts, Pair<List<L>, Map<String, Object>> newState) {
+        for (L l : newState.first) {
+            ts.addToLabel(newState, l.toString());
+        }
+        for (String key : newState.second.keySet()) {
+            ts.addToLabel(newState, key + "=" + newState.second.get(key).toString());
+        }
+    }
+
+    private <A> boolean isChannelAction(A action) {
+        return NanoPromelaFileReader.pareseNanoPromelaString(action.toString()).chanreadstmt() !=null ||
+                NanoPromelaFileReader.pareseNanoPromelaString(action.toString()).chanwritestmt() !=null;
+
+    }
+
     private <L, A> boolean canExecute(Pair<List<L>, Map<String, Object>> currState, PGTransition<L,A> tran1, ConditionDef cd1, ActionDef ad1) {
-        return ad1.isMatchingAction(tran1.getAction()) &&
-                cd1.evaluate(currState.getSecond(),tran1.getCondition());
+        try{
+            return currState.first.contains(tran1.getFrom()) &&
+                    ad1.isMatchingAction(tran1.getAction()) &&
+                    cd1.evaluate(currState.getSecond(),tran1.getCondition()) &&
+                    ad1.effect(currState.getSecond(), tran1.getAction())!=null;
+        }catch (ParseCancellationException e){
+            return false;
+        }
+
     }
 
     private <L> boolean canExecuteASync(Pair<List<L>, Map<String, Object>> currState,PGTransition tran1 ,PGTransition tran2 ,ConditionDef cd1, ConditionDef cd2, ActionDef ad1, ActionDef ad2) {
-        if(canExecute(currState,tran1,cd1,ad1) && canExecute(currState,tran2,cd2,ad2) ){
-            return ad1 instanceof InterleavingActDef && ad2 instanceof InterleavingActDef &&
-                    ((InterleavingActDef)ad1).isOneSidedAction((String)tran1.getAction()) &&
-                    ((InterleavingActDef)ad2).isOneSidedAction((String)tran2.getAction());
+        if(ad1 instanceof InterleavingActDef && ad2 instanceof InterleavingActDef){
+            InterleavingActDef iad1 = (InterleavingActDef)ad1;
+            String cond = tran1.getCondition().toString() + "&&"+tran2.getCondition().toString();
+            String action = tran1.getAction() +"|"+tran2.getAction();
+            Set<ConditionDef> set = new HashSet<>();
+            set.add(cd1);set.add(cd2);
+            return ConditionDef.evaluate(set,currState.getSecond(),cond) && iad1.isMatchingAction(action) &&
+                    ad1.effect(currState.getSecond(),action)!=null && currState.first.contains(tran1.getFrom()) &&
+                    currState.first.contains(tran2.getFrom());
+
+        }else{
+            return false;
         }
-        return false;
     }
 
 
@@ -725,7 +773,7 @@ public class FvmFacade {
         for (List<L> candidate: genInitialCandidates(cs, actions)) {
             for (Map<String,Object> initialEval: getInitialEvals(cs,actions)) {
                 Pair<List<L>, Map<String, Object>> newState = new Pair<>(candidate, initialEval);
-                tagNewState(ts,newState);
+                tagCSNewState(ts,newState);
                 ts.addInitialState(newState);
             }
         }

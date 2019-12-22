@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 public class FvmFacadeTest {
 
-    private static final Object TAU ="tau";
+    private static final Object TAU =null;
 
     private FvmFacade fvm = new FvmFacade();
 
@@ -244,6 +244,8 @@ public class FvmFacadeTest {
                 new HashSet<ActionDef>(Set.of(new ParserBasedActDef())),
                 new HashSet<ConditionDef>(Set.of(new ParserBasedCondDef()))
         );
+        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(expected));
+        System.out.println(GraphvizPainter.toStringPainter().makeDotCode(actual));
         assertEquals(expected,actual);
     }
 
@@ -252,12 +254,14 @@ public class FvmFacadeTest {
         Object c1 = "C1";
         Object c2 = "C2";
         Object d = "_D";
-        Object m = "m";
+        int m = 1;
+        String c1bang1 = "C1!1";
+        String c2bang1 = "C2!1";
         String c1bang = "C1!x";
-        String c2q = "C2?y";
+        String c2q = "C2?x";
         String _dbang= "_D!";
         String c2bang = "C2!y";
-        String c1q = "C1?x";
+        String c1q = "C1?y";
         String _dq = "_D?";
         ProgramGraph p1 = new ProgramGraph();
         Object loc11 = "loc11";
@@ -269,10 +273,10 @@ public class FvmFacadeTest {
         p1.addLocation(loc13);
         p1.addLocation(loc14);
         p1.setInitial(loc11,true);
-        p1.addTransition(new PGTransition(loc11,"true",c1bang, loc12));
+        p1.addTransition(new PGTransition(loc11,"true",c1bang1, loc12));
         p1.addTransition(new PGTransition(loc12,"true",c2q, loc13));
         p1.addTransition(new PGTransition(loc13,"true",_dbang, loc14));
-        p1.addInitalization(new ArrayList<>(List.of("x:=1")));
+        p1.addInitalization(new ArrayList<>(List.of("x:=0")));
 
         ProgramGraph p2 = new ProgramGraph();
         Object loc21 = "loc21";
@@ -284,7 +288,7 @@ public class FvmFacadeTest {
         p2.addLocation(loc23);
         p2.addLocation(loc24);
         p2.setInitial(loc21,true);
-        p2.addTransition(new PGTransition(loc21,"true",c2bang, loc22));
+        p2.addTransition(new PGTransition(loc21,"true",c2bang1, loc22));
         p2.addTransition(new PGTransition(loc22,"true",c1q, loc23));
         p2.addTransition(new PGTransition(loc23,"true",_dq, loc24));
         p2.addInitalization(new ArrayList<>(List.of("y:=0")));
@@ -292,49 +296,52 @@ public class FvmFacadeTest {
 
         TransitionSystem ts = new TransitionSystem();
         Map theEmptyEval = new HashMap<>() {{
-            put(c1, new LinkedList<>());
-            put(c2, new LinkedList<>());
-            put(d, new LinkedList<>());
+            put("x", 0);
+            put("y", 0);
         }};
         Pair s11e = genPair(loc11,loc21, new HashMap<>() {{
-            put(c1, new LinkedList<>());
-            put(c2, new LinkedList<>());
-            put(d, new LinkedList<>());
+            put("x", 0);
+            put("y", 0);
         }});
         Pair s21c1m = genPair(loc12,loc21, new HashMap<>() {{
             put(c1, new LinkedList<>(Arrays.asList(m)));
-            put(c2, new LinkedList<>());
-            put(d, new LinkedList<>());
+            put("x", 0);
+            put("y", 0);
         }});
         Pair s22c1mc2m = genPair(loc12,loc22, new HashMap<>() {{
             put(c1, new LinkedList<>(Arrays.asList(m)));
             put(c2, new LinkedList<>(Arrays.asList(m)));
-            put(d, new LinkedList<>());
+            put("x", 0);
+            put("y", 0);
         }});
         Pair s12c2m = genPair(loc11,loc22, new HashMap<>() {{
-            put(c1, new LinkedList<>());
             put(c2, new LinkedList<>(Arrays.asList(m)));
-            put(d, new LinkedList<>());
+            put("x", 0);
+            put("y", 0);
         }});
         Pair s32c2m = genPair(loc13,loc22, new HashMap<>() {{
-            put(c1, new LinkedList<>());
-            put(c2, new LinkedList<>(Arrays.asList(m)));
-            put(d, new LinkedList<>());
-        }});
-        Pair s23c1m = genPair(loc12,loc23, new HashMap<>() {{
             put(c1, new LinkedList<>(Arrays.asList(m)));
             put(c2, new LinkedList<>());
-            put(d, new LinkedList<>());
+            put("x", 1);
+            put("y", 0);
+        }});
+        Pair s23c1m = genPair(loc12,loc23, new HashMap<>() {{
+            put(c1, new LinkedList<>());
+            put(c2, new LinkedList<>(Arrays.asList(m)));
+            put("x", 0);
+            put("y", 1);
         }});
         Pair s33e = genPair(loc13,loc23, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>());
-            put(d, new LinkedList<>());
+            put("x", 1);
+            put("y", 1);
         }});
         Pair s44e = genPair(loc14,loc24, new HashMap<>() {{
             put(c1, new LinkedList<>());
             put(c2, new LinkedList<>());
-            put(d, new LinkedList<>());
+            put("x", 1);
+            put("y", 1);
         }});
         ts.addInitialState(s11e);
         ts.addStates(s21c1m,s12c2m,s22c1mc2m,s32c2m,s23c1m,s33e,s44e);
@@ -347,17 +354,50 @@ public class FvmFacadeTest {
         ts.addTransition(new TSTransition(s23c1m,TAU, s33e));
         ts.addTransition(new TSTransition(s32c2m,TAU, s33e));
         ts.addTransition(new TSTransition(s33e,TAU, s44e));
-        /*
-        ts.addTransition(new TSTransition(s11e,new WriteAction(c1, m), s21c1m));
-        ts.addTransition(new TSTransition(s11e,new WriteAction(c2, m), s12c2m));
-        ts.addTransition(new TSTransition(s21c1m,new WriteAction(c1, m), s22c1mc2m));
-        ts.addTransition(new TSTransition(s12c2m,new WriteAction(c2, m), s22c1mc2m));
-        ts.addTransition(new TSTransition(s22c1mc2m,new ReadAction(c1), s32c2m));
-        ts.addTransition(new TSTransition(s22c1mc2m,new ReadAction(c2), s23c1m));
-        ts.addTransition(new TSTransition(s23c1m,new ReadAction(c1), s33e));
-        ts.addTransition(new TSTransition(s32c2m,new ReadAction(c2), s33e));
-        ts.addTransition(new TSTransition(s33e,new ASyncAction(c2), s44e));
-        */
+        ts.addToLabel(s11e,"x=0");
+        ts.addToLabel(s11e,"y=0");
+        ts.addToLabel(s11e,loc11.toString());
+        ts.addToLabel(s11e,loc21.toString());
+        ts.addToLabel(s21c1m,"x=0");
+        ts.addToLabel(s21c1m,"y=0");
+        ts.addToLabel(s21c1m,"C1=[1]");
+        ts.addToLabel(s21c1m,loc12.toString());
+        ts.addToLabel(s21c1m,loc21.toString());
+        ts.addToLabel(s12c2m,"x=0");
+        ts.addToLabel(s12c2m,"y=0");
+        ts.addToLabel(s12c2m,"C2=[1]");
+        ts.addToLabel(s12c2m,loc11.toString());
+        ts.addToLabel(s12c2m,loc22.toString());
+        ts.addToLabel(s22c1mc2m,"x=0");
+        ts.addToLabel(s22c1mc2m,"y=0");
+        ts.addToLabel(s22c1mc2m,"C1=[1]");
+        ts.addToLabel(s22c1mc2m,"C2=[1]");
+        ts.addToLabel(s22c1mc2m,loc12.toString());
+        ts.addToLabel(s22c1mc2m,loc22.toString());
+        ts.addToLabel(s32c2m,"x=1");
+        ts.addToLabel(s32c2m,"y=0");
+        ts.addToLabel(s32c2m,"C1=[1]");
+        ts.addToLabel(s32c2m,"C2=[]");
+        ts.addToLabel(s32c2m,loc13.toString());
+        ts.addToLabel(s32c2m,loc22.toString());
+        ts.addToLabel(s23c1m,"x=0");
+        ts.addToLabel(s23c1m,"y=1");
+        ts.addToLabel(s23c1m,"C1=[]");
+        ts.addToLabel(s23c1m,"C2=[1]");
+        ts.addToLabel(s23c1m,loc12.toString());
+        ts.addToLabel(s23c1m,loc23.toString());
+        ts.addToLabel(s33e,"x=1");
+        ts.addToLabel(s33e,"y=1");
+        ts.addToLabel(s33e,"C1=[]");
+        ts.addToLabel(s33e,"C2=[]");
+        ts.addToLabel(s33e,loc13.toString());
+        ts.addToLabel(s33e,loc23.toString());
+        ts.addToLabel(s44e,"x=1");
+        ts.addToLabel(s44e,"y=1");
+        ts.addToLabel(s44e,"C1=[]");
+        ts.addToLabel(s44e,"C2=[]");
+        ts.addToLabel(s44e,loc14.toString());
+        ts.addToLabel(s44e,loc24.toString());
         return new Pair<>(cs,ts);
     }
 

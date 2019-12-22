@@ -99,7 +99,7 @@ public class GraphvizPainter<S, A, P> {
                         .append(" -> ")
                         .append(idByState.get(t.getTo()))
                         .append(" [label=\"")
-                        .append(actionPainter.apply(t.getAction()).replace("\"", "\\\"\\"))
+                        .append(actionPainter.apply(t.getAction()!=null ? t.getAction(): (A)"tau").replace("\"", "\\\"\\"))
                         .append("\"];\n")
         );
     }

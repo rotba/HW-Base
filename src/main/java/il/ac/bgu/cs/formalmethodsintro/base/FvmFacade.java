@@ -796,7 +796,9 @@ public class FvmFacade {
     private <L> boolean canExecuteASync(Pair<List<L>, Map<String, Object>> currState,PGTransition tran1 ,PGTransition tran2 ,ConditionDef cd1, ConditionDef cd2, ActionDef ad1, ActionDef ad2) {
         if(ad1 instanceof InterleavingActDef && ad2 instanceof InterleavingActDef){
             InterleavingActDef iad1 = (InterleavingActDef)ad1;
-            String cond = tran1.getCondition().toString() + "&&"+tran2.getCondition().toString();
+            String cond1 = tran1.getCondition().equals("") ? "true" : "(" + tran1.getCondition() + ")";
+            String cond2 = tran2.getCondition().equals("") ? "true" : "(" + tran2.getCondition() + ")";
+            String cond = cond1 + "&&" + cond2;
             String action = tran1.getAction() +"|"+tran2.getAction();
             Set<ConditionDef> set = new HashSet<>();
             set.add(cd1);set.add(cd2);
@@ -826,7 +828,7 @@ public class FvmFacade {
         Set<Map<String,Object>> ans = new HashSet<>();
         ans.add(new HashMap<>());
         for (ProgramGraph<L,A> p: cs.getProgramGraphs()) {
-            boolean hasRep = false;
+            boolean hasRep = p.getInitalizations().size() ==0 ? true:false;
             for (List<String> g: p.getInitalizations()) {
                 Map<String, Object> currEval= new HashMap<>();
                 for (ActionDef ad:actions) {

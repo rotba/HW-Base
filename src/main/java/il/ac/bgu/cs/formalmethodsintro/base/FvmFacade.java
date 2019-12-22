@@ -824,6 +824,7 @@ public class FvmFacade {
 
     private <L, A> Iterable<? extends Map<String, Object>> getInitialEvals(ChannelSystem<L, A> cs, Set<ActionDef> actions) {
         Set<Map<String,Object>> ans = new HashSet<>();
+        ans.add(new HashMap<>());
         for (ProgramGraph<L,A> p: cs.getProgramGraphs()) {
             boolean hasRep = false;
             for (List<String> g: p.getInitalizations()) {
@@ -834,30 +835,19 @@ public class FvmFacade {
                             currEval = ad.effect(new HashMap<>(), s);
                     }
                 }
-                if (ans.size()==0){
-                    ans.add(currEval);
-                    hasRep = true;
-                }else{
-                    for (Map<String,Object>  existingInitial: ans) {
-                        for (ActionDef ad:actions) {
-                            for (String s:g) {
-                                if(ad.isMatchingAction(s))
-                                    currEval = ad.effect(new HashMap<>(), s);
-                            }
-                        }
-                        if (!hasConflict(currEval,existingInitial)){
-                            Map<String, Object> newEval = new HashMap<>();
-                            newEval.putAll(currEval);
-                            newEval.putAll(existingInitial);
-                            ans.remove(existingInitial);
-                            ans.add(newEval);
-                            hasRep=true;
-                        }
+                for (Map<String,Object>  existingInitial: ans) {
+                    if (!hasConflict(currEval,existingInitial)){
+                        Map<String, Object> newEval = new HashMap<>();
+                        newEval.putAll(currEval);
+                        newEval.putAll(existingInitial);
+                        ans.remove(existingInitial);
+                        ans.add(newEval);
+                        hasRep=true;
                     }
                 }
-                if (!hasRep){
-                    return new HashSet<>();
-                }
+            }
+            if(!hasRep){
+                return new HashSet<>();
             }
         }
         return ans;
@@ -963,18 +953,6 @@ public class FvmFacade {
         }
     }
 
-    /**
-     * Creates a transition system representing channel system {@code cs}.
-     *
-     * @param <L> Type of locations in the channel system.
-     * @param <A> Type of actions in the channel system.
-     * @param cs  The channel system to be translated into a transition system.
-     * @return A transition system representing {@code cs}.
-     */
-    public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
-            ChannelSystem<L, A> cs) {
-        throw new java.lang.UnsupportedOperationException();
-    }
 
 
 
@@ -1121,7 +1099,6 @@ public class FvmFacade {
             else { // ;
                 return handleJoinOperation(location);
             }
-        return null;
     }
 
     private Set<PGTransition<String, String>> handleJoinOperation(NanoPromelaParser.StmtContext joined) {

@@ -7,13 +7,18 @@ import static il.ac.bgu.cs.formalmethodsintro.base.util.CollectionHelper.seq;
 import static il.ac.bgu.cs.formalmethodsintro.base.util.CollectionHelper.transition;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.FvmFacade;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
+import il.ac.bgu.cs.formalmethodsintro.base.util.GraphvizPainter;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import org.junit.Test;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 
@@ -28,8 +33,12 @@ public class ChannelSystemTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void alternatingBitProtocol() throws Exception {
-		TransitionSystem<Pair<List<String>, Map<String, Object>>, String, String> ts = fvmFacadeImpl.transitionSystemFromChannelSystem(AlternatingBitProtocolBuilder.build());
-
+		TransitionSystem<Pair<List<String>, Map<String, Object>>, String, String> ts = fvmFacadeImpl.transitionSystemFromChannelSystem(
+				AlternatingBitProtocolBuilder.build(),
+				Set.of(new ParserBasedActDef(), new ParserBasedInterleavingActDef()),
+				Set.of(new ParserBasedCondDef())
+		);
+		System.out.println(GraphvizPainter.toStringPainter().makeDotCode(ts));
 		assertTrue(fvmFacadeImpl.isInitialExecutionFragment(ts, AlternatingSequence.of(p(seq("snd_msg(0)", "off", "wait(0)"), map()), //
 				"C!0", //
 				p(seq("set_tmr(0)", "off", "wait(0)"), map(p("C", seq(0)))), //
@@ -81,7 +90,11 @@ public class ChannelSystemTest {
 
 		ChannelSystem<String, String> cs = new ChannelSystem<>(seq(pg1, pg2));
 
-		TransitionSystem<Pair<List<String>, Map<String, Object>>, String, String> ts = fvmFacadeImpl.transitionSystemFromChannelSystem(cs);
+		TransitionSystem<Pair<List<String>, Map<String, Object>>, String, String> ts = fvmFacadeImpl.transitionSystemFromChannelSystem(
+				cs,
+				Set.of(new ParserBasedActDef(), new ParserBasedInterleavingActDef()),
+				Set.of(new ParserBasedCondDef())
+		);
 
 		assertEquals(set(
                 p(seq("l1", "l2"), map(p("y", 1), p("C", seq(1)))),

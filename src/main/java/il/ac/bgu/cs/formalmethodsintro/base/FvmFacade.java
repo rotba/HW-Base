@@ -694,71 +694,76 @@ public class FvmFacade {
 
     private <A, L> void spreadReachables(ChannelSystem<L,A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions, TransitionSystem<Pair<List<L>, Map<String, Object>>,A, String> ts) {
         for (Pair<List<L>, Map<String, Object>> initialState : ts.getInitialStates()) {
-            spreadToReachables(initialState, cs, actions, conditions, ts);
+            Queue<Pair<List<L>, Map<String, Object>>> q = new LinkedList<>();
+            q.add(initialState);
+            spreadToReachables(q, cs, actions, conditions, ts);
         }
     }
 
-    private <L, A> void spreadToReachables(Pair<List<L>, Map<String, Object>> currState, ChannelSystem<L,A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions, TransitionSystem<Pair<List<L>, Map<String, Object>>,A, String> ts) {
-        for (ProgramGraph<L,A> p1: cs.getProgramGraphs()) {
-            for (ProgramGraph<L,A> p2: cs.getProgramGraphs()) {
-                if(!p1.equals(p2)){
-                    for (PGTransition<L,A> tran1 : p1.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
-                        for (PGTransition<L,A> tran2 : p2.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
-                            if (currState.getFirst().contains(tran1.getFrom())) {
-                                for (ActionDef ad1 : actions) {
-                                    for (ActionDef ad2 : actions) {
-                                        for (ConditionDef cd1 : conditions) {
-                                            for (ConditionDef cd2 : conditions) {
-                                                if(canExecuteASync(currState,tran1,tran2,cd1,cd2,ad1,ad2)){
-                                                    List<L> locations = new ArrayList<>(currState.first);
-                                                    locations.remove(tran1.getFrom());
-                                                    locations.remove(tran2.getFrom());
-                                                    locations.add(tran1.getTo());
-                                                    locations.add(tran2.getTo());
-                                                    locations.sort(new Comparator<L>() {
-                                                        @Override
-                                                        public int compare(L o1, L o2) {
-                                                            return o1.toString().compareTo(o2.toString());
-                                                        }
-                                                    });
-                                                    String action = tran1.getAction() + "|"+tran2.getAction();
-                                                    Pair<List<L>, Map<String,Object>> newState =
-                                                            new Pair<>(
-                                                                    locations,
-                                                                    ad1.effect(currState.getSecond(),action)
-                                                            );
-                                                    boolean needToSpread = !ts.getStates().contains(newState);
-                                                    ts.addTransition(new TSTransition<>(currState, null, newState));
-                                                    tagCSNewState(ts, newState);
-                                                    ts.addState(newState);
-                                                    if(needToSpread){
-                                                        spreadToReachables(newState,cs,actions,conditions,ts);
-                                                    }
-                                                }else if(canExecute(currState,tran1,cd1,ad1)){
-                                                    List<L> locations = new ArrayList<>(currState.first);
-                                                    locations.remove(tran1.getFrom());
-                                                    locations.add(tran1.getTo());
-                                                    locations.sort(new Comparator<L>() {
-                                                        @Override
-                                                        public int compare(L o1, L o2) {
-                                                            return o1.toString().compareTo(o2.toString());
-                                                        }
-                                                    });
-                                                    Pair<List<L>, Map<String,Object>> newState =
-                                                            new Pair<>(
-                                                                    locations,
-                                                                    ad1.effect(currState.getSecond(),tran1.getAction())
-                                                            );
-                                                    boolean needToSpread = !ts.getStates().contains(newState);
-                                                    if(isChannelAction(tran1.getAction())){
+    private <L, A> void spreadToReachables(Queue<Pair<List<L>, Map<String, Object>>> q, ChannelSystem<L,A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions, TransitionSystem<Pair<List<L>, Map<String, Object>>,A, String> ts) {
+        while(!q.isEmpty()){
+            Pair<List<L>, Map<String, Object>> currState = q.poll();
+            for (ProgramGraph<L,A> p1: cs.getProgramGraphs()) {
+                for (ProgramGraph<L,A> p2: cs.getProgramGraphs()) {
+                    if(!p1.equals(p2)){
+                        for (PGTransition<L,A> tran1 : p1.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
+                            for (PGTransition<L,A> tran2 : p2.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
+                                if (currState.getFirst().contains(tran1.getFrom())) {
+                                    for (ActionDef ad1 : actions) {
+                                        for (ActionDef ad2 : actions) {
+                                            for (ConditionDef cd1 : conditions) {
+                                                for (ConditionDef cd2 : conditions) {
+                                                    if(canExecuteASync(currState,tran1,tran2,cd1,cd2,ad1,ad2)){
+                                                        List<L> locations = new ArrayList<>(currState.first);
+                                                        locations.remove(tran1.getFrom());
+                                                        locations.remove(tran2.getFrom());
+                                                        locations.add(tran1.getTo());
+                                                        locations.add(tran2.getTo());
+                                                        locations.sort(new Comparator<L>() {
+                                                            @Override
+                                                            public int compare(L o1, L o2) {
+                                                                return o1.toString().compareTo(o2.toString());
+                                                            }
+                                                        });
+                                                        String action = tran1.getAction() + "|"+tran2.getAction();
+                                                        Pair<List<L>, Map<String,Object>> newState =
+                                                                new Pair<>(
+                                                                        locations,
+                                                                        ad1.effect(currState.getSecond(),action)
+                                                                );
+                                                        boolean needToSpread = !ts.getStates().contains(newState);
                                                         ts.addTransition(new TSTransition<>(currState, null, newState));
-                                                    }else{
-                                                        ts.addTransition(new TSTransition<>(currState, tran1.getAction(), newState));
-                                                    }
-                                                    tagCSNewState(ts, newState);
-                                                    ts.addState(newState);
-                                                    if(needToSpread){
-                                                        spreadToReachables(newState,cs,actions,conditions,ts);
+                                                        tagCSNewState(ts, newState);
+                                                        ts.addState(newState);
+                                                        if(needToSpread){
+                                                            q.add(newState);
+                                                        }
+                                                    }else if(canExecute(currState,tran1,cd1,ad1)){
+                                                        List<L> locations = new ArrayList<>(currState.first);
+                                                        locations.remove(tran1.getFrom());
+                                                        locations.add(tran1.getTo());
+                                                        locations.sort(new Comparator<L>() {
+                                                            @Override
+                                                            public int compare(L o1, L o2) {
+                                                                return o1.toString().compareTo(o2.toString());
+                                                            }
+                                                        });
+                                                        Pair<List<L>, Map<String,Object>> newState =
+                                                                new Pair<>(
+                                                                        locations,
+                                                                        ad1.effect(currState.getSecond(),tran1.getAction())
+                                                                );
+                                                        boolean needToSpread = !ts.getStates().contains(newState);
+                                                        if(isChannelAction(tran1.getAction())){
+                                                            ts.addTransition(new TSTransition<>(currState, null, newState));
+                                                        }else{
+                                                            ts.addTransition(new TSTransition<>(currState, tran1.getAction(), newState));
+                                                        }
+                                                        tagCSNewState(ts, newState);
+                                                        ts.addState(newState);
+                                                        if(needToSpread){
+                                                            q.add(newState);
+                                                        }
                                                     }
                                                 }
                                             }
@@ -767,8 +772,8 @@ public class FvmFacade {
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
             }
         }

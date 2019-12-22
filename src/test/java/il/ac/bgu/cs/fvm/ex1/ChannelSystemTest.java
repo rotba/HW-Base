@@ -38,7 +38,6 @@ public class ChannelSystemTest {
 				Set.of(new ParserBasedActDef(), new ParserBasedInterleavingActDef()),
 				Set.of(new ParserBasedCondDef())
 		);
-		System.out.println(GraphvizPainter.toStringPainter().makeDotCode(ts));
 		assertTrue(fvmFacadeImpl.isInitialExecutionFragment(ts, AlternatingSequence.of(p(seq("snd_msg(0)", "off", "wait(0)"), map()), //
 				"C!0", //
 				p(seq("set_tmr(0)", "off", "wait(0)"), map(p("C", seq(0)))), //

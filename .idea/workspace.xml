@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="128">
-              <caret line="705" column="130" selection-start-line="705" selection-start-column="130" selection-end-line="705" selection-end-column="130" />
+            <state relative-caret-position="98">
+              <caret line="138" selection-start-line="138" selection-end-line="138" />
               <folding>
                 <element signature="e#2103#2104#0" expanded="true" />
                 <element signature="e#2131#2132#0" expanded="true" />
@@ -27,8 +28,8 @@
                 <element signature="e#21936#21937#0" expanded="true" />
                 <element signature="e#21979#21980#0" expanded="true" />
                 <element signature="e#22722#22730#0" expanded="true" />
-                <element signature="e#65453#65454#0" expanded="true" />
-                <element signature="e#66079#66080#0" expanded="true" />
+                <element signature="e#65872#65873#0" expanded="true" />
+                <element signature="e#66498#66499#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -39,33 +40,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/jdk/internal/reflect/DelegatingMethodAccessorImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="42" selection-start-line="42" selection-end-line="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/internal/runners/statements/RunAfters.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/runners/ParentRunner.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
             </state>
           </provider>
         </entry>
@@ -112,11 +86,43 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="40" column="78" lean-forward="true" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="78" />
+            <state relative-caret-position="197">
+              <caret line="39" column="10" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/AlternatingSequence.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="140">
+              <caret line="56" selection-start-line="56" selection-end-line="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/CollectionHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="142">
+              <caret line="36" selection-start-line="36" selection-end-line="36" />
+              <folding>
+                <element signature="e#1144#1145#0" expanded="true" />
+                <element signature="e#1327#1328#0" expanded="true" />
+                <element signature="e#1368#1369#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="59">
+              <caret line="211" selection-start-line="211" selection-end-line="211" />
             </state>
           </provider>
         </entry>
@@ -214,8 +220,8 @@
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ASyncAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/GraphvizPainter.java" />
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" />
+        <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java" />
       </list>
     </option>
   </component>
@@ -346,7 +352,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577021099178" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577022588226" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="extract.method.default.visibility" value="private" />
@@ -487,43 +493,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 14h 38m 42s.xml">
-      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 14h 41m 27s.xml">
-      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 14h 42m 02s.xml">
-      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 14h 47m 00s.xml">
-      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 14h 48m 09s.xml">
-      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 15h 14m 59s.xml">
-      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 21m 38s.xml">
-      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 22m 34s.xml">
-      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 24m 04s.xml">
-      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 24m 50s.xml">
       <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 24m 54s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 15h 25m 06s.xml">
+      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 33m 00s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 33m 04s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 15h 33m 06s.xml">
+      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest_testTransitionSystemChannelSystem - 2019.12.22 at 15h 33m 08s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemChannelSystem" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 15h 33m 59s.xml">
+      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 15h 41m 13s.xml">
+      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ChannelSystemTest_alternatingBitProtocol - 2019.12.22 at 15h 49m 41s.xml">
+      <configuration name="ChannelSystemTest.alternatingBitProtocol" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79540000" />
+    <option name="totallyTimeSpent" value="81628000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.26705757" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -535,7 +540,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.62621886" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.5839653" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.5796316" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -564,26 +569,34 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java</url>
-          <line>704</line>
-          <properties>
-            <option name="lambda-ordinal" value="0" />
-          </properties>
-          <option name="timeStamp" value="54" />
+          <url>file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java</url>
+          <line>40</line>
+          <properties />
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="transition==null" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java</url>
+          <line>211</line>
+          <properties />
+          <option name="timeStamp" value="62" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JUnit">
-        <watch expression="newState" />
-        <watch expression="currState" />
-        <watch expression="tran1" />
-        <watch expression="tran2" />
+        <watch expression="transition.getFrom().equals(s) &amp;&amp; transition.getAction().equals(a)" />
+        <watch expression="transitions.toArray()[299]" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>transition.getFrom().equals(s) &amp;&amp; transition.getAction().equals(a)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>p1.getTransitions().stream().filter(x-&gt;currState.first.contains(x)).collect(Collectors.toList())</expression-string>
         <language-id>JAVA</language-id>
@@ -628,10 +641,17 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
+    </expressions>
+    <expressions id="breakpointCondition">
       <expression>
-        <expression-string>t</expression-string>
+        <expression-string>transition==null</expression-string>
         <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>transition.getAction()==null</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
@@ -710,13 +730,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="37" column="63" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1496">
-          <caret line="107" column="16" selection-start-line="107" selection-start-column="16" selection-end-line="107" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -853,13 +866,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="40" column="78" lean-forward="true" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/function/Predicate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -869,8 +875,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="705" column="130" selection-start-line="705" selection-start-column="130" selection-end-line="705" selection-end-column="130" />
+        <state relative-caret-position="98">
+          <caret line="138" selection-start-line="138" selection-end-line="138" />
           <folding>
             <element signature="e#2103#2104#0" expanded="true" />
             <element signature="e#2131#2132#0" expanded="true" />
@@ -880,9 +886,42 @@
             <element signature="e#21936#21937#0" expanded="true" />
             <element signature="e#21979#21980#0" expanded="true" />
             <element signature="e#22722#22730#0" expanded="true" />
-            <element signature="e#65453#65454#0" expanded="true" />
-            <element signature="e#66079#66080#0" expanded="true" />
+            <element signature="e#65872#65873#0" expanded="true" />
+            <element signature="e#66498#66499#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/CollectionHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#1144#1145#0" expanded="true" />
+            <element signature="e#1327#1328#0" expanded="true" />
+            <element signature="e#1368#1369#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/AlternatingSequence.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="59">
+          <caret line="211" selection-start-line="211" selection-end-line="211" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex1/ChannelSystemTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="39" column="10" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
         </state>
       </provider>
     </entry>

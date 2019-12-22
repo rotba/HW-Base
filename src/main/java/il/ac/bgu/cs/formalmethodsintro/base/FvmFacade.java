@@ -730,6 +730,27 @@ public class FvmFacade {
     }
 
 
+    private String padSpaces(String code){
+        code = code.replace("atomic", "atomic ");
+        code = code.replace("->", " -> ");
+        code = code.replace("::", ":: ");
+        code = code.replace("skip", " skip");
+//        code = code.replace(":=", " := ");
+//        code = code.replace("-", " - ");
+//        code = code.replace("+", " + ");
+//        code = code.replace("*", " * ");
+//        code = code.replace("/", " / ");
+//        code = code.replace("%", " % ");
+        code = code.replace(";", "; ");
+        code = code.replace("fi", " fi");
+        code = code.replace("if", "if ");
+        code = code.replace("od", " od");
+        code = code.replace("do", "do ");
+        code = code.replace("{", "{ ");
+        code = code.replace("}", "} ");
+        return code;
+    }
+
     /**
      * Construct a program graph from nanopromela code.
      *
@@ -750,7 +771,7 @@ public class FvmFacade {
      * @throws Exception If the code is invalid.
      */
     public ProgramGraph<String, String> programGraphFromNanoPromelaString(String nanopromela) throws Exception {
-        NanoPromelaParser.StmtContext root = NanoPromelaFileReader.pareseNanoPromelaString(nanopromela);
+        NanoPromelaParser.StmtContext root = NanoPromelaFileReader.pareseNanoPromelaString(padSpaces(nanopromela));
         return createPGFromNP(root);
     }
 
@@ -767,17 +788,25 @@ public class FvmFacade {
         return createPGFromNP(root);
     }
 
+
+
     private ProgramGraph<String, String> createPGFromNP(NanoPromelaParser.StmtContext root){
         ProgramGraph<String,String> pg = createProgramGraph();
         Set<NanoPromelaParser.StmtContext> locations = new HashSet<>();
-        Set<PGTransition<String, String>> transitions = new HashSet<>();
+//        Set<PGTransition<String, String>> transitions = new HashSet<>();
         createLocationsFromNP(root, locations);
         // the whole program is the initial location of the pg
-        pg.setInitial(root.getText(), true);
         for(NanoPromelaParser.StmtContext loc : locations)
             pg.addLocation(loc.getText());
-        for(PGTransition trans : transitions)
-            pg.addTransition(trans);
+        for (String string_loc : pg.getLocations()) {
+            if (!string_loc.equals("exit")) {
+                Set<PGTransition<String, String>> trans = createTransitionsFromNP(string_loc);
+                for (PGTransition<String, String> transition : trans)
+                    pg.addTransition(transition);
+            }
+        }
+//        for(PGTransition trans : transitions)
+//            pg.addTransition(trans);
         return pg;
     }
 
@@ -809,7 +838,7 @@ public class FvmFacade {
                 createLocationsFromNP(option.stmt(), subs);
                 for(NanoPromelaParser.StmtContext sub : subs){
                     if(!sub.getText().equals("exit"))
-                      locations.add(NanoPromelaFileReader.pareseNanoPromelaString(sub.getText() + ";" +root.getText()));
+                      locations.add(NanoPromelaFileReader.pareseNanoPromelaString(padSpaces(sub.getText() + ";" +root.getText())));
                 }
             }
         }
@@ -821,13 +850,107 @@ public class FvmFacade {
             createLocationsFromNP(first, sub_of_first);
             for(NanoPromelaParser.StmtContext sub : sub_of_first){
                 if(!sub.getText().equals("exit"))
-                locations.add(NanoPromelaFileReader.pareseNanoPromelaString(sub.getText() + ";" +second.getText()));
+                locations.add(NanoPromelaFileReader.pareseNanoPromelaString(padSpaces(sub.getText() + ";" +second.getText())));
             }
             Set<NanoPromelaParser.StmtContext> sub_of_second = new HashSet<>();
             createLocationsFromNP(second, sub_of_second);
             locations.addAll(sub_of_second);
         }
     }
+
+    private Set<PGTransition<String, String>> createTransitionsFromNP(String loc) {
+            NanoPromelaParser.StmtContext location = NanoPromelaFileReader.pareseNanoPromelaString(padSpaces(loc));
+            if (location.assstmt() != null || location.chanreadstmt() != null || location.chanwritestmt() != null || location.atomicstmt() != null || location.skipstmt() != null) {
+                return Set.of(handleBaseOperation(location));
+            }
+//            else if (location.ifstmt() != null) {
+//                handleIfOperation(location, pg);
+//            }
+//            else if (location.dostmt() != null) {
+//                handleDoOperation(location, pg);
+//            }
+            else { // ;
+                return handleJoinOperation(location);
+            }
+        return null;
+    }
+
+    private Set<PGTransition<String, String>> handleJoinOperation(NanoPromelaParser.StmtContext joined) {
+        NanoPromelaParser.StmtContext first = joined.stmt(0);
+        NanoPromelaParser.StmtContext second = joined.stmt(1);
+        Set<PGTransition<String, String>> trans_of_first = createTransitionsFromNP(first.getText());
+        Set<PGTransition<String, String>> ret = new HashSet<>();
+        for(PGTransition<String, String> transition : trans_of_first){
+            if(transition.getFrom().equals(first.getText()) && transition.getTo().equals("exit"))
+                ret.add(new PGTransition<>(joined.getText(), transition.getCondition(), transition.getAction(), second.getText()));
+        }
+        return ret;
+    }
+
+
+    private PGTransition handleBaseOperation(NanoPromelaParser.StmtContext location) {
+        if(location.getText().equals("skip"))
+            return new PGTransition<>(location.getText(), "true", "nothing", "exit");
+        else
+            return new PGTransition<>(location.getText(), "true", location.getText(), "exit");
+    }
+
+//    private void createLocationsFromNP2(NanoPromelaParser.StmtContext root, Set<String> locations) {
+//        if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {
+//            /* The sub-statements are only [root] and [exit]                    */
+//            String exit = "exit";
+//            String base = root.getText();
+//            locations.add(exit);
+//            locations.add(base);
+//        }
+//        else if (root.ifstmt() != null) {
+//        /* The sub-statements are [root], [exit], and the sub-statements of
+//        all op.stmt() where op is a member of root.ifstmt().option() */
+//            String exit = "exit";
+//            String base = root.getText();
+//            locations.add(exit);
+//            locations.add(base);
+//            List<NanoPromelaParser.OptionContext> options = root.ifstmt().option();
+//            for(NanoPromelaParser.OptionContext option : options){
+//                Set<String> locOfOpt = new HashSet<>();
+//                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
+//                createLocationsFromNP2(option.stmt(), locOfOpt);
+//                locations.addAll(locOfOpt);
+//            }
+//        }
+//        else if (root.dostmt() != null) {
+//        /* The sub-statements are [root], [exit], and locations [𝑠𝑢𝑏;root]
+//        where 𝑠𝑢𝑏 is a sub-statement of some op in root.dostmt().option() */
+//            String exit = "exit";
+//            String base = root.getText();
+//            locations.add(exit);
+//            locations.add(base);
+//            List<NanoPromelaParser.OptionContext> options = root.dostmt().option();
+//            for(NanoPromelaParser.OptionContext option : options){
+//                Set<String> locOfOpt = new HashSet<>();
+//                createLocationsFromNP2(option.stmt(), locOfOpt);
+//                for(String loc : locOfOpt)
+//                    if(!loc.equals("exit")) {
+//                        locations.add(loc + ";" + base);
+//                    }
+//            }
+//        }
+//        else { // ;
+//            /* The sub-statements are locations of the form [𝑠𝑢𝑏;root.stmt(1)] where 𝑠𝑢𝑏 is a sub-statement of root.stmt(0) plus all the substatements of root.stmt(1) */
+//            NanoPromelaParser.StmtContext first = root.stmt(0);
+//            NanoPromelaParser.StmtContext second = root.stmt(1);
+//            Set<String> locOfFirst = new HashSet<>();
+//            Set<String> locOfSecond = new HashSet<>();
+//            createLocationsFromNP2(second, locOfSecond);
+//            createLocationsFromNP2(first, locOfFirst);
+//            locations.addAll(locOfSecond);
+//            for(String loc : locOfFirst)
+//                if (!loc.equals("exit")) {
+//                    String new_loc = loc + ";" + second.getText();
+//                    locations.add(new_loc);
+//                }
+//        }
+//    }
 
     private void createPGFromNP(NanoPromelaParser.StmtContext root, Set<String> locations, Set<PGTransition<String, String>> transitions) {
         if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {

@@ -182,26 +182,22 @@ public class FvmFacadeTest {
 
     @Test
     public void testNanoPromela() {
-        String code ="do:: x> 5 -> x:= 4 :: x < 8 -> if :: x <9 ->y :=x fi od";
+        String code = "x := 6";
+//                "if :: x >3 -> y := 5; z := 7 :: x < 2 -> t := 4; z :=0 fi ; x :=4";
+//                "atomic{x:=5;y:=0};\n" +
+//                        "  do \n" +
+//                        "  :: x > 2 -> x:=x-1\n" +
+//                        "  :: x < 2 -> \n" +
+//                        "\t\tif \n" +
+//                        "      \t:: x >2 -> y:=x; x:=x+1 \n" +
+//                        "\t\tfi\t\n" +
+//                        "  od\n";
 
-
-//                "atomic{x:=5; y:=0};" +
-//                "do :: x > 2 -> x:=x-1" +
-//                ":: x < 2 -> if" +
-//                ":: x == 2 -> y:=x; x:=x+1" +
-//                "fi" +
-//                "od";
-
-//                " atomic{x:=5;y:=0};\n" +
-//                "  do \n" +
-//                "  :: x > 2 -> x:=x-1\n" +
-//                "  :: x <= 2 -> \n" +
-//                "\t\tif \n" +
-//                "      \t:: x ==2 -> y:=x; x:=x+1 \n" +
-//                "\t\tfi\t\n" +
-//                "  od\n";
         try {
-            ProgramGraph pg = fvm.programGraphFromNanoPromelaString(code);
+            ProgramGraph<String,String> pg = fvm.programGraphFromNanoPromelaString(code);
+            Set<NanoPromelaParser.StmtContext> st = new HashSet<>();
+            for(String loc : pg.getLocations())
+                st.add(NanoPromelaFileReader.pareseNanoPromelaString(loc));
             assertEquals(fvm.programGraphFromNanoPromela(code), pgnp());
         } catch (Exception e) {
             e.printStackTrace();

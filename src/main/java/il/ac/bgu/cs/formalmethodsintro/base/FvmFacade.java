@@ -2,11 +2,14 @@ package il.ac.bgu.cs.formalmethodsintro.base;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import il.ac.bgu.cs.formalmethodsintro.base.automata.Automaton;
 import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.InterleavingActDef;
+import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
@@ -699,8 +702,8 @@ public class FvmFacade {
         for (ProgramGraph<L,A> p1: cs.getProgramGraphs()) {
             for (ProgramGraph<L,A> p2: cs.getProgramGraphs()) {
                 if(!p1.equals(p2)){
-                    for (PGTransition<L,A> tran1 : p1.getTransitions()) {
-                        for (PGTransition<L,A> tran2 : p2.getTransitions()) {
+                    for (PGTransition<L,A> tran1 : p1.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
+                        for (PGTransition<L,A> tran2 : p2.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
                             if (currState.getFirst().contains(tran1.getFrom())) {
                                 for (ActionDef ad1 : actions) {
                                     for (ActionDef ad2 : actions) {
@@ -724,10 +727,13 @@ public class FvmFacade {
                                                                     locations,
                                                                     ad1.effect(currState.getSecond(),action)
                                                             );
+                                                    boolean needToSpread = !ts.getStates().contains(newState);
                                                     ts.addTransition(new TSTransition<>(currState, null, newState));
                                                     tagCSNewState(ts, newState);
                                                     ts.addState(newState);
-                                                    spreadToReachables(newState,cs,actions,conditions,ts);
+                                                    if(needToSpread){
+                                                        spreadToReachables(newState,cs,actions,conditions,ts);
+                                                    }
                                                 }else if(canExecute(currState,tran1,cd1,ad1)){
                                                     List<L> locations = new ArrayList<>(currState.first);
                                                     locations.remove(tran1.getFrom());
@@ -743,7 +749,7 @@ public class FvmFacade {
                                                                     locations,
                                                                     ad1.effect(currState.getSecond(),tran1.getAction())
                                                             );
-
+                                                    boolean needToSpread = !ts.getStates().contains(newState);
                                                     if(isChannelAction(tran1.getAction())){
                                                         ts.addTransition(new TSTransition<>(currState, null, newState));
                                                     }else{
@@ -751,7 +757,9 @@ public class FvmFacade {
                                                     }
                                                     tagCSNewState(ts, newState);
                                                     ts.addState(newState);
-                                                    spreadToReachables(newState,cs,actions,conditions,ts);
+                                                    if(needToSpread){
+                                                        spreadToReachables(newState,cs,actions,conditions,ts);
+                                                    }
                                                 }
                                             }
                                         }
@@ -794,7 +802,11 @@ public class FvmFacade {
     }
 
     private <L> boolean canExecuteASync(Pair<List<L>, Map<String, Object>> currState,PGTransition tran1 ,PGTransition tran2 ,ConditionDef cd1, ConditionDef cd2, ActionDef ad1, ActionDef ad2) {
-        if(ad1 instanceof InterleavingActDef && ad2 instanceof InterleavingActDef){
+        if(
+                ad1 instanceof InterleavingActDef
+                && ad2 instanceof InterleavingActDef
+                && new ParserBasedInterleavingActDef().isOneSidedAction(tran1.getAction().toString())
+        ){
             InterleavingActDef iad1 = (InterleavingActDef)ad1;
             String cond1 = tran1.getCondition().equals("") ? "true" : "(" + tran1.getCondition() + ")";
             String cond2 = tran2.getCondition().equals("") ? "true" : "(" + tran2.getCondition() + ")";
@@ -802,9 +814,19 @@ public class FvmFacade {
             String action = tran1.getAction() +"|"+tran2.getAction();
             Set<ConditionDef> set = new HashSet<>();
             set.add(cd1);set.add(cd2);
-            return ConditionDef.evaluate(set,currState.getSecond(),cond) && iad1.isMatchingAction(action) &&
-                    ad1.effect(currState.getSecond(),action)!=null && currState.first.contains(tran1.getFrom()) &&
-                    currState.first.contains(tran2.getFrom());
+            try{
+                return ConditionDef.evaluate(set,currState.getSecond(),cond)
+                        && iad1.isMatchingAction(action)
+                        && ad1.effect(currState.getSecond(),action)!=null
+                        && currState.first.contains(tran1.getFrom())
+                        && currState.first.contains(tran2.getFrom());
+            }catch (java.lang.Exception e){
+                if(e.getMessage().contains("Incompatible hanshaking statements")){
+                    return false;
+                }else{
+                    throw e;
+                }
+            }
 
         }else{
             return false;

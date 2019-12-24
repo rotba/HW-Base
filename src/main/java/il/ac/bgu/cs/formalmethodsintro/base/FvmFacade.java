@@ -60,6 +60,8 @@ public class FvmFacade {
      */
 
     public <S, A, P> boolean isActionDeterministic(TransitionSystem<S, A, P> ts) {
+        if(ts.getInitialStates().size() > 1)
+            return false;
         for (S s : ts.getStates()) {
             for (A a : ts.getActions()) {
                 // getTransition returns all the successors of s considering action a
@@ -81,6 +83,8 @@ public class FvmFacade {
      * @return {@code true} iff the action is ap-deterministic.
      */
     public <S, A, P> boolean isAPDeterministic(TransitionSystem<S, A, P> ts) {
+        if(ts.getInitialStates().size() > 1)
+            return false;
         for (S s : ts.getStates()) {
             for (S sTag1 : post(ts, s)) {
                 for (S sTag2 : post(ts, s)) {
@@ -872,7 +876,6 @@ public class FvmFacade {
             else { // ;
                 return handleJoinOperation(location);
             }
-        return null;
     }
 
     private Set<PGTransition<String, String>> handleJoinOperation(NanoPromelaParser.StmtContext joined) {

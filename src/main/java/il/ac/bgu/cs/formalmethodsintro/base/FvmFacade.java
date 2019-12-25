@@ -8,6 +8,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
+import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaBaseListener;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
@@ -440,6 +441,7 @@ public class FvmFacade {
                                                                           TransitionSystem<S2, A, P> ts2) {
 
         TransitionSystem<Pair<S1, S2>, A, P> interleaved = createInterleavedBase(ts1, ts2, new HashSet<>());
+        removeUnreachableStates(interleaved);
         return interleaved;
     }
 
@@ -510,6 +512,7 @@ public class FvmFacade {
                 }
             }
         }*/
+        removeUnreachableStates(interleaved);
         return interleaved;
     }
 
@@ -573,7 +576,7 @@ public class FvmFacade {
                     for (Pair<L1, L2> to_loc : interleaved.getLocations())
                         if (to_loc.second.equals(trans.getTo()) && to_loc.first.equals(from_loc.first))
                             interleaved.addTransition(new PGTransition<>(from_loc, trans.getCondition(), trans.getAction(), to_loc));
-
+        removeUnreachableLocations(interleaved);
         return interleaved;
     }
 
@@ -594,6 +597,25 @@ public class FvmFacade {
             ret.add(boolArray);
         }
         return ret;
+    }
+
+    private <S, A, P> void removeUnreachableStates(TransitionSystem<S,A,P> ts){
+        Set<S> reachable = this.reach(ts);
+        Set<S> unreachable = new HashSet<>();
+        Set<TSTransition<S,A>> unNeededTrans = new HashSet<>();
+        for(S state : ts.getStates()){
+            if(!reachable.contains(state)) {
+                unreachable.add(state);
+                for(TSTransition<S,A> trans : ts.getTransitions()){
+                    if(trans.getFrom().equals(state))
+                        unNeededTrans.add(trans);
+                }
+            }
+        }
+        for(S toRemove : unreachable)
+            ts.forceRemoveState(toRemove);
+        for(TSTransition<S,A> trans : unNeededTrans)
+            ts.removeTransition(trans);
     }
 
     /**
@@ -659,6 +681,7 @@ public class FvmFacade {
             }
 
         }
+        removeUnreachableStates(ts);
         return ts;
     }
 
@@ -755,6 +778,53 @@ public class FvmFacade {
         return code;
     }
 
+    private <L, A> Set<L> PGreach(ProgramGraph<L,A> pg) {
+        Set<L> reachable = new HashSet<>();
+        for(L initial_loc : pg.getInitialLocations()){
+            reachable.add(initial_loc);
+            reachable = rec_PGreach(pg, initial_loc, reachable);
+        }
+        return reachable;
+    }
+
+    private <L,A> Set<L> rec_PGreach(ProgramGraph<L,A> pg, L l,  Set<L> reachable){
+        for(L post_loc : postPG(pg, l)){
+            if(!reachable.contains(post_loc)) {
+                reachable.add(post_loc);
+                reachable = rec_PGreach(pg, post_loc, reachable);
+            }
+        }
+        return reachable;
+    }
+
+    private <L, A> Set<L> postPG(ProgramGraph<L,A> pg, L l) {
+        Set<L> ans = new HashSet<>();
+        for(PGTransition<L,A> trans : pg.getTransitions()){
+            if(trans.getFrom().equals(l))
+                ans.add(trans.getTo());
+        }
+        return ans;
+    }
+
+    public <L,A> void removeUnreachableLocations(ProgramGraph<L,A> pg){
+        Set<L> reachable = this.PGreach(pg);
+        Set<L> unreachable = new HashSet<>();
+        Set<PGTransition<L,A>> unNeededTrans = new HashSet<>();
+        for(L location : pg.getLocations()){
+            if(!reachable.contains(location)) {
+                unreachable.add(location);
+                for(PGTransition<L,A> trans : pg.getTransitions()){
+                    if(trans.getFrom().equals(location))
+                        unNeededTrans.add(trans);
+                }
+            }
+        }
+        for(L toRemove : unreachable)
+            pg.removeLocation(toRemove);
+        for(PGTransition<L,A> trans : unNeededTrans)
+            pg.removeTransition(trans);
+    }
+
     /**
      * Construct a program graph from nanopromela code.
      *
@@ -797,20 +867,22 @@ public class FvmFacade {
     private ProgramGraph<String, String> createPGFromNP(NanoPromelaParser.StmtContext root){
         ProgramGraph<String,String> pg = createProgramGraph();
         Set<NanoPromelaParser.StmtContext> locations = new HashSet<>();
-//        Set<PGTransition<String, String>> transitions = new HashSet<>();
         createLocationsFromNP(root, locations);
         // the whole program is the initial location of the pg
         for(NanoPromelaParser.StmtContext loc : locations)
             pg.addLocation(loc.getText());
+        pg.setInitial(root.getText(), true);
+        Set<PGTransition> transitions = new HashSet<>();
         for (String string_loc : pg.getLocations()) {
             if (!string_loc.equals("exit")) {
                 Set<PGTransition<String, String>> trans = createTransitionsFromNP(string_loc);
                 for (PGTransition<String, String> transition : trans)
-                    pg.addTransition(transition);
+                    transitions.add(transition);
             }
         }
-//        for(PGTransition trans : transitions)
-//            pg.addTransition(trans);
+        for(PGTransition trans : transitions)
+            pg.addTransition(trans);
+        this.removeUnreachableLocations(pg);
         return pg;
     }
 
@@ -853,8 +925,9 @@ public class FvmFacade {
             Set<NanoPromelaParser.StmtContext> sub_of_first = new HashSet<>();
             createLocationsFromNP(first, sub_of_first);
             for(NanoPromelaParser.StmtContext sub : sub_of_first){
-                if(!sub.getText().equals("exit"))
-                locations.add(NanoPromelaFileReader.pareseNanoPromelaString(padSpaces(sub.getText() + ";" +second.getText())));
+                if(!sub.getText().equals("exit")){
+                     locations.add(NanoPromelaFileReader.pareseNanoPromelaString(padSpaces(sub.getText() + ";" +second.getText())));
+                }
             }
             Set<NanoPromelaParser.StmtContext> sub_of_second = new HashSet<>();
             createLocationsFromNP(second, sub_of_second);
@@ -867,15 +940,50 @@ public class FvmFacade {
             if (location.assstmt() != null || location.chanreadstmt() != null || location.chanwritestmt() != null || location.atomicstmt() != null || location.skipstmt() != null) {
                 return Set.of(handleBaseOperation(location));
             }
-//            else if (location.ifstmt() != null) {
-//                handleIfOperation(location, pg);
-//            }
-//            else if (location.dostmt() != null) {
-//                handleDoOperation(location, pg);
-//            }
+            else if (location.ifstmt() != null) {
+                return handleIfOperation(location);
+            }
+            else if (location.dostmt() != null) {
+                return handleDoOperation(location);
+            }
             else { // ;
                 return handleJoinOperation(location);
             }
+    }
+
+    private Set<PGTransition<String, String>> handleDoOperation(NanoPromelaParser.StmtContext location) {
+        Set<PGTransition<String, String>> transitions = new HashSet<>();
+        String do_loop = location.getText();
+        List<NanoPromelaParser.OptionContext> options = location.dostmt().option();
+        String none_of_conds = "";
+        for(NanoPromelaParser.OptionContext option : options)
+            none_of_conds = none_of_conds + "!" + option.boolexpr().getText() + " && ";
+        none_of_conds = none_of_conds.substring(0, none_of_conds.length()-4);
+        transitions.add(new PGTransition<String,String>(do_loop, none_of_conds, "nothing", "exit"));
+        for(NanoPromelaParser.OptionContext option : options){
+            Set<PGTransition<String, String>> optTrans = createTransitionsFromNP(option.stmt().getText());
+            for(PGTransition<String, String> trans : optTrans){
+                if(trans.getFrom().equals(option.stmt().getText()) && trans.getTo().equals("exit"))
+                    transitions.add(new PGTransition<>(do_loop, "(" +option.boolexpr().getText() + " && " + trans.getCondition()+")",trans.getAction(), do_loop));
+                else if(trans.getFrom().equals(option.stmt().getText()))
+                    transitions.add(new PGTransition<>(do_loop,"("+option.boolexpr().getText() + " && " + trans.getCondition()+")",trans.getAction(), trans.getTo() + ";" +do_loop));
+            }
+        }
+        return  transitions;
+    }
+
+    private Set<PGTransition<String, String>> handleIfOperation(NanoPromelaParser.StmtContext location) {
+        List<NanoPromelaParser.OptionContext> options = location.ifstmt().option();
+        Set<PGTransition<String, String>> transitions = new HashSet<>();
+        for(NanoPromelaParser.OptionContext option : options){
+            String stmt = option.stmt().getText();
+            Set<PGTransition<String, String>> transOfOpt = createTransitionsFromNP(stmt);
+            for(PGTransition trans_of_opt : transOfOpt){
+                if(trans_of_opt.getFrom().equals(stmt))
+                    transitions.add(new PGTransition<>(location.getText(), "("+option.boolexpr().getText() + " && " + trans_of_opt.getCondition()+")", (String)trans_of_opt.getAction(), (String)trans_of_opt.getTo()));
+            }
+        }
+        return transitions;
     }
 
     private Set<PGTransition<String, String>> handleJoinOperation(NanoPromelaParser.StmtContext joined) {
@@ -886,14 +994,26 @@ public class FvmFacade {
         for(PGTransition<String, String> transition : trans_of_first){
             if(transition.getFrom().equals(first.getText()) && transition.getTo().equals("exit"))
                 ret.add(new PGTransition<>(joined.getText(), transition.getCondition(), transition.getAction(), second.getText()));
+            else if(transition.getFrom().equals(first.getText()))
+                ret.add(new PGTransition<>(joined.getText(), transition.getCondition(), transition.getAction(),  transition.getTo()+ ";" + second.getText()));
         }
         return ret;
     }
 
 
     private PGTransition handleBaseOperation(NanoPromelaParser.StmtContext location) {
-        if(location.getText().equals("skip"))
+        if(location.skipstmt() != null)
             return new PGTransition<>(location.getText(), "true", "nothing", "exit");
+        else if(location.atomicstmt() != null){
+            String atomic = "";
+            List<NanoPromelaParser.IntexprContext> basics = location.atomicstmt().intexpr();
+            for(int i =0; i < basics.size(); i++){
+                atomic += basics.get(i).getText();
+                if(i!=basics.size()-1)
+                    atomic += ";";
+            }
+            return new PGTransition(location.getText(), "true", atomic, "exit");
+        }
         else
             return new PGTransition<>(location.getText(), "true", location.getText(), "exit");
     }
@@ -955,106 +1075,203 @@ public class FvmFacade {
 //        }
 //    }
 
-    private void createPGFromNP(NanoPromelaParser.StmtContext root, Set<String> locations, Set<PGTransition<String, String>> transitions) {
-        if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {
-            /* The sub-statements are only [root] and [exit]                    */
-            String exit = "exit";
-            String base = root.getText();
-            locations.add(exit);
-            locations.add(base);
-            if(base.equals("skip"))
-                transitions.add(new PGTransition<>(base, "true", "nothing", exit));
-            else
-                transitions.add(new PGTransition<>(base, "true", base, exit));
-        } else if (root.ifstmt() != null) {
-        /* The sub-statements are [root], [exit], and the sub-statements of
-        all op.stmt() where op is a member of root.ifstmt().option() */
-            String exit = "exit";
-            String base = root.getText();
-            locations.add(exit);
-            locations.add(base);
-            List<NanoPromelaParser.OptionContext> options = root.ifstmt().option();
-            for(NanoPromelaParser.OptionContext option : options){
-                Set<String> locOfOpt = new HashSet<>();
-                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
-                createPGFromNP(option.stmt(), locOfOpt, transOfOpt);
-                locations.addAll(locOfOpt);
-                transitions.addAll(transOfOpt);
-                for(PGTransition trans_of_opt : transOfOpt){
-                    if(trans_of_opt.getFrom().equals(option.stmt().getText()))
-                        transitions.add(new PGTransition<String, String>(base, option.boolexpr().getText() + " && " + trans_of_opt.getCondition(), (String)trans_of_opt.getAction(), (String)trans_of_opt.getTo()));
-                }
+//    private void createPGFromNP(NanoPromelaParser.StmtContext root, Set<String> locations, Set<PGTransition<String, String>> transitions) {
+//        if (root.assstmt() != null || root.chanreadstmt() != null || root.chanwritestmt() != null || root.atomicstmt() != null || root.skipstmt() != null) {
+//            /* The sub-statements are only [root] and [exit]                    */
+//            String exit = "exit";
+//            String base = root.getText();
+//            locations.add(exit);
+//            locations.add(base);
+//            if(base.equals("skip"))
+//                transitions.add(new PGTransition<>(base, "true", "nothing", exit));
+//            else
+//                transitions.add(new PGTransition<>(base, "true", base, exit));
+//        } else if (root.ifstmt() != null) {
+//        /* The sub-statements are [root], [exit], and the sub-statements of
+//        all op.stmt() where op is a member of root.ifstmt().option() */
+//            String exit = "exit";
+//            String base = root.getText();
+//            locations.add(exit);
+//            locations.add(base);
+//            List<NanoPromelaParser.OptionContext> options = root.ifstmt().option();
+//            for(NanoPromelaParser.OptionContext option : options){
+//                Set<String> locOfOpt = new HashSet<>();
+//                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
+//                createPGFromNP(option.stmt(), locOfOpt, transOfOpt);
+//                locations.addAll(locOfOpt);
+//                transitions.addAll(transOfOpt);
+//                for(PGTransition trans_of_opt : transOfOpt){
+//                    if(trans_of_opt.getFrom().equals(option.stmt().getText()))
+//                        transitions.add(new PGTransition<String, String>(base, option.boolexpr().getText() + " && " + trans_of_opt.getCondition(), (String)trans_of_opt.getAction(), (String)trans_of_opt.getTo()));
+//                }
+//            }
+//        } else if (root.dostmt() != null) {
+//        /* The sub-statements are [root], [exit], and locations [𝑠𝑢𝑏;root]
+//        where 𝑠𝑢𝑏 is a sub-statement of some op in root.dostmt().option() */
+//            String exit = "exit";
+//            String base = root.getText();
+//            locations.add(exit);
+//            locations.add(base);
+//            List<NanoPromelaParser.OptionContext> options = root.dostmt().option();
+//            String none_of_conds = "";
+//            for(NanoPromelaParser.OptionContext option : options){
+//                none_of_conds = none_of_conds + "!" + option.boolexpr().getText() + " && ";
+//                Set<String> locOfOpt = new HashSet<>();
+//                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
+//                createPGFromNP(option.stmt(), locOfOpt, transOfOpt);
+//                for(String loc : locOfOpt)
+//                    if(!loc.equals("exit")) {
+//                        locations.add(loc + ";" + base);
+//                        helper(NanoPromelaFileReader.pareseNanoPromelaString(loc + ";" + base), transitions);
+//                    }
+//                for(PGTransition trans :transOfOpt) {
+//                    if (trans.getFrom().equals(option.stmt().getText()) && trans.getTo().equals(exit))
+//                        transitions.add(new PGTransition<>(base, option.boolexpr().getText() + " && " + trans.getCondition(), (String) trans.getAction(), base));
+//                    else if(trans.getFrom().equals(option.stmt().getText()))
+//                        transitions.add(new PGTransition<>(base, option.boolexpr().getText() + " && " + trans.getCondition(), (String) trans.getAction(), trans.getTo() + ";" +base));
+//                }
+//            }
+//            none_of_conds.substring(0, none_of_conds.length()-4);
+//            // transition for if all the conditions od the do statement are false
+//            transitions.add(new PGTransition<>(base, none_of_conds, "nothing", exit));
+//        } else { // ;
+//            /* The sub-statements are locations of the form [𝑠𝑢𝑏;root.stmt(1)] where 𝑠𝑢𝑏 is a sub-statement of root.stmt(0) plus all the substatements of root.stmt(1) */
+//            NanoPromelaParser.StmtContext first = root.stmt(0);
+//            NanoPromelaParser.StmtContext second = root.stmt(1);
+//            Set<String> locOfFirst = new HashSet<>();
+//            Set<String> locOfSecond = new HashSet<>();
+//            Set<PGTransition<String, String>> transOfFirst = new HashSet<>();
+//            Set<PGTransition<String, String>> transOfSecond = new HashSet<>();
+//            createPGFromNP(second, locOfSecond, transOfSecond);
+//            createPGFromNP(first, locOfFirst, transOfFirst);
+//            locations.addAll(locOfSecond);
+//            transitions.addAll(transOfSecond);
+//            for(String loc : locOfFirst)
+//                if (!loc.equals("exit")) {
+//                    String new_loc = loc + ";" + second.getText();
+//                    locations.add(new_loc);
+//                    for (PGTransition trans_of_first : transOfFirst)
+//                        if (trans_of_first.getFrom().equals(loc) && trans_of_first.getTo().equals("exit"))
+//                            transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), second.getText()));
+//                        else if(trans_of_first.getFrom().equals(loc))
+//                            transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), trans_of_first.getTo() + ";" + second.getText()));
+//                    }
+//        }
+//    }
+
+//    private void helper(NanoPromelaParser.StmtContext root, Set<PGTransition<String,String>> transitions){
+//        NanoPromelaParser.StmtContext first = root.stmt(0);
+//        NanoPromelaParser.StmtContext second = root.stmt(1);
+//        Set<String> locOfFirst = new HashSet<>();
+//        Set<PGTransition<String, String>> transOfFirst = new HashSet<>();
+//        createPGFromNP(first, locOfFirst, transOfFirst);
+//        for(String loc : locOfFirst)
+//            if (!loc.equals("exit")) {
+//                String new_loc = loc + ";" + second.getText();
+//                for (PGTransition trans_of_first : transOfFirst)
+//                    if (trans_of_first.getFrom().equals(loc) && trans_of_first.getTo().equals("exit"))
+//                        transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), second.getText()));
+//                    else if(trans_of_first.getFrom().equals(loc))
+//                        transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), trans_of_first.getTo() + ";" + second.getText()));
+//            }
+//    }
+
+    private TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> boxTS(int i0, int j0){
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> ts = new TransitionSystem();
+        ts.addAtomicProposition("not_solved");
+        for(int i=1; i<=7; i++){
+            for(int j=1; i<=7; i++){
+                Pair<Integer,Integer> new_state = new Pair<>(i,j);
+                if(i==i0 && j==j0)
+                    ts.addInitialState(new_state);
+                else
+                    ts.addState(new_state);
+                if(!((i==2 && j==2) || (i==3 && j==3) || (i==5 && j==3) || (i==5 && j==4) || (i==6 && j==4)))
+                    ts.addToLabel(new_state, "not_solved");
+                ts.addAction(new Pair("R", new Pair(i,j)));
+                ts.addAction(new Pair("L", new Pair(i,j)));
+                ts.addAction(new Pair("U", new Pair(i,j)));
+                ts.addAction(new Pair("D", new Pair(i,j)));
             }
-        } else if (root.dostmt() != null) {
-        /* The sub-statements are [root], [exit], and locations [𝑠𝑢𝑏;root]
-        where 𝑠𝑢𝑏 is a sub-statement of some op in root.dostmt().option() */
-            String exit = "exit";
-            String base = root.getText();
-            locations.add(exit);
-            locations.add(base);
-            List<NanoPromelaParser.OptionContext> options = root.dostmt().option();
-            String none_of_conds = "";
-            for(NanoPromelaParser.OptionContext option : options){
-                none_of_conds = none_of_conds + "!" + option.boolexpr().getText() + " && ";
-                Set<String> locOfOpt = new HashSet<>();
-                Set<PGTransition<String, String>> transOfOpt = new HashSet<>();
-                createPGFromNP(option.stmt(), locOfOpt, transOfOpt);
-                for(String loc : locOfOpt)
-                    if(!loc.equals("exit")) {
-                        locations.add(loc + ";" + base);
-                        helper(NanoPromelaFileReader.pareseNanoPromelaString(loc + ";" + base), transitions);
-                    }
-                for(PGTransition trans :transOfOpt) {
-                    if (trans.getFrom().equals(option.stmt().getText()) && trans.getTo().equals(exit))
-                        transitions.add(new PGTransition<>(base, option.boolexpr().getText() + " && " + trans.getCondition(), (String) trans.getAction(), base));
-                    else if(trans.getFrom().equals(option.stmt().getText()))
-                        transitions.add(new PGTransition<>(base, option.boolexpr().getText() + " && " + trans.getCondition(), (String) trans.getAction(), trans.getTo() + ";" +base));
-                }
-            }
-            none_of_conds.substring(0, none_of_conds.length()-4);
-            // transition for if all the conditions od the do statement are false
-            transitions.add(new PGTransition<>(base, none_of_conds, "nothing", exit));
-        } else { // ;
-            /* The sub-statements are locations of the form [𝑠𝑢𝑏;root.stmt(1)] where 𝑠𝑢𝑏 is a sub-statement of root.stmt(0) plus all the substatements of root.stmt(1) */
-            NanoPromelaParser.StmtContext first = root.stmt(0);
-            NanoPromelaParser.StmtContext second = root.stmt(1);
-            Set<String> locOfFirst = new HashSet<>();
-            Set<String> locOfSecond = new HashSet<>();
-            Set<PGTransition<String, String>> transOfFirst = new HashSet<>();
-            Set<PGTransition<String, String>> transOfSecond = new HashSet<>();
-            createPGFromNP(second, locOfSecond, transOfSecond);
-            createPGFromNP(first, locOfFirst, transOfFirst);
-            locations.addAll(locOfSecond);
-            transitions.addAll(transOfSecond);
-            for(String loc : locOfFirst)
-                if (!loc.equals("exit")) {
-                    String new_loc = loc + ";" + second.getText();
-                    locations.add(new_loc);
-                    for (PGTransition trans_of_first : transOfFirst)
-                        if (trans_of_first.getFrom().equals(loc) && trans_of_first.getTo().equals("exit"))
-                            transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), second.getText()));
-                        else if(trans_of_first.getFrom().equals(loc))
-                            transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), trans_of_first.getTo() + ";" + second.getText()));
-                    }
         }
+        Set<Pair<Integer,Integer>> walls = new HashSet<>();
+        for(int i=1; i<=7; i++){
+            walls.add(new Pair<>(i,1));
+            walls.add(new Pair<>(i,7));
+            walls.add(new Pair<>(1,i));
+            walls.add(new Pair<>(7,i));
+        }
+        walls.add(new Pair<>(2,5));
+        for(Pair<Integer,Integer> state: ts.getStates()){
+            if(!walls.contains(new Pair<>(state.first, state.second+1)))
+                ts.addTransition(new TSTransition<>(state,new Pair("R", new Pair(state.first,state.second-1)),new Pair<>(state.first, state.second+1)));
+            if(!walls.contains(new Pair<>(state.first, state.second-1)))
+                ts.addTransition(new TSTransition<>(state,new Pair("L", new Pair(state.first,state.second+1)),new Pair<>(state.first, state.second-1)));
+            if(!walls.contains(new Pair<>(state.first-1, state.second)))
+                ts.addTransition(new TSTransition<>(state,new Pair("U", new Pair(state.first+1,state.second)),new Pair<>(state.first-1, state.second)));
+            if(!walls.contains(new Pair<>(state.first+1, state.second)))
+                ts.addTransition(new TSTransition<>(state,new Pair("D", new Pair(state.first-1,state.second)),new Pair<>(state.first+1, state.second)));
+            for(Pair<Integer,Integer> other_state: ts.getStates()){
+                if(!state.equals(other_state) && !other_state.equals(new Pair(state.first, state.second-1)))
+                    ts.addTransition(new TSTransition<>(state, new Pair<>("R", other_state), state));
+                if(!state.equals(other_state) && !other_state.equals(new Pair(state.first, state.second+1)))
+                    ts.addTransition(new TSTransition<>(state, new Pair<>("L", other_state), state));
+                if(!state.equals(other_state) && !other_state.equals(new Pair(state.first+1, state.second)))
+                    ts.addTransition(new TSTransition<>(state, new Pair<>("U", other_state), state));
+                if(!state.equals(other_state) && !other_state.equals(new Pair(state.first-1, state.second)))
+                    ts.addTransition(new TSTransition<>(state, new Pair<>("D", other_state), state));
+            }
+        }
+        return ts;
     }
 
-    private void helper(NanoPromelaParser.StmtContext root, Set<PGTransition<String,String>> transitions){
-        NanoPromelaParser.StmtContext first = root.stmt(0);
-        NanoPromelaParser.StmtContext second = root.stmt(1);
-        Set<String> locOfFirst = new HashSet<>();
-        Set<PGTransition<String, String>> transOfFirst = new HashSet<>();
-        createPGFromNP(first, locOfFirst, transOfFirst);
-        for(String loc : locOfFirst)
-            if (!loc.equals("exit")) {
-                String new_loc = loc + ";" + second.getText();
-                for (PGTransition trans_of_first : transOfFirst)
-                    if (trans_of_first.getFrom().equals(loc) && trans_of_first.getTo().equals("exit"))
-                        transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), second.getText()));
-                    else if(trans_of_first.getFrom().equals(loc))
-                        transitions.add(new PGTransition<>(new_loc, trans_of_first.getCondition(), (String) trans_of_first.getAction(), trans_of_first.getTo() + ";" + second.getText()));
+    private TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> playerTS(int i0, int j0){
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> ts = new TransitionSystem();
+        for(int i=1; i<=7; i++){
+            for(int j=1; i<=7; i++){
+                Pair<Integer,Integer> new_state = new Pair<>(i,j);
+                if(i==i0 && j==j0)
+                    ts.addInitialState(new_state);
+                else
+                    ts.addState(new_state);
+                ts.addAction(new Pair("R", new Pair(i,j)));
+                ts.addAction(new Pair("L", new Pair(i,j)));
+                ts.addAction(new Pair("U", new Pair(i,j)));
+                ts.addAction(new Pair("D", new Pair(i,j)));
             }
+        }
+        Set<Pair<Integer,Integer>> walls = new HashSet<>();
+        for(int i=1; i<=7; i++){
+            walls.add(new Pair<>(i,1));
+            walls.add(new Pair<>(i,7));
+            walls.add(new Pair<>(1,i));
+            walls.add(new Pair<>(7,i));
+        }
+        walls.add(new Pair<>(2,5));
+        for(Pair<Integer,Integer> state: ts.getStates()) {
+            if (!walls.contains(new Pair<>(state.first, state.second + 1)))
+                ts.addTransition(new TSTransition<>(state, new Pair("R", new Pair(state.first, state.second)), new Pair<>(state.first, state.second + 1)));
+            if (!walls.contains(new Pair<>(state.first, state.second - 1)))
+                ts.addTransition(new TSTransition<>(state, new Pair("L", new Pair(state.first, state.second)), new Pair<>(state.first, state.second - 1)));
+            if (!walls.contains(new Pair<>(state.first - 1, state.second)))
+                ts.addTransition(new TSTransition<>(state, new Pair("U", new Pair(state.first, state.second)), new Pair<>(state.first - 1, state.second)));
+            if (!walls.contains(new Pair<>(state.first + 1, state.second)))
+                ts.addTransition(new TSTransition<>(state, new Pair("D", new Pair(state.first, state.second)), new Pair<>(state.first + 1, state.second)));
+        }
+        return ts;
     }
+
+    public TransitionSystem sokobanTS(){
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> box3_2 = boxTS(3,2);
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> box3_3 = boxTS(3,3);
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> box3_5 = boxTS(3,5);
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> box4_5 = boxTS(4,5);
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> box5_4 = boxTS(5,4);
+        TransitionSystem<Pair<Integer,Integer>,Pair<String, Pair<Integer,Integer>>,String> player = playerTS(2,3);
+        Set<Pair<String, Pair<Integer,Integer>>> handshaking = box3_2.getActions();
+        return interleave(interleave(interleave(interleave(interleave(box3_2, box3_3, handshaking), box3_5, handshaking), box4_5, handshaking), box5_4,handshaking), player, handshaking);
+    }
+
 
     /**
      * Creates a transition system from a transition system and an automaton.

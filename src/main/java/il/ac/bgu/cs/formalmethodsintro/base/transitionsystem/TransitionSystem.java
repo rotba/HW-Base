@@ -161,6 +161,18 @@ public class TransitionSystem<STATE, ACTION, ATOMIC_PROPOSITION> {
         labelingFunction.remove(state);
     }
 
+    public void forceRemoveState(STATE state)  {
+//        transitions.stream()
+//                .filter((t) -> (t.getFrom().equals(state) || t.getTo().equals(state)))
+//                .findFirst().map(t -> {
+//            throw new DeletionOfAttachedStateException(state, TransitionSystemPart.TRANSITIONS);
+//        });
+
+        states.remove(state);
+        initialStates.remove(state);
+        labelingFunction.remove(state);
+    }
+
 
     /**
      * Add a transition. The action and states are added automatically, if they

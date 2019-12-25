@@ -182,27 +182,32 @@ public class FvmFacadeTest {
 
     @Test
     public void testNanoPromela() {
-        String code = "x := 6";
-//                "if :: x >3 -> y := 5; z := 7 :: x < 2 -> t := 4; z :=0 fi ; x :=4";
-//                "atomic{x:=5;y:=0};\n" +
-//                        "  do \n" +
-//                        "  :: x > 2 -> x:=x-1\n" +
-//                        "  :: x < 2 -> \n" +
-//                        "\t\tif \n" +
-//                        "      \t:: x >2 -> y:=x; x:=x+1 \n" +
-//                        "\t\tfi\t\n" +
-//                        "  od\n";
+        String code =
+                "atomic{a:=3;b:=0};\n" +
+                        "  do \n" +
+                        "    :: a > b -> \n" +
+                        "\t\tdo \n" +
+                        "\t\t   :: a != b -> \n" +
+                        "\t\t\t\tb := b+1 \n" +
+                        "\t\tod\n" +
+                        "  od\n";
 
         try {
             ProgramGraph<String,String> pg = fvm.programGraphFromNanoPromelaString(code);
-            Set<NanoPromelaParser.StmtContext> st = new HashSet<>();
-            for(String loc : pg.getLocations())
-                st.add(NanoPromelaFileReader.pareseNanoPromelaString(loc));
             assertEquals(fvm.programGraphFromNanoPromela(code), pgnp());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+//    public void testSokoban(){
+//        TransitionSystem sokoban = fvm.sokobanTS();
+//        Set<Object> reachable = fvm.reach(sokoban);
+//        for(Object state : reachable){
+//            (Pair<Pair<Pair<Pair<Pair<Pair<Integer,Integer>, Pair<Integer,Integer>>, Pair<Integer,Integer>>, Pair<Integer,Integer>>, Pair<Integer,Integer>>, Pair<Integer,Integer>>>) state
+//            Pair<Integer,Integer> box_1 = state
+//        }
+//    }
 
 
     //todo: complete function
@@ -286,8 +291,8 @@ public class FvmFacadeTest {
         Pair p01 = new Pair<>(l00,l11);
         Pair p10 = new Pair<>(l01,l10);
         Pair p11 = new Pair<>(l01,l11);
-        pg01.addInitalization(List.of("y:=7"));
-        pg01.addInitalization(List.of("x:=0"));
+        pg01.addInitalization(List.of("x:=0","y:=7"));
+//        pg01.addInitalization(List.of("x:=0"));
         pg01.addLocation(p00);
         pg01.addLocation(p01);
         pg01.addLocation(p10);

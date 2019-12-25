@@ -43,6 +43,7 @@ public class NanoPromelaTest {
 					"fi";
 			InputStream in1 = new ByteArrayInputStream(a.getBytes(StandardCharsets.UTF_8));
 			ProgramGraph<String, String> pg = fvmFacadeImpl.programGraphFromNanoPromela(in1);
+			fvmFacadeImpl.removeUnreachableLocations(pg);
 
 			assertEquals(set("exit", "do::x<3->x:=x+1od;y:=9",
 					"if::a==c->bb:=1::a==b->if::x!=y->do::x<3->x:=x+1odfi;y:=9fi", "y:=9"), pg.getLocations());
@@ -67,9 +68,10 @@ public class NanoPromelaTest {
 			String a = "if ::x>1 -> C?x; D!5; do ::x>1 -> C?x; y:= 1; do ::r>3 -> r:=1; D!r od od; ppp:=2 fi";
 			InputStream in1 = new ByteArrayInputStream(a.getBytes(StandardCharsets.UTF_8));
 			ProgramGraph<String, String> pg = fvmFacadeImpl.programGraphFromNanoPromela(in1);
+			fvmFacadeImpl.removeUnreachableLocations(pg);
 
 			assertEquals(
-					set("", "ppp:=2", "do::r>3->r:=1;D!rod;do::x>1->C?x;y:=1;do::r>3->r:=1;D!rodod;ppp:=2",
+					set("exit", "ppp:=2", "do::r>3->r:=1;D!rod;do::x>1->C?x;y:=1;do::r>3->r:=1;D!rodod;ppp:=2",
 							"if::x>1->C?x;D!5;do::x>1->C?x;y:=1;do::r>3->r:=1;D!rodod;ppp:=2fi",
 							"y:=1;do::r>3->r:=1;D!rod;do::x>1->C?x;y:=1;do::r>3->r:=1;D!rodod;ppp:=2",
 							"D!5;do::x>1->C?x;y:=1;do::r>3->r:=1;D!rodod;ppp:=2",
@@ -107,6 +109,7 @@ public class NanoPromelaTest {
 			String a = "if :: x<3 -> do ::x<4 -> x:=5; x:=6 od; x:=7 fi";
 			InputStream in1 = new ByteArrayInputStream(a.getBytes(StandardCharsets.UTF_8));
 			ProgramGraph<String, String> pg = fvmFacadeImpl.programGraphFromNanoPromela(in1);
+			fvmFacadeImpl.removeUnreachableLocations(pg);
 
 			assertEquals(set("exit", "do::x<4->x:=5;x:=6od;x:=7", "x:=6;do::x<4->x:=5;x:=6od;x:=7", "x:=7",
 					"if::x<3->do::x<4->x:=5;x:=6od;x:=7fi"), pg.getLocations());

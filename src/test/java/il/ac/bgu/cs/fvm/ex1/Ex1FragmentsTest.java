@@ -108,6 +108,7 @@ public class Ex1FragmentsTest {
     public void testInvalidExecutionFragment() {
         assertFalse("expecting exception: fragment contains nonexistent states and actions",
                 sut.isMaximalExecutionFragment(makeLinearTs(2), AlternatingSequence.of(3, "a3", 4, "a4", 5)));
+
     }
 
     @Test(timeout = 2000)

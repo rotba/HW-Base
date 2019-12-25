@@ -2,10 +2,14 @@ package il.ac.bgu.cs.formalmethodsintro.base;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import il.ac.bgu.cs.formalmethodsintro.base.automata.Automaton;
 import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
+import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.InterleavingActDef;
+import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
@@ -22,7 +26,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
-import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 /**
  * Interface for the entry point class to the HW in this class. Our
@@ -699,42 +703,277 @@ public class FvmFacade {
     public <L, A> TransitionSystem<Pair<L, Map<String, Object>>, A, String> transitionSystemFromProgramGraph(
             ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs) {
         TransitionSystem<Pair<L, Map<String, Object>>, A, String> ts = createTransitionSystem();
+        for (Pair<L, Map<String, Object>> initialState:findInitialStates(pg, actionDefs)) {
+            ts.addInitialState(initialState);
+            tagNewState(ts,initialState);
+        }
+        spreadReachables(pg, actionDefs, conditionDefs, ts);
+        return ts;
+    }
+
+    public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
+            ChannelSystem<L, A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions) {
+        TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> ts = createTransitionSystem();
+        findInitialStates(cs, actions, ts);
+        spreadReachables(cs, actions, conditions, ts);
+        return ts;
+    }
+
+    private <A, L> void spreadReachables(ChannelSystem<L,A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions, TransitionSystem<Pair<List<L>, Map<String, Object>>,A, String> ts) {
+        for (Pair<List<L>, Map<String, Object>> initialState : ts.getInitialStates()) {
+            Queue<Pair<List<L>, Map<String, Object>>> q = new LinkedList<>();
+            q.add(initialState);
+            spreadToReachables(q, cs, actions, conditions, ts);
+        }
+    }
+
+    private <L, A> void spreadToReachables(Queue<Pair<List<L>, Map<String, Object>>> q, ChannelSystem<L,A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions, TransitionSystem<Pair<List<L>, Map<String, Object>>,A, String> ts) {
+        while(!q.isEmpty()){
+            Pair<List<L>, Map<String, Object>> currState = q.poll();
+            for (ProgramGraph<L,A> p1: cs.getProgramGraphs()) {
+                for (ProgramGraph<L,A> p2: cs.getProgramGraphs()) {
+                    if(!p1.equals(p2)){
+                        for (PGTransition<L,A> tran1 : p1.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
+                            for (PGTransition<L,A> tran2 : p2.getTransitions().stream().filter(x->currState.first.contains(x.getFrom())).collect(Collectors.toList())) {
+                                if (currState.getFirst().contains(tran1.getFrom())) {
+                                    for (ActionDef ad1 : actions) {
+                                        for (ActionDef ad2 : actions) {
+                                            for (ConditionDef cd1 : conditions) {
+                                                for (ConditionDef cd2 : conditions) {
+                                                    if(canExecuteASync(currState,tran1,tran2,cd1,cd2,ad1,ad2)){
+                                                        List<L> locations = new ArrayList<>(currState.first);
+                                                        locations.remove(tran1.getFrom());
+                                                        locations.remove(tran2.getFrom());
+                                                        locations.add(tran1.getTo());
+                                                        locations.add(tran2.getTo());
+                                                        locations.sort(new Comparator<L>() {
+                                                            @Override
+                                                            public int compare(L o1, L o2) {
+                                                                return o1.toString().compareTo(o2.toString());
+                                                            }
+                                                        });
+                                                        String action = tran1.getAction() + "|"+tran2.getAction();
+                                                        Pair<List<L>, Map<String,Object>> newState =
+                                                                new Pair<>(
+                                                                        locations,
+                                                                        ad1.effect(currState.getSecond(),action)
+                                                                );
+                                                        boolean needToSpread = !ts.getStates().contains(newState);
+                                                        ts.addTransition(new TSTransition<>(currState, null, newState));
+                                                        tagCSNewState(ts, newState);
+                                                        ts.addState(newState);
+                                                        if(needToSpread){
+                                                            q.add(newState);
+                                                        }
+                                                    }else if(canExecute(currState,tran1,cd1,ad1)){
+                                                        List<L> locations = new ArrayList<>(currState.first);
+                                                        locations.remove(tran1.getFrom());
+                                                        locations.add(tran1.getTo());
+                                                        locations.sort(new Comparator<L>() {
+                                                            @Override
+                                                            public int compare(L o1, L o2) {
+                                                                return o1.toString().compareTo(o2.toString());
+                                                            }
+                                                        });
+                                                        Pair<List<L>, Map<String,Object>> newState =
+                                                                new Pair<>(
+                                                                        locations,
+                                                                        ad1.effect(currState.getSecond(),tran1.getAction())
+                                                                );
+                                                        boolean needToSpread = !ts.getStates().contains(newState);
+                                                        if(isChannelAction(tran1.getAction())){
+                                                            ts.addTransition(new TSTransition<>(currState, null, newState));
+                                                        }else{
+                                                            ts.addTransition(new TSTransition<>(currState, tran1.getAction(), newState));
+                                                        }
+                                                        tagCSNewState(ts, newState);
+                                                        ts.addState(newState);
+                                                        if(needToSpread){
+                                                            q.add(newState);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    private <L, A> void tagCSNewState(TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> ts, Pair<List<L>, Map<String, Object>> newState) {
+        for (L l : newState.first) {
+            ts.addToLabel(newState, l.toString());
+        }
+        for (String key : newState.second.keySet()) {
+            ts.addToLabel(newState, key + "=" + newState.second.get(key).toString());
+        }
+    }
+
+    private <A> boolean isChannelAction(A action) {
+        return NanoPromelaFileReader.pareseNanoPromelaString(action.toString()).chanreadstmt() !=null ||
+                NanoPromelaFileReader.pareseNanoPromelaString(action.toString()).chanwritestmt() !=null;
+
+    }
+
+    private <L, A> boolean canExecute(Pair<List<L>, Map<String, Object>> currState, PGTransition<L,A> tran1, ConditionDef cd1, ActionDef ad1) {
+        try{
+            return currState.first.contains(tran1.getFrom()) &&
+                    ad1.isMatchingAction(tran1.getAction()) &&
+                    cd1.evaluate(currState.getSecond(),tran1.getCondition()) &&
+                    ad1.effect(currState.getSecond(), tran1.getAction())!=null;
+        }catch (ParseCancellationException e){
+            return false;
+        }
+
+    }
+
+    private <L> boolean canExecuteASync(Pair<List<L>, Map<String, Object>> currState,PGTransition tran1 ,PGTransition tran2 ,ConditionDef cd1, ConditionDef cd2, ActionDef ad1, ActionDef ad2) {
+        if(
+                ad1 instanceof InterleavingActDef
+                && ad2 instanceof InterleavingActDef
+                && new ParserBasedInterleavingActDef().isOneSidedAction(tran1.getAction().toString())
+        ){
+            InterleavingActDef iad1 = (InterleavingActDef)ad1;
+            String cond1 = tran1.getCondition().equals("") ? "true" : "(" + tran1.getCondition() + ")";
+            String cond2 = tran2.getCondition().equals("") ? "true" : "(" + tran2.getCondition() + ")";
+            String cond = cond1 + "&&" + cond2;
+            String action = tran1.getAction() +"|"+tran2.getAction();
+            Set<ConditionDef> set = new HashSet<>();
+            set.add(cd1);set.add(cd2);
+            try{
+                return ConditionDef.evaluate(set,currState.getSecond(),cond)
+                        && iad1.isMatchingAction(action)
+                        && ad1.effect(currState.getSecond(),action)!=null
+                        && currState.first.contains(tran1.getFrom())
+                        && currState.first.contains(tran2.getFrom());
+            }catch (java.lang.Exception e){
+                if(e.getMessage().contains("Incompatible hanshaking statements")){
+                    return false;
+                }else{
+                    throw e;
+                }
+            }
+
+        }else{
+            return false;
+        }
+    }
+
+
+
+
+    private <A, L> void findInitialStates(ChannelSystem<L,A> cs, Set<ActionDef> actions, TransitionSystem<Pair<List<L>, Map<String, Object>>,A, String> ts) {
+        for (List<L> candidate: genInitialCandidates(cs, actions)) {
+            for (Map<String,Object> initialEval: getInitialEvals(cs,actions)) {
+                Pair<List<L>, Map<String, Object>> newState = new Pair<>(candidate, initialEval);
+                tagCSNewState(ts,newState);
+                ts.addInitialState(newState);
+            }
+        }
+    }
+
+    private <L, A> Iterable<? extends Map<String, Object>> getInitialEvals(ChannelSystem<L, A> cs, Set<ActionDef> actions) {
+        Set<Map<String,Object>> ans = new HashSet<>();
+        ans.add(new HashMap<>());
+        for (ProgramGraph<L,A> p: cs.getProgramGraphs()) {
+            boolean hasRep = p.getInitalizations().size() ==0 ? true:false;
+            for (List<String> g: p.getInitalizations()) {
+                Map<String, Object> currEval= new HashMap<>();
+                for (ActionDef ad:actions) {
+                    for (String s:g) {
+                        if(ad.isMatchingAction(s))
+                            currEval = ad.effect(new HashMap<>(), s);
+                    }
+                }
+                for (Map<String,Object>  existingInitial: ans) {
+                    if (!hasConflict(currEval,existingInitial)){
+                        Map<String, Object> newEval = new HashMap<>();
+                        newEval.putAll(currEval);
+                        newEval.putAll(existingInitial);
+                        ans.remove(existingInitial);
+                        ans.add(newEval);
+                        hasRep=true;
+                    }
+                }
+            }
+            if(!hasRep){
+                return new HashSet<>();
+            }
+        }
+        return ans;
+    }
+
+    private boolean hasConflict(Map<String, Object> g, Map<String, Object> existingInitial) {
+        for (String x: g.keySet()
+             ) {
+            for (String y: existingInitial.keySet()
+                 ) {
+                if(x.equals(y)){
+                    if(g.get(x).equals(existingInitial.get(y))){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
+    private <L,A> Set<List<L>> genInitialCandidates(ChannelSystem<L, A> cs, Set<ActionDef> actions) {
+        List<List<L>> ans = new ArrayList<>();
+        ProgramGraph<List<L>,A> init = createProgramGraph();
+        ProgramGraph<List<L>,A> acc = init;
+        for (ProgramGraph<L,A> curr: cs.getProgramGraphs()) {
+            acc = cross(curr,acc);
+        }
+        return acc.getLocations();
+    }
+
+    private <L,A> ProgramGraph<List<L>,A> cross(ProgramGraph<L,A> curr, ProgramGraph<List<L>,?> acc) {
+        ProgramGraph<List<L>,A> ans = createProgramGraph();
+        if (acc.getLocations().size() ==0){
+            for (L l2: curr.getInitialLocations()) {
+                List<L> newState = new ArrayList<>();
+                newState.add(l2);
+                ans.addLocation(newState);
+            }
+            return ans;
+        }
+        for (List<L> l1: acc.getLocations()) {
+            for (L l2: curr.getInitialLocations()) {
+                List<L> newState = new ArrayList<>(l1);
+                newState.add(l2);
+                ans.addLocation(newState);
+            }
+        }
+        return ans;
+    }
+
+
+    private <L, A> void spreadReachables(ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs, TransitionSystem<Pair<L, Map<String, Object>>, A, String> ts) {
+        for (Pair<L, Map<String, Object>> initialState : ts.getInitialStates()) {
+            spreadToReachables(initialState, pg, actionDefs, conditionDefs, ts);
+        }
+    }
+
+
+    private <L, A> List<Pair<L, Map<String, Object>>> findInitialStates(ProgramGraph<L, A> pg, Set<ActionDef> actionDefs) {
+        List<Pair<L, Map<String, Object>>> ans = new ArrayList<>();
         for (L initLoc : pg.getInitialLocations()) {
             for (List<String> init : pg.getInitalizations()) {
                 for (String initialDef : init) {
                     for (ActionDef ad : actionDefs) {
                         if (ad.isMatchingAction(initialDef)) {
-                            ts.addInitialState(new Pair<>(initLoc, ad.effect(new HashMap<>(), initialDef)));
-                        }
-                    }
-                }
-            }
-
-        }
-
-        for (Pair<L, Map<String, Object>> initialState : ts.getInitialStates()) {
-            for (Pair<L, Map<String, Object>> reachable :
-                    lazyGetReachables(initialState, pg, actionDefs, conditionDefs)) {
-                ts.addState(reachable);
-            }
-        }
-        return null;
-    }
-
-    private <L, A> Set<Pair<L, Map<String, Object>>> lazyGetReachables(Pair<L, Map<String, Object>> currState, ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs) {
-        HashSet<Pair<L, Map<String, Object>>> ans = new HashSet<>();
-        for (PGTransition tran : pg.getTransitions()) {
-            if (tran.getFrom().equals(currState.getFirst())) {
-                for (ConditionDef cd : conditionDefs) {
-                    if (cd.evaluate(currState.getSecond(), tran.getCondition())) {
-                        for (ActionDef ad : actionDefs) {
-                            if (ad.isMatchingAction(tran.getAction())) {
-                                Pair<L, Map<String, Object>> newState = new Pair(tran.getTo(), ad.effect(currState.getSecond(), tran.getAction()));
-                                ans.add(newState);
-                                for (Pair<L, Map<String, Object>> reachable : lazyGetReachables(newState, pg, actionDefs, conditionDefs)) {
-                                    ans.add(reachable);
-                                }
-                            }
+                            Pair<L, Map<String, Object>> newState = new Pair<>(initLoc, ad.effect(new HashMap<>(), initialDef));
+                            ans.add(newState);
                         }
                     }
                 }
@@ -743,18 +982,35 @@ public class FvmFacade {
         return ans;
     }
 
-    /**
-     * Creates a transition system representing channel system {@code cs}.
-     *
-     * @param <L> Type of locations in the channel system.
-     * @param <A> Type of actions in the channel system.
-     * @param cs  The channel system to be translated into a transition system.
-     * @return A transition system representing {@code cs}.
-     */
-    public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
-            ChannelSystem<L, A> cs) {
-        throw new java.lang.UnsupportedOperationException();
+    private <L, A> void tagNewState(TransitionSystem<Pair<L, Map<String, Object>>, A, String> ts, Pair<L, Map<String, Object>> newState) {
+        ts.addToLabel(newState, newState.first.toString());
+        for (String key: newState.second.keySet()) {
+            ts.addToLabel(newState,key + "="+ newState.second.get(key).toString());
+        }
     }
+
+    private <L,A> void spreadToReachables(Pair<L, Map<String, Object>> currState, ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs, TransitionSystem ts) {
+        for (PGTransition tran : pg.getTransitions()) {
+            if (tran.getFrom().equals(currState.getFirst())) {
+                for (ConditionDef cd : conditionDefs) {
+                    if (cd.evaluate(currState.getSecond(), tran.getCondition())) {
+                        for (ActionDef ad : actionDefs) {
+                            if (ad.isMatchingAction(tran.getAction())) {
+                                Pair<L, Map<String, Object>> newState = new Pair(tran.getTo(), ad.effect(currState.getSecond(), tran.getAction()));
+                                ts.addState(newState);
+                                ts.addTransition(new TSTransition(currState,tran.getAction(),newState));
+                                tagNewState(ts,newState);
+                                spreadToReachables(newState, pg, actionDefs, conditionDefs, ts);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
 
     private String padSpaces(String code){

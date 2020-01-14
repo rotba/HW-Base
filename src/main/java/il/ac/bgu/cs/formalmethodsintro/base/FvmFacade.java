@@ -1543,7 +1543,38 @@ public class FvmFacade {
      */
     public <Sts, Saut, A, P> TransitionSystem<Pair<Sts, Saut>, A, Saut> product(TransitionSystem<Sts, A, P> ts,
                                                                                 Automaton<Saut, P> aut) {
-        throw new java.lang.UnsupportedOperationException();
+        TransitionSystem<Pair<Sts,Saut>, A, Saut> ts_a = new TransitionSystem();
+        Set<Saut> a_states = aut.getStates();
+        for(Sts ts_state : ts.getStates()){
+            for(Saut a_state : a_states){
+                Pair<Sts, Saut> new_state = new Pair(ts_state, a_state);
+                if(ts.getInitialStates().contains(ts_state) && aut.isSecondState(a_state)){
+                    ts_a.addInitialState(new_state);
+                }
+                ts_a.addState(new_state);
+                ts_a.addToLabel(new_state, a_state);
+            }
+        }
+        ts_a.addAllAtomicPropositions(aut.getStates());
+        ts_a.addAllActions(ts.getActions());
+        for(TSTransition<Sts, A> trans : ts.getTransitions()){
+            for(Saut a_from_state : a_states){
+                Map<Set<P>, Set<Saut>> a_trans = aut.getTransitions().get(a_from_state);
+                for(Set<P> l_set : a_trans.keySet()){
+                    for(P sigma : l_set){
+                        if(ts.getLabel(trans.getTo()).contains(sigma)) {
+                            for(Saut to_a_state : a_trans.get(l_set)) {
+                                Pair<Sts, Saut> from = new Pair(trans.getFrom(), a_from_state);
+                                Pair<Sts, Saut> to = new Pair(trans.getTo(), to_a_state);
+                                ts_a.addTransition(new TSTransition<>(from, trans.getAction(), to));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        removeUnreachableStates(ts_a);
+        return ts_a;
     }
 
     /**

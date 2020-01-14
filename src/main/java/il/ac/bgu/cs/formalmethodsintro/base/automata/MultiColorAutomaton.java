@@ -18,6 +18,19 @@ public class MultiColorAutomaton<State, L> {
         accepting = new HashMap<>();
     }
 
+    public Set<State> getStates(){
+        Set<State> ret = new HashSet<>();
+        ret.addAll(initial);
+        for(Set acc : accepting.values()){
+            ret.addAll(acc);
+        }
+        ret.addAll(transitions.keySet());
+        for(Map trans : transitions.values()){
+            ret.addAll(trans.values());
+        }
+        return ret;
+    }
+
     public void addState(State s) {
         if (!transitions.containsKey(s)) {
             transitions.put(s, new HashMap<>());
@@ -118,4 +131,11 @@ public class MultiColorAutomaton<State, L> {
         return Objects.equals(this.transitions, other.transitions);
     }
 
+    public boolean isSecondState(State a_state){
+        for(State init_state : initial){
+            Map out = transitions.get(init_state);
+            return out.values().contains(a_state);
+        }
+        return false;
+    }
 }

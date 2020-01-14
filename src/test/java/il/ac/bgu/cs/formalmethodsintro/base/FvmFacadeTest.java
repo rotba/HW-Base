@@ -1,5 +1,6 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
+import il.ac.bgu.cs.formalmethodsintro.base.automata.Automaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
@@ -213,6 +214,50 @@ public class FvmFacadeTest {
 //        }
 //    }
 
+    @Test
+    public void testProduct(){
+        Pair<Pair, TransitionSystem> out = productHelper();
+        TransitionSystem ts = (TransitionSystem) out.first.first;
+        Automaton aut = (Automaton) out.first.second;
+        TransitionSystem pro = out.second;
+        assertEquals(pro, fvm.product(ts, aut));
+    }
+
+    private Pair<Pair, TransitionSystem> productHelper() {
+        TransitionSystem ts = new TransitionSystem();
+        ts.addAllStates(Set.of("Sr", "Sy", "Sg", "Sry"));
+        ts.addToLabel("Sr", "red");
+        ts.addToLabel("Sy", "yellow");
+        ts.addInitialState("Sg");
+        ts.addTransition(new TSTransition("Sg", "alpha", "Sy"));
+        ts.addTransition(new TSTransition("Sy", "alpha", "Sr"));
+        ts.addTransition(new TSTransition("Sr", "alpha", "Sry"));
+        ts.addTransition(new TSTransition("Sry", "alpha", "Sg"));
+        Automaton aut = new Automaton();
+        aut.setInitial("q0");
+        aut.addState("q1");
+        aut.addState("q2");
+        aut.addTransition("q0", Set.of("yellow", "not red"), "q1");
+        aut.addTransition("q0", Set.of("not yellow", "not red"), "q0");
+        aut.addTransition("q1", Set.of("yellow"), "q1");
+        aut.addTransition("q1", Set.of("not yellow"), "q0");
+        aut.addTransition("q0", Set.of("red"), "q2");
+        aut.setAccepting("q2");
+        TransitionSystem pro = new TransitionSystem();
+        pro.addState(new Pair<>("Sry", "q0"));
+        pro.addState(new Pair<>("Sr", "q0"));
+        pro.addState(new Pair<>("Sy", "q1"));
+        pro.addInitialState(new Pair<>("Sg", "q0"));
+        pro.addTransition(new TSTransition(new Pair<>("Sg", "q0"), "alpha", new Pair<>("Sy", "q1")));
+        pro.addTransition(new TSTransition(new Pair<>("Sy", "q1"), "alpha", new Pair<>("Sr", "q0")));
+        pro.addTransition(new TSTransition(new Pair<>("Sr", "q0"), "alpha", new Pair<>("Sry", "q0")));
+        pro.addTransition(new TSTransition(new Pair<>("Sry", "q0"), "alpha", new Pair<>("Sg", "q0")));
+        pro.addToLabel(new Pair<>("Sry", "q0"), "q0");
+        pro.addToLabel(new Pair<>("Sr", "q0"), "q0");
+        pro.addToLabel(new Pair<>("Sy", "q1"), "q1");
+        pro.addToLabel(new Pair<>("Sg", "q0"), "q0");
+        return new Pair(new Pair(ts, aut), pro);
+    }
 
     //todo: complete function
     private ProgramGraph<String, String> pgnp() {

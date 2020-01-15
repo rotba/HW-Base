@@ -25,8 +25,10 @@ public class MultiColorAutomaton<State, L> {
             ret.addAll(acc);
         }
         ret.addAll(transitions.keySet());
-        for(Map trans : transitions.values()){
-            ret.addAll(trans.values());
+        for(Map<Set<L>, Set<State>> trans : transitions.values()){
+            for(Set<State> s : trans.values()) {
+                ret.addAll(s);
+            }
         }
         return ret;
     }
@@ -131,10 +133,13 @@ public class MultiColorAutomaton<State, L> {
         return Objects.equals(this.transitions, other.transitions);
     }
 
-    public boolean isSecondState(State a_state){
+    public boolean isSecondState(State a_state, Set<L> label_state){
         for(State init_state : initial){
-            Map out = transitions.get(init_state);
-            return out.values().contains(a_state);
+            Map<Set<L>, Set<State>> out = transitions.get(init_state);
+            for(Set<L> key : out.keySet()){
+                if(key.equals(label_state) && out.get(key).contains(a_state))
+                    return true;
+            }
         }
         return false;
     }

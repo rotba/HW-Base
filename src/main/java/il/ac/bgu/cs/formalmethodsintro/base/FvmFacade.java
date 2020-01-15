@@ -1541,6 +1541,8 @@ public class FvmFacade {
      * @param aut    The automaton.
      * @return The product of {@code ts} with {@code aut}.
      */
+
+    //TODO : rememeber AP maybe need to remove redundant (of the unreachable)
     public <Sts, Saut, A, P> TransitionSystem<Pair<Sts, Saut>, A, Saut> product(TransitionSystem<Sts, A, P> ts,
                                                                                 Automaton<Saut, P> aut) {
         TransitionSystem<Pair<Sts,Saut>, A, Saut> ts_a = new TransitionSystem();
@@ -1548,8 +1550,9 @@ public class FvmFacade {
         for(Sts ts_state : ts.getStates()){
             for(Saut a_state : a_states){
                 Pair<Sts, Saut> new_state = new Pair(ts_state, a_state);
-                if(ts.getInitialStates().contains(ts_state) && aut.isSecondState(a_state)){
-                    ts_a.addInitialState(new_state);
+                if(ts.getInitialStates().contains(ts_state)){
+                    if(aut.isSecondState(a_state, ts.getLabel(ts_state)))
+                        ts_a.addInitialState(new_state);
                 }
                 ts_a.addState(new_state);
                 ts_a.addToLabel(new_state, a_state);

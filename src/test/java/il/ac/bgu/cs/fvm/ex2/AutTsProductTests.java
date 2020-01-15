@@ -135,7 +135,7 @@ public class AutTsProductTests {
 		ts.addState(Green);
 		ts.addState(Red);
 
-		ts.setInitial(Red, true);
+		ts.addInitialState(Red);
 
 		ts.addAction(Actions.Switch);
 
@@ -154,7 +154,7 @@ public class AutTsProductTests {
 		TransitionSystem<Lights, Actions, String> ts = fvmFacadeImpl.createTransitionSystem();
 
 		ts.addStates(Off, Red, Green);
-		ts.setInitial(Red, true);
+		ts.addInitialState(Red);
 		ts.addAction(Switch);
 
 		ts.addTransitionFrom(Red).action(Switch).to(Green);

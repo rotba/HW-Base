@@ -1,6 +1,7 @@
 package il.ac.bgu.cs.formalmethodsintro.base;
 
 import il.ac.bgu.cs.formalmethodsintro.base.automata.Automaton;
+import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
@@ -221,6 +222,58 @@ public class FvmFacadeTest {
         Automaton aut = (Automaton) out.first.second;
         TransitionSystem pro = out.second;
         assertEquals(pro, fvm.product(ts, aut));
+    }
+
+    @Test
+    public void testGNBA2NBA(){
+        Pair<MultiColorAutomaton,Automaton> p = NBA1_GNBA1();
+        Automaton actual = fvm.GNBA2NBA(p.getFirst());
+        Automaton expected = p.getSecond();
+        assertEquals(expected, actual);
+    }
+
+    private Pair<MultiColorAutomaton, Automaton> NBA1_GNBA1() {
+        final int RED = 0;
+        final int BLUE = 1;
+        final String A ="A";
+        MultiColorAutomaton gnba = new MultiColorAutomaton();
+        Pair p11 = new Pair("q1","r1");
+        Pair p12 = new Pair("q1","r2");
+        Pair p21 = new Pair("q2","r1");
+        Pair p22 = new Pair("q2","r2");
+        gnba.addState(p11);
+        gnba.addState(p12);
+        gnba.addState(p21);
+        gnba.addState(p22);
+        gnba.setAccepting(p11, RED);
+        gnba.setAccepting(p22, BLUE);
+        gnba.setInitial(p11);
+        gnba.addTransition(p11,Set.of(A),p22);
+        gnba.addTransition(p22,Set.of(A),p11);
+
+        Automaton nba = new Automaton();
+        Pair p11r = new Pair(p11,RED);
+        Pair p22r = new Pair(p22,RED);
+        Pair p21r = new Pair(p21,RED);
+        Pair p12r = new Pair(p12,RED);
+        Pair p11b = new Pair(p11,BLUE);
+        Pair p22b = new Pair(p22,BLUE);
+        Pair p12b = new Pair(p12,BLUE);
+        Pair p21b = new Pair(p21,BLUE);
+
+        nba.addTransition(p11r, Set.of(A), p22b);
+        nba.addTransition(p22r, Set.of(A), p11r);
+        nba.addTransition(p22b, Set.of(A), p11r);
+        nba.addTransition(p11b, Set.of(A), p22b);
+
+        nba.addState(p21b);
+        nba.addState(p21r);
+        nba.addState(p12b);
+        nba.addState(p12r);
+
+        nba.setAccepting(p11r);
+        nba.setInitial(p11r);
+        return new Pair(gnba,nba);
     }
 
     private Pair<Pair, TransitionSystem> productHelper() {

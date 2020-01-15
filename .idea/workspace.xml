@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="1612" column="5" selection-start-line="1612" selection-start-column="5" selection-end-line="1612" selection-end-column="5" />
+            <state relative-caret-position="137">
+              <caret line="1676" column="25" lean-forward="true" selection-start-line="1676" selection-start-column="25" selection-end-line="1676" selection-end-column="25" />
               <folding>
                 <element signature="e#2324#2325#0" expanded="true" />
                 <element signature="e#2352#2353#0" expanded="true" />
@@ -31,6 +30,15 @@
                 <element signature="e#22391#22392#0" expanded="true" />
                 <element signature="e#22434#22435#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/Pair.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="196">
+              <caret line="44" selection-start-line="44" selection-end-line="44" />
             </state>
           </provider>
         </entry>
@@ -56,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="234" column="30" selection-start-line="234" selection-start-column="30" selection-end-line="234" selection-end-column="30" />
+            <state relative-caret-position="95">
+              <caret line="229" column="33" lean-forward="true" selection-start-line="229" selection-start-column="33" selection-end-line="229" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1454#1455#0" expanded="true" />
@@ -103,13 +111,33 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="347">
+              <caret line="69" column="68" selection-start-line="69" selection-start-column="68" selection-end-line="69" selection-end-column="68" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/jdk/internal/reflect/NativeMethodAccessorImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="146">
+              <caret line="68" column="33" selection-start-line="68" selection-start-column="33" selection-end-line="68" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/Assert.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="117" selection-start-line="117" selection-end-line="117" />
+            <state relative-caret-position="196">
+              <caret line="130" selection-start-line="130" selection-end-line="130" />
               <folding>
-                <element signature="e#3920#3921#0" expanded="true" />
                 <element signature="e#3966#3967#0" expanded="true" />
                 <element signature="e#4403#4404#0" expanded="true" />
                 <element signature="e#4455#4456#0" expanded="true" />
@@ -121,8 +149,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+            <state relative-caret-position="170">
+              <caret line="132" column="66" lean-forward="true" selection-start-line="132" selection-start-column="15" selection-end-line="132" selection-end-column="66" />
+              <folding>
+                <element signature="e#1886#1887#0" expanded="true" />
+                <element signature="e#1916#1917#0" expanded="true" />
+                <element signature="e#1983#1984#0" expanded="true" />
+                <element signature="e#2017#2018#0" expanded="true" />
+                <element signature="e#2657#2658#0" expanded="true" />
+                <element signature="e#2698#2699#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -130,44 +166,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/Automaton.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="35" column="17" lean-forward="true" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+            <state relative-caret-position="44">
+              <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
               <folding>
                 <element signature="e#1231#1232#0" expanded="true" />
                 <element signature="e#1271#1272#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/AlternatingSequence.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="56" selection-start-line="56" selection-end-line="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/CollectionHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
-              <folding>
-                <element signature="e#1144#1145#0" expanded="true" />
-                <element signature="e#1327#1328#0" expanded="true" />
-                <element signature="e#1368#1369#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/transitionsystem/TransitionSystem.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3298">
-              <caret line="223" selection-start-line="223" selection-end-line="223" />
             </state>
           </provider>
         </entry>
@@ -184,9 +188,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>equals</find>
-      <find>il.ac.bgu.cs.fvm</find>
-      <find>CollatzProgramGraphBuilder</find>
       <find>implements ActionDef</find>
       <find>implements .*ActionDef</find>
       <find>Map</find>
@@ -211,11 +212,23 @@
       <find>addTR</find>
       <find>gnba</find>
       <find>addTransition</find>
+      <find>GNBA2NBA</find>
+      <find>&quot;s01&quot;</find>
+      <find>&quot;a22&quot;</find>
+      <find>&quot;a2&quot;</find>
+      <find>equals</find>
       <find>get</find>
     </findStrings>
     <replaceStrings>
       <replace>il.ac.bgu.cs.formalmethodsintro.base</replace>
       <replace>=</replace>
+      <replace>new Pair(&quot;s0&quot;, 1)</replace>
+      <replace>new Pair(&quot;s2&quot;, 1)</replace>
+      <replace>new Pair(&quot;s1&quot;, 1)</replace>
+      <replace>new Pair(&quot;s0&quot;, 2)</replace>
+      <replace>new Pair(&quot;s1&quot;, 2)</replace>
+      <replace>new Pair(&quot;a2&quot;, 2)</replace>
+      <replace>&quot;s2&quot;</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -250,6 +263,7 @@
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java" />
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" />
+        <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java" />
       </list>
     </option>
   </component>
@@ -296,27 +310,6 @@
               <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
               <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -325,6 +318,33 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="cs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="cs" type="462c0819:PsiDirectoryNode" />
+              <item name="fvm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="cs" type="462c0819:PsiDirectoryNode" />
+              <item name="fvm" type="462c0819:PsiDirectoryNode" />
+              <item name="ex2" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -372,7 +392,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.FvmFacadeTest.testGNBA2NBA">
+  <component name="RunManager" selected="JUnit.GNBACritSectionTest.simpleTest">
     <configuration name="FvmFacadeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
@@ -399,6 +419,22 @@
       <option name="PACKAGE_NAME" value="il.ac.bgu.cs.formalmethodsintro.base" />
       <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.formalmethodsintro.base.FvmFacadeTest" />
       <option name="METHOD_NAME" value="testGNBA2NBA" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GNBACritSectionTest.simpleTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FormalMethodsIntro-Base" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="il.ac.bgu.cs.fvm.ex2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="il.ac.bgu.cs.fvm.ex2" />
+      <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.fvm.ex2.GNBACritSectionTest" />
+      <option name="METHOD_NAME" value="simpleTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -434,29 +470,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ProgramGraphTest.soda" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FormalMethodsIntro-Base" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="il.ac.bgu.cs.fvm.ex1.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="il.ac.bgu.cs.fvm.ex1" />
-      <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.fvm.ex1.ProgramGraphTest" />
-      <option name="METHOD_NAME" value="soda" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.GNBACritSectionTest.simpleTest" />
         <item itemvalue="JUnit.FvmFacadeTest.testGNBA2NBA" />
         <item itemvalue="JUnit.FvmFacadeTest" />
         <item itemvalue="JUnit.ProgramGraphProductTest" />
         <item itemvalue="JUnit.ProgramGraphTest" />
-        <item itemvalue="JUnit.ProgramGraphTest.soda" />
       </list>
     </recent_temporary>
   </component>
@@ -476,47 +496,47 @@
       <workItem from="1576944962010" duration="22065000" />
       <workItem from="1577001797514" duration="12283000" />
       <workItem from="1577261990803" duration="5199000" />
-      <workItem from="1579076137911" duration="8632000" />
+      <workItem from="1579076137911" duration="11159000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 02m 37s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 16m 37s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 39m 22s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 22m 45s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 39m 26s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 23m 41s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 41m 57s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 25m 29s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 43m 03s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 31m 03s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 44m 45s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 32m 12s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 47m 52s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 33m 48s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 48m 18s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 33m 50s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 52m 30s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 33m 57s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testGNBA2NBA - 2020.01.15 at 14h 53m 31s.xml">
-      <configuration name="FvmFacadeTest.testGNBA2NBA" configurationId="JUnit" />
+    <history-entry file="GNBACritSectionTest_simpleTest - 2020.01.15 at 15h 34m 53s.xml">
+      <configuration name="GNBACritSectionTest.simpleTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96943000" />
+    <option name="totallyTimeSpent" value="99470000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <frame x="-7" y="-7" width="655" height="695" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="simpleUML" show_stripe_button="false" />
@@ -529,8 +549,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.5435169" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.12966253" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.44049734" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.053285968" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -570,18 +590,6 @@
           <line>223</line>
           <properties />
           <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java</url>
-          <line>114</line>
-          <properties />
-          <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java</url>
-          <line>22</line>
-          <properties />
-          <option name="timeStamp" value="73" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -655,21 +663,6 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>trans.values()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>actual.transitions</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>expected.transitions</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
         <expression-string>other.transitions</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -680,22 +673,37 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+        <expression-string>other.accepting</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>this.accepting</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>Objects.equals(this.transitions, other.transitions)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>gnba.getStates()</expression-string>
+        <expression-string>getExpected()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mulAut.getStates()</expression-string>
+        <expression-string>mulAut.getColors()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mulAut.getTransitions().get(state)</expression-string>
+        <expression-string>trans.values()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>actual.transitions</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -911,17 +919,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/Automaton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="35" column="17" lean-forward="true" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
-          <folding>
-            <element signature="e#1231#1232#0" expanded="true" />
-            <element signature="e#1271#1272#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -929,23 +926,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/Assert.java">
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/jdk/internal/reflect/NativeMethodAccessorImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="117" selection-start-line="117" selection-end-line="117" />
-          <folding>
-            <element signature="e#3920#3921#0" expanded="true" />
-            <element signature="e#3966#3967#0" expanded="true" />
-            <element signature="e#4403#4404#0" expanded="true" />
-            <element signature="e#4455#4456#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="146">
+          <caret line="68" column="33" selection-start-line="68" selection-start-column="33" selection-end-line="68" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="234" column="30" selection-start-line="234" selection-start-column="30" selection-end-line="234" selection-end-column="30" />
+        <state relative-caret-position="95">
+          <caret line="229" column="33" lean-forward="true" selection-start-line="229" selection-start-column="33" selection-end-line="229" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1454#1455#0" expanded="true" />
@@ -990,17 +981,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="1612" column="5" selection-start-line="1612" selection-start-column="5" selection-end-line="1612" selection-end-column="5" />
+        <state relative-caret-position="137">
+          <caret line="1676" column="25" lean-forward="true" selection-start-line="1676" selection-start-column="25" selection-end-line="1676" selection-end-column="25" />
           <folding>
             <element signature="e#2324#2325#0" expanded="true" />
             <element signature="e#2352#2353#0" expanded="true" />
@@ -1008,6 +992,61 @@
             <element signature="e#8532#8533#0" expanded="true" />
             <element signature="e#22391#22392#0" expanded="true" />
             <element signature="e#22434#22435#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/Automaton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding>
+            <element signature="e#1231#1232#0" expanded="true" />
+            <element signature="e#1271#1272#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/Assert.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="130" selection-start-line="130" selection-end-line="130" />
+          <folding>
+            <element signature="e#3966#3967#0" expanded="true" />
+            <element signature="e#4403#4404#0" expanded="true" />
+            <element signature="e#4455#4456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="132" column="66" lean-forward="true" selection-start-line="132" selection-start-column="15" selection-end-line="132" selection-end-column="66" />
+          <folding>
+            <element signature="e#1886#1887#0" expanded="true" />
+            <element signature="e#1916#1917#0" expanded="true" />
+            <element signature="e#1983#1984#0" expanded="true" />
+            <element signature="e#2017#2018#0" expanded="true" />
+            <element signature="e#2657#2658#0" expanded="true" />
+            <element signature="e#2698#2699#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="347">
+          <caret line="69" column="68" selection-start-line="69" selection-start-column="68" selection-end-line="69" selection-end-column="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -281,6 +281,8 @@ public class FvmFacadeTest {
         ts.addAllStates(Set.of("Sr", "Sy", "Sg", "Sry"));
         ts.addToLabel("Sr", "red");
         ts.addToLabel("Sy", "yellow");
+        ts.addToLabel("Sg", "");
+        ts.addToLabel("Sry", "");
         ts.addInitialState("Sg");
         ts.addTransition(new TSTransition("Sg", "alpha", "Sy"));
         ts.addTransition(new TSTransition("Sy", "alpha", "Sr"));
@@ -290,11 +292,11 @@ public class FvmFacadeTest {
         aut.setInitial("q0");
         aut.addState("q1");
         aut.addState("q2");
-        aut.addTransition("q0", Set.of("yellow", "not red"), "q1");
-        aut.addTransition("q0", Set.of("not yellow", "not red"), "q0");
-        aut.addTransition("q1", Set.of("yellow"), "q1");
-        aut.addTransition("q1", Set.of("not yellow"), "q0");
-        aut.addTransition("q0", Set.of("red"), "q2");
+        aut.addTransition("q0", Set.of("yellow"), "q1");
+        aut.addTransition("q0", Set.of(""), "q0");
+        aut.addTransition("q1", Set.of("yellow", "yellow and red"), "q1");
+        aut.addTransition("q1", Set.of("red", ""), "q0");
+        aut.addTransition("q0", Set.of("red", "yellow and red"), "q2");
         aut.setAccepting("q2");
         TransitionSystem pro = new TransitionSystem();
         pro.addState(new Pair<>("Sry", "q0"));
@@ -309,6 +311,7 @@ public class FvmFacadeTest {
         pro.addToLabel(new Pair<>("Sr", "q0"), "q0");
         pro.addToLabel(new Pair<>("Sy", "q1"), "q1");
         pro.addToLabel(new Pair<>("Sg", "q0"), "q0");
+        pro.addAtomicProposition("q2");
         return new Pair(new Pair(ts, aut), pro);
     }
 

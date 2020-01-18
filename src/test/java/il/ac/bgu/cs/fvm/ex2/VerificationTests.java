@@ -56,7 +56,6 @@ public class VerificationTests {
 		// Test with an automaton
 		{
 			Automaton<String, String> aut = new AutomataFactory<>(ts).eventuallyAlwaysAut(a -> a.contains("i<3"));
-
 			VerificationResult<Integer> vr = fvmFacadeImpl.verifyAnOmegaRegularProperty(ts, aut);
 			assertTrue(vr instanceof VerificationFailed);
 			new CounterExampleVerifier<>(ts, aut).verifyCounterExample(vr);

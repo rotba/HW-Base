@@ -24,7 +24,10 @@ import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
+import il.ac.bgu.cs.formalmethodsintro.base.util.GraphvizPainter;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
+import il.ac.bgu.cs.formalmethodsintro.base.verification.VeficationSucceeded;
+import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationFailed;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 
@@ -1542,7 +1545,6 @@ public class FvmFacade {
      * @return The product of {@code ts} with {@code aut}.
      */
 
-    //TODO : rememeber AP maybe need to remove redundant (of the unreachable)
     public <Sts, Saut, A, P> TransitionSystem<Pair<Sts, Saut>, A, Saut> product(TransitionSystem<Sts, A, P> ts,
                                                                                 Automaton<Saut, P> aut) {
         TransitionSystem<Pair<Sts,Saut>, A, Saut> ts_a = new TransitionSystem();
@@ -1558,21 +1560,19 @@ public class FvmFacade {
                 ts_a.addToLabel(new_state, a_state);
             }
         }
-        ts_a.addAllAtomicPropositions(aut.getStates());
+        //ts_a.addAllAtomicPropositions(aut.getStates());
         ts_a.addAllActions(ts.getActions());
         for(TSTransition<Sts, A> trans : ts.getTransitions()){
             for(Saut a_from_state : a_states){
                 Map<Set<P>, Set<Saut>> a_trans = aut.getTransitions().get(a_from_state);
                 for(Set<P> l_set : a_trans.keySet()){
-                    for(P sigma : l_set){
-                        if(ts.getLabel(trans.getTo()).contains(sigma)) {
+                        if(ts.getLabel(trans.getTo()).equals(l_set)) {
                             for(Saut to_a_state : a_trans.get(l_set)) {
                                 Pair<Sts, Saut> from = new Pair(trans.getFrom(), a_from_state);
                                 Pair<Sts, Saut> to = new Pair(trans.getTo(), to_a_state);
                                 ts_a.addTransition(new TSTransition<>(from, trans.getAction(), to));
                             }
                         }
-                    }
                 }
             }
         }
@@ -1596,8 +1596,111 @@ public class FvmFacade {
      */
     public <S, A, P, Saut> VerificationResult<S> verifyAnOmegaRegularProperty(TransitionSystem<S, A, P> ts,
                                                                               Automaton<Saut, P> aut) {
-        throw new java.lang.UnsupportedOperationException();
+        TransitionSystem<Pair<S, Saut>, A, Saut> ts_a = product(ts, aut);
+        Set<Pair<S, Saut>> r = new HashSet<>(); // set of visited states in outer DFS
+        List<Pair<S, Saut>> u = new LinkedList<>(); // stack for outer DFS
+        Set<Pair<S, Saut>> t = new HashSet<>(); // set of visited states in inner DFS
+        List<Pair<S, Saut>> v = new LinkedList<>(); // stack for inner DFS
+        boolean cycle_found = false;
+        while(!ts_a.getInitialStates().equals(r) && !ts_a.getInitialStates().isEmpty() && !cycle_found){
+            Pair<S, Saut> s = getsNotInSet(ts_a.getInitialStates(), r);
+            // reachable cycle
+            u.add(0, s);
+            r.add(s);
+            boolean con = true;
+            while(con){
+                Pair<S,Saut> s_tag = u.get(0);
+                Set<Pair<S,Saut>> s_tag_post = post(ts_a, s_tag);
+                if(!s_tag_post.equals(r) && !s_tag_post.isEmpty()){
+                    Pair<S, Saut> s_tag_tag = getsNotInSet(s_tag_post, r);
+                    u.add(0, s_tag_tag);
+                    r.add(s_tag_tag);
+                }
+                else{
+                    u.remove(0);
+                    if(aut.getAcceptingStates().contains(s_tag.second)) {
+                        cycle_found = cycle_check(s_tag, t, v, ts_a);
+                    }
+                }
+                con = !u.isEmpty() && !cycle_found;
+            }
+        }
+        if(!cycle_found)
+            return new VeficationSucceeded<>();
+        else{
+            VerificationFailed fail = new VerificationFailed();
+            Collections.reverse(v);
+            Collections.reverse(u);
+            fail.setCycle(v);
+            fail.setPrefix(u);
+            return fail;
+        }
+
+
+
+//        // first find all the reachable states which are accepting in the automaton
+//        Set<Saut> acc = aut.getAcceptingStates();
+//        Set<Pair<S,Saut>> all = this.reach(ts_a);
+//        Set<Pair<S,Saut>> acc_reach = new HashSet<>();
+//        for(Pair<S,Saut> state : all)
+//            if(acc.contains(state.second))
+//                acc_reach.add(state);
+//
+//        //search for a cycle using DFS
+//        boolean hasCycle = false;
+//        for(Pair<S,Saut> state : acc_reach){
+//            List<Pair<S,Saut>> stack = new LinkedList<>();
+//            Set<Pair<S,Saut>> states_set = new HashSet<>();
+//            stack.add(state);
+//            states_set.add(state);
+//            while(!stack.isEmpty() && !hasCycle){
+//                Pair<S,Saut> stag = stack.get(stack.size()-1);
+//                Set<Pair<S,Saut>> spost = post(ts_a, stag);
+//                if(spost.contains(state))
+//                    hasCycle = true;
+//                else{
+//                    if(spost.){
+//                        states_set.add()
+//                    }
+//                    else
+//                        stack.remove(0);
+//                }
+//            }
+//        }
+
     }
+
+    private <Saut, S, A> boolean cycle_check(Pair<S,Saut> s, Set<Pair<S,Saut>> t, List<Pair<S,Saut>> v, TransitionSystem<Pair<S, Saut>, A, Saut> ts_a) {
+        boolean cycle_found = false;
+        v.add(0, s);
+        t.add(s);
+        boolean con = true;
+        while(con){
+            Pair<S,Saut> s_tag = v.get(0);
+            Set<Pair<S,Saut>> post_s_tag = post(ts_a, s_tag);
+            if(post_s_tag.contains(s))
+                cycle_found = true;
+            else{
+                if(!post_s_tag.equals(t) && !post_s_tag.isEmpty()){
+                    Pair<S,Saut> s_tag_tag = getsNotInSet(post_s_tag, t);
+                    v.add(0, s_tag_tag);
+                    t.add(s_tag_tag);
+                }
+                else
+                    v.remove(0);
+            }
+            con = !v.isEmpty() && !cycle_found;
+        }
+        return cycle_found;
+    }
+
+    private <Saut, S> Pair<S,Saut> getsNotInSet(Set<Pair<S,Saut>> initialStates, Set<Pair<S,Saut>> r) {
+        for(Pair<S,Saut> state : initialStates)
+            if(!r.contains(state))
+                return state;
+        return null;
+    }
+
 
     /**
      * Translation of Linear Temporal Logic (LTL) formula to a Nondeterministic

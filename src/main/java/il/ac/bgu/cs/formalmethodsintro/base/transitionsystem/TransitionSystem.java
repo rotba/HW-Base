@@ -1,12 +1,8 @@
 package il.ac.bgu.cs.formalmethodsintro.base.transitionsystem;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.DeletionOfAttachedActionException;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.DeletionOfAttachedAtomicPropositionException;
@@ -170,7 +166,18 @@ public class TransitionSystem<STATE, ACTION, ATOMIC_PROPOSITION> {
 
         states.remove(state);
         initialStates.remove(state);
+        Set<ATOMIC_PROPOSITION> p = labelingFunction.get(state);
         labelingFunction.remove(state);
+        Collection<Set<ATOMIC_PROPOSITION>> collection = labelingFunction.values();
+        HashSet merged = new HashSet();
+        for(Set<ATOMIC_PROPOSITION> labels : collection){
+            merged.addAll(labels);
+        }
+        for(ATOMIC_PROPOSITION ap : p){
+            if(!merged.contains(ap))
+                atomicPropositions.remove(ap);
+        }
+
     }
 
 

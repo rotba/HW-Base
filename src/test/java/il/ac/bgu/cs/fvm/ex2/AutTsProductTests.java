@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 
+import il.ac.bgu.cs.formalmethodsintro.base.util.GraphvizPainter;
 import org.junit.Test;
 
 import il.ac.bgu.cs.formalmethodsintro.base.FvmFacade;
@@ -64,6 +65,7 @@ public class AutTsProductTests {
 
 		TransitionSystem<Pair<Lights, AutomatonStates>, Actions, AutomatonStates> comb1 = fvmFacadeImpl.product(ts1, aut);
 
+		System.out.println( GraphvizPainter.toStringPainter().makeDotCode(ts1) );
 		assertEquals(set(p(Green, Q0), p(Red, Q1), p(Red, Q2), p(Green, Q2), p(Red, Q0)), comb1.getStates());
 		assertEquals(set(p(Red, Q1), p(Red, Q0)), comb1.getInitialStates());
 		assertEquals(set(Switch), comb1.getActions());
@@ -79,6 +81,7 @@ public class AutTsProductTests {
 
 		TransitionSystem<Pair<Lights, AutomatonStates>, Actions, AutomatonStates> ts = fvmFacadeImpl.product(ts2, aut);
 
+		System.out.println( GraphvizPainter.toStringPainter().makeDotCode(ts1) );
 		assertEquals(set(p(Green, Q0), p(Off, Q2), p(Off, Q0), p(Red, Q1), p(Red, Q2), p(Green, Q2), p(Red, Q0), p(Off, Q1)), ts.getStates());
 		assertEquals(set(p(Red, Q1), p(Red, Q0)), ts.getInitialStates());
 		assertEquals(set(Switch), ts.getActions());

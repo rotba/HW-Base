@@ -29,7 +29,9 @@ import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VeficationSucceeded;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationFailed;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
+import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationSucceeded;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.svvrl.goal.core.util.Sets;
 
 /**
  * Interface for the entry point class to the HW in this class. Our
@@ -1588,73 +1590,45 @@ public class FvmFacade {
         Set<Pair<S, Saut>> t = new HashSet<>(); // set of visited states in inner DFS
         List<Pair<S, Saut>> v = new LinkedList<>(); // stack for inner DFS
         boolean cycle_found = false;
-        while(!ts_a.getInitialStates().equals(r) && !ts_a.getInitialStates().isEmpty() && !cycle_found){
-            Pair<S, Saut> s = getsNotInSet(ts_a.getInitialStates(), r);
+        Pair<S, Saut> s = getsNotInSet(ts_a.getInitialStates(), r);
+        while(s!=null && !cycle_found){
             // reachable cycle
             u.add(0, s);
             r.add(s);
             boolean con = true;
             while(con){
                 Pair<S,Saut> s_tag = u.get(0);
-                Set<Pair<S,Saut>> s_tag_post = post(ts_a, s_tag);
-                if(!s_tag_post.equals(r) && !s_tag_post.isEmpty()){
+                if(s_tag == null)
+                    con = false;
+                else {
+                    Set<Pair<S, Saut>> s_tag_post = post(ts_a, s_tag);
                     Pair<S, Saut> s_tag_tag = getsNotInSet(s_tag_post, r);
-                    u.add(0, s_tag_tag);
-                    r.add(s_tag_tag);
-                }
-                else{
-                    u.remove(0);
-                    if(aut.getAcceptingStates().contains(s_tag.second)) {
-                        cycle_found = cycle_check(s_tag, t, v, ts_a);
+                    if (s_tag_tag != null) {
+                        u.add(0, s_tag_tag);
+                        r.add(s_tag_tag);
+                    } else {
+                        u.remove(0);
+                        if (aut.getAcceptingStates().contains(s_tag.second)) {
+                            cycle_found = cycle_check(s_tag, t, v, ts_a);
+                        }
                     }
+                    con = !u.isEmpty() && !cycle_found;
                 }
-                con = !u.isEmpty() && !cycle_found;
             }
+            s = getsNotInSet(ts_a.getInitialStates(), r);
         }
         if(!cycle_found)
-            return new VeficationSucceeded<>();
+            return new VerificationSucceeded<S>();
         else{
-            VerificationFailed fail = new VerificationFailed();
+            VerificationFailed<S> fail = new VerificationFailed<>();
             Collections.reverse(v);
             Collections.reverse(u);
-            fail.setCycle(v);
-            fail.setPrefix(u);
+            fail.setCycle(v.stream().map(state -> state.first).collect(Collectors.toList()));
+            fail.setPrefix(u.stream().map(state -> state.first).collect(Collectors.toList()));
             return fail;
         }
-
-
-
-//        // first find all the reachable states which are accepting in the automaton
-//        Set<Saut> acc = aut.getAcceptingStates();
-//        Set<Pair<S,Saut>> all = this.reach(ts_a);
-//        Set<Pair<S,Saut>> acc_reach = new HashSet<>();
-//        for(Pair<S,Saut> state : all)
-//            if(acc.contains(state.second))
-//                acc_reach.add(state);
-//
-//        //search for a cycle using DFS
-//        boolean hasCycle = false;
-//        for(Pair<S,Saut> state : acc_reach){
-//            List<Pair<S,Saut>> stack = new LinkedList<>();
-//            Set<Pair<S,Saut>> states_set = new HashSet<>();
-//            stack.add(state);
-//            states_set.add(state);
-//            while(!stack.isEmpty() && !hasCycle){
-//                Pair<S,Saut> stag = stack.get(stack.size()-1);
-//                Set<Pair<S,Saut>> spost = post(ts_a, stag);
-//                if(spost.contains(state))
-//                    hasCycle = true;
-//                else{
-//                    if(spost.){
-//                        states_set.add()
-//                    }
-//                    else
-//                        stack.remove(0);
-//                }
-//            }
-//        }
-
     }
+
 
     private <Saut, S, A> boolean cycle_check(Pair<S,Saut> s, Set<Pair<S,Saut>> t, List<Pair<S,Saut>> v, TransitionSystem<Pair<S, Saut>, A, Saut> ts_a) {
         boolean cycle_found = false;
@@ -1663,19 +1637,22 @@ public class FvmFacade {
         boolean con = true;
         while(con){
             Pair<S,Saut> s_tag = v.get(0);
-            Set<Pair<S,Saut>> post_s_tag = post(ts_a, s_tag);
-            if(post_s_tag.contains(s))
-                cycle_found = true;
-            else{
-                if(!post_s_tag.equals(t) && !post_s_tag.isEmpty()){
-                    Pair<S,Saut> s_tag_tag = getsNotInSet(post_s_tag, t);
-                    v.add(0, s_tag_tag);
-                    t.add(s_tag_tag);
+            if(s_tag == null)
+                con = false;
+            else {
+                Set<Pair<S, Saut>> post_s_tag = post(ts_a, s_tag);
+                if (post_s_tag.contains(s))
+                    cycle_found = true;
+                else {
+                    Pair<S, Saut> s_tag_tag = getsNotInSet(post_s_tag, t);
+                    if (s_tag_tag != null) {
+                        v.add(0, s_tag_tag);
+                        t.add(s_tag_tag);
+                    } else
+                        v.remove(0);
                 }
-                else
-                    v.remove(0);
+                con = !v.isEmpty() && !cycle_found;
             }
-            con = !v.isEmpty() && !cycle_found;
         }
         return cycle_found;
     }

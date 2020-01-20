@@ -348,8 +348,46 @@ public class FvmFacadeTest {
         aut.addTransition("q1",Set.of(),"q1");
         aut.addTransition("q1",Set.of("green"),"q2");
         aut.addTransition("q1",Set.of("green", "red"),"q2");
-        VerificationResult<Integer> vr = fvm.verifyAnOmegaRegularProperty(ts, aut);
+        VerificationResult<String> vr = fvm.verifyAnOmegaRegularProperty(ts, aut);
         assertTrue(vr instanceof VerificationSucceeded);
+    }
+
+
+    @Test
+    public void testVerifyFail(){
+        TransitionSystem ts = new TransitionSystem();
+        ts.addState("s0");
+        ts.addState("s1");
+        ts.addState("s2");
+        ts.addToLabel("s0", "red");
+        ts.addToLabel("s1", "green");
+        ts.addTransition(new TSTransition("s0", "alpha", "s1"));
+        ts.addTransition(new TSTransition("s1", "alpha", "s0"));
+        ts.addTransition(new TSTransition("s0", "alpha", "s2"));
+        ts.addTransition(new TSTransition("s2", "alpha", "s0"));
+        ts.addInitialState("s0");
+        Automaton aut = new Automaton();
+        aut.addState("q0");
+        aut.addState("q2");
+        aut.addState("q1");
+        aut.setAccepting("q1");
+        aut.setInitial("q0");
+        aut.addTransition("q0",Set.of("green"), "q0" );
+        aut.addTransition("q0",Set.of(), "q0" );
+        aut.addTransition("q0",Set.of("red"), "q0" );
+        aut.addTransition("q0",Set.of("green", "red"), "q0" );
+        aut.addTransition("q2",Set.of("green"), "q2" );
+        aut.addTransition("q2",Set.of(), "q2" );
+        aut.addTransition("q2",Set.of("red"), "q2" );
+        aut.addTransition("q2",Set.of("green", "red"), "q2" );
+        aut.addTransition("q0",Set.of("red"),"q1");
+        aut.addTransition("q0",Set.of(),"q1");
+        aut.addTransition("q1",Set.of("red"),"q1");
+        aut.addTransition("q1",Set.of(),"q1");
+        aut.addTransition("q1",Set.of("green"),"q2");
+        aut.addTransition("q1",Set.of("green", "red"),"q2");
+        VerificationResult<String> vr = fvm.verifyAnOmegaRegularProperty(ts, aut);
+        assertTrue(vr instanceof VerificationFailed);
     }
 
     //todo: complete function

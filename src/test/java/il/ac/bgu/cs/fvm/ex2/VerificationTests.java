@@ -73,8 +73,20 @@ public class VerificationTests {
 
 	@Test
 	public void nanopromelaTest() throws Exception {
-		try (InputStream in = getClass().getClassLoader().getResourceAsStream("il/ac/bgu/cs/fvm/ex3/tst1.np")) {
-			ProgramGraph<String, String> pg = fvmFacadeImpl.programGraphFromNanoPromela(in);
+		try (InputStream in = getClass().getClassLoader().getResourceAsStream("il/ac/bgu/cs/fvm/ex2/tst1.np")) {
+			String t = "x:=1;\n" +
+					"x:=2;\n" +
+					"x:=3;\n" +
+					"do \n" +
+					"\t::true -> x:=4;\n" +
+					"\t          x:=5;\n" +
+					"\t          x:=6;\n" +
+					"\t          x:=0;\n" +
+					"\t          x:=7;\n" +
+					"\t          x:=8\n" +
+					"od";
+			//ProgramGraph<String, String> pg = fvmFacadeImpl.programGraphFromNanoPromela(in);
+			ProgramGraph<String,String> pg = fvmFacadeImpl.programGraphFromNanoPromelaString(t);
 			TransitionSystem<Pair<String, Map<String, Object>>, String, String> ts = fvmFacadeImpl.transitionSystemFromProgramGraph(pg, set(new ParserBasedActDef()), set(new ParserBasedCondDef()));
 
 			Automaton<String, String> aut = new AutomataFactory<>(ts).alwaysEventuallyAut(s -> s.contains("x = 0"));

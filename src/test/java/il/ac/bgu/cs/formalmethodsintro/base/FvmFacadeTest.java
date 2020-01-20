@@ -6,6 +6,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
+import il.ac.bgu.cs.formalmethodsintro.base.ltl.AP;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
@@ -246,13 +247,7 @@ public class FvmFacadeTest {
     }
 
     private Pair<LTL, MultiColorAutomaton> LTL1_GNBA1() {
-        Object A_AP = "a";
-        LTL A = new LTL() {
-            @Override
-            public String toString() {
-                return A_AP.toString();
-            }
-        };
+        LTL A = new AP("a");
         LTL trueUntilNotA = LTL.until(LTL.true_(), LTL.not(A));
         LTL eventuallyNotA =trueUntilNotA;
         LTL alwaysA = LTL.not(eventuallyNotA);
@@ -281,7 +276,7 @@ public class FvmFacadeTest {
         final int TRUE_UNTIL_NOT_A =0;
         final int PHI =1;
         for (Object o :
-                Set.of(
+                new HashSet<>(
                         List.of(
                                 _1011, _1001, _1010, //Containing not a
                                 _1101, _1001        //Not containing trueUntilNotA

@@ -13,7 +13,9 @@ import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavin
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
+import il.ac.bgu.cs.formalmethodsintro.base.ltl.AP;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
+import il.ac.bgu.cs.formalmethodsintro.base.ltl_wrapper.LTLWrapper;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaBaseListener;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
@@ -26,11 +28,13 @@ import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.util.GraphvizPainter;
 import il.ac.bgu.cs.formalmethodsintro.base.util.Pair;
+import il.ac.bgu.cs.formalmethodsintro.base.util.Util;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VeficationSucceeded;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationFailed;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationSucceeded;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.antlr.v4.runtime.misc.Utils;
 import org.svvrl.goal.core.util.Sets;
 
 /**
@@ -1674,12 +1678,130 @@ public class FvmFacade {
      * @return An automaton A such that L_\omega(A)=Words(ltl)
      */
     public <L> Automaton<?, L> LTL2NBA(LTL<L> ltl) {
-        MultiColorAutomaton gnba = toGNBA(ltl);
+        MultiColorAutomaton<?, L> gnba = toGNBA(ltl);
         return GNBA2NBA(gnba);
     }
 
     public <L> MultiColorAutomaton toGNBA(LTL<L> ltl) {
-        return new MultiColorAutomaton();
+        Set<LTL> closure = getClosure(ltl);
+        Set<Set<LTL>> states = filterNotYesodi(closure);
+        Set initials = getLTLGNBAInitials(states, ltl);
+        Set accepting = getLTLGNBAAcceptings(states);
+        Map<Set<LTL>, Integer> colorsMap = getColorsMap(states);
+        Set deletionSet = createDeletionSet(states);
+        Set<Pair> connectableStates = filterNotConnectable(states, deletionSet);
+        MultiColorAutomaton gnba = new MultiColorAutomaton();
+        for (Set<LTL> B:states) {
+            gnba.addState(B);
+            if(initials.contains(B))
+                gnba.setInitial(B);
+            if(accepting.contains(B))
+                gnba.setInitial(B);
+            if(accepting.contains(B))
+                gnba.setAccepting(B, colorsMap.get(B));
+            for(Set<LTL> Btag: states){
+                if(!deletionSet.contains(new Pair<>(B, Btag))){
+                    gnba.addTransition(
+                            B,
+                            new HashSet(Arrays.asList(
+                                    getAPOfState(B)
+                            )),
+                            Btag
+                    );
+                }
+            }
+        }
+        return gnba;
+    }
+
+    private <L> List<AP<L>> getAPOfState(Set<LTL> B) {
+        List ans  = new ArrayList();
+        for (LTL l: B) {
+            if(l instanceof AP){
+                ans.add((AP)l);
+            }
+        }
+        return ans;
+    }
+
+    private Set<Pair> filterNotConnectable(Set<Set<LTL>> states, Set deletionSet) {
+        Set ans = new HashSet();
+        for (Set<LTL> B: states) {
+            for (Set<LTL> Btag: states) {
+                Pair candidate = new Pair<>(B,Btag);
+                if(!deletionSet.contains(candidate)){
+                    ans.add(candidate);
+                }
+            }
+        }
+        return ans;
+    }
+
+    private Set createDeletionSet(Set<Set<LTL>> states) {
+        Set ans = new HashSet();
+        for (Set<LTL> B: states) {
+            for (Set<LTL> Btag: states) {
+                for (LTL l: B) {
+                    if(LTLWrapper.createLTLWrapper(l).derivesDeletion(Btag)){
+                        ans.add(new Pair<>(B, Btag));
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    private Map<Set<LTL>, Integer> getColorsMap(Set<Set<LTL>> states) {
+        int counter = 0;
+        Map ans = new HashMap();
+        for (Set<LTL> s: states){
+            for (LTL l: s) {
+                if(LTLWrapper.createLTLWrapper(l).derivesAccepting(s)){
+                    if(!ans.keySet().contains(l)){
+                        ans.put(l, counter);
+                        counter++;                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    private Set getLTLGNBAAcceptings(Set<Set<LTL>> states) {
+        Set ans = new HashSet();
+        for (Set<LTL> s: states){
+            for (LTL l: s) {
+                if(LTLWrapper.createLTLWrapper(l).derivesAccepting(s)){
+                    ans.add(s);
+                }
+            }
+        }
+        return ans;
+    }
+
+    private <L> Set getLTLGNBAInitials(Set<Set<LTL>> states, LTL<L> ltl) {
+        Set ans = new HashSet();
+        for (Set<LTL> s: states) {
+            if(s.contains(ltl))
+                ans.add(s);
+        }
+        return ans;
+    }
+
+    private Set<Set<LTL>> filterNotYesodi(Set<LTL> closure) {
+        Set ans = new HashSet();
+        for (Set<LTL> s: Util.powerSet(closure)) {
+            for (LTL l: s) {
+                if(!LTLWrapper.createLTLWrapper(l).derivesNotYesodi(s)){
+                    ans.add(s);
+                }
+            }
+        }
+        return ans;
+    }
+
+    private <L> Set getClosure(LTL<L> ltl) {
+        LTLWrapper wrapper = LTLWrapper.createLTLWrapper(ltl);
+        return wrapper.getSub();
     }
 
     /**

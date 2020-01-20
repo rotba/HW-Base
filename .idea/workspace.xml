@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,45 +12,22 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="1596824974">
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="java" value="1175" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="1175" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27846">
-              <caret line="1676" column="25" selection-start-line="1676" selection-start-column="25" selection-end-line="1676" selection-end-column="25" />
+            <state relative-caret-position="374">
+              <caret line="1681" column="5" selection-start-line="1681" selection-start-column="5" selection-end-line="1681" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/Pair.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl/LTL.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="44" selection-start-line="44" selection-end-line="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/GraphvizPainter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1683">
-              <caret line="111" column="65" selection-start-line="111" selection-start-column="65" selection-end-line="111" selection-end-column="65" />
+            <state relative-caret-position="119">
+              <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -60,49 +35,54 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1790">
-              <caret line="332" column="37" selection-start-line="332" selection-start-column="37" selection-end-line="332" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
+            <state relative-caret-position="1787">
+              <caret line="335" column="8" selection-start-line="335" selection-start-column="8" selection-end-line="335" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/MultiColorAutomaton.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2074">
-              <caret line="132" column="66" selection-start-line="132" selection-start-column="15" selection-end-line="132" selection-end-column="66" />
-              <folding>
+                <element signature="e#1815#1816#0" expanded="true" />
                 <element signature="e#1886#1887#0" expanded="true" />
-                <element signature="e#1916#1917#0" expanded="true" />
-                <element signature="e#1983#1984#0" expanded="true" />
+                <element signature="e#1950#1951#0" expanded="true" />
                 <element signature="e#2017#2018#0" expanded="true" />
-                <element signature="e#2657#2658#0" expanded="true" />
-                <element signature="e#2698#2699#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/automata/Automaton.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
-              <folding>
-                <element signature="e#1231#1232#0" expanded="true" />
-                <element signature="e#1271#1272#0" expanded="true" />
+                <element signature="e#2078#2079#0" expanded="true" />
+                <element signature="e#2145#2146#0" expanded="true" />
+                <element signature="e#4830#4831#0" expanded="true" />
+                <element signature="e#4893#4894#0" expanded="true" />
+                <element signature="e#9033#9169#0" expanded="true" />
+                <element signature="e#9168#9169#0" expanded="true" />
+                <element signature="e#15923#15924#0" expanded="true" />
+                <element signature="e#15970#15971#0" expanded="true" />
+                <element signature="e#16202#16203#0" expanded="true" />
+                <element signature="e#16249#16250#0" expanded="true" />
+                <element signature="e#41276#41277#0" expanded="true" />
+                <element signature="e#41321#41322#0" expanded="true" />
+                <element signature="e#41388#41389#0" expanded="true" />
+                <element signature="e#41433#41434#0" expanded="true" />
+                <element signature="e#41502#41503#0" expanded="true" />
+                <element signature="e#41545#41546#0" expanded="true" />
+                <element signature="e#45666#45667#0" expanded="true" />
+                <element signature="e#45700#45701#0" expanded="true" />
+                <element signature="e#45878#45879#0" expanded="true" />
+                <element signature="e#45910#45911#0" expanded="true" />
+                <element signature="e#45962#45963#0" expanded="true" />
+                <element signature="e#45997#45998#0" expanded="true" />
+                <element signature="e#46054#46055#0" expanded="true" />
+                <element signature="e#46090#46091#0" expanded="true" />
+                <element signature="e#46176#46177#0" expanded="true" />
+                <element signature="e#46208#46209#0" expanded="true" />
+                <element signature="e#46260#46261#0" expanded="true" />
+                <element signature="e#46296#46297#0" expanded="true" />
+                <element signature="e#46353#46354#0" expanded="true" />
+                <element signature="e#46388#46389#0" expanded="true" />
+                <element signature="e#46510#46511#0" expanded="true" />
+                <element signature="e#46544#46545#0" expanded="true" />
+                <element signature="e#46794#46795#0" expanded="true" />
+                <element signature="e#46826#46827#0" expanded="true" />
+                <element signature="e#46906#46907#0" expanded="true" />
+                <element signature="e#46971#46972#0" expanded="true" />
+                <element signature="e#47060#47061#0" expanded="true" />
+                <element signature="e#47094#47095#0" expanded="true" />
+                <element signature="e#47194#47195#0" expanded="true" />
+                <element signature="e#47226#47227#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -199,12 +179,6 @@
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
   <component name="MavenProjectNavigator">
     <treeState>
       <expand>
@@ -230,67 +204,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="cs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="cs" type="462c0819:PsiDirectoryNode" />
-              <item name="fvm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="cs" type="462c0819:PsiDirectoryNode" />
-              <item name="fvm" type="462c0819:PsiDirectoryNode" />
-              <item name="ex2" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -376,6 +290,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -429,6 +345,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="il.ac.bgu.cs.formalmethodsintro.base" />
       <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.formalmethodsintro.base.FvmFacadeTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -491,6 +408,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="il.ac.bgu.cs.fvm.ex1" />
       <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.fvm.ex1.ProgramGraphProductTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -566,11 +484,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108402000" />
+    <option name="totallyTimeSpent" value="108407000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.26705757" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -1010,15 +927,62 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27846">
-          <caret line="1676" column="25" selection-start-line="1676" selection-start-column="25" selection-end-line="1676" selection-end-column="25" />
+        <state relative-caret-position="374">
+          <caret line="1681" column="5" selection-start-line="1681" selection-start-column="5" selection-end-line="1681" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1790">
-          <caret line="332" column="37" selection-start-line="332" selection-start-column="37" selection-end-line="332" selection-end-column="37" />
+        <state relative-caret-position="1787">
+          <caret line="335" column="8" selection-start-line="335" selection-start-column="8" selection-end-line="335" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1815#1816#0" expanded="true" />
+            <element signature="e#1886#1887#0" expanded="true" />
+            <element signature="e#1950#1951#0" expanded="true" />
+            <element signature="e#2017#2018#0" expanded="true" />
+            <element signature="e#2078#2079#0" expanded="true" />
+            <element signature="e#2145#2146#0" expanded="true" />
+            <element signature="e#4830#4831#0" expanded="true" />
+            <element signature="e#4893#4894#0" expanded="true" />
+            <element signature="e#9033#9169#0" expanded="true" />
+            <element signature="e#9168#9169#0" expanded="true" />
+            <element signature="e#15923#15924#0" expanded="true" />
+            <element signature="e#15970#15971#0" expanded="true" />
+            <element signature="e#16202#16203#0" expanded="true" />
+            <element signature="e#16249#16250#0" expanded="true" />
+            <element signature="e#41276#41277#0" expanded="true" />
+            <element signature="e#41321#41322#0" expanded="true" />
+            <element signature="e#41388#41389#0" expanded="true" />
+            <element signature="e#41433#41434#0" expanded="true" />
+            <element signature="e#41502#41503#0" expanded="true" />
+            <element signature="e#41545#41546#0" expanded="true" />
+            <element signature="e#45666#45667#0" expanded="true" />
+            <element signature="e#45700#45701#0" expanded="true" />
+            <element signature="e#45878#45879#0" expanded="true" />
+            <element signature="e#45910#45911#0" expanded="true" />
+            <element signature="e#45962#45963#0" expanded="true" />
+            <element signature="e#45997#45998#0" expanded="true" />
+            <element signature="e#46054#46055#0" expanded="true" />
+            <element signature="e#46090#46091#0" expanded="true" />
+            <element signature="e#46176#46177#0" expanded="true" />
+            <element signature="e#46208#46209#0" expanded="true" />
+            <element signature="e#46260#46261#0" expanded="true" />
+            <element signature="e#46296#46297#0" expanded="true" />
+            <element signature="e#46353#46354#0" expanded="true" />
+            <element signature="e#46388#46389#0" expanded="true" />
+            <element signature="e#46510#46511#0" expanded="true" />
+            <element signature="e#46544#46545#0" expanded="true" />
+            <element signature="e#46794#46795#0" expanded="true" />
+            <element signature="e#46826#46827#0" expanded="true" />
+            <element signature="e#46906#46907#0" expanded="true" />
+            <element signature="e#46971#46972#0" expanded="true" />
+            <element signature="e#47060#47061#0" expanded="true" />
+            <element signature="e#47094#47095#0" expanded="true" />
+            <element signature="e#47194#47195#0" expanded="true" />
+            <element signature="e#47226#47227#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

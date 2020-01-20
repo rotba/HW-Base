@@ -282,8 +282,10 @@ public class FvmFacadeTest {
         final int PHI =1;
         for (Object o :
                 Set.of(
-                        _1011, _1001, _1010, //Containing not a
-                        _1101, _1001        //Not containing trueUntilNotA
+                        List.of(
+                                _1011, _1001, _1010, //Containing not a
+                                _1101, _1001        //Not containing trueUntilNotA
+                        )
                 )
         ) {//trueUntilNotA eccepting
             gnba.setAccepting(o, TRUE_UNTIL_NOT_A);

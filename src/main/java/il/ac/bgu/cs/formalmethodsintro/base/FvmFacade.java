@@ -1679,6 +1679,7 @@ public class FvmFacade {
     }
 
     public <L> MultiColorAutomaton toGNBA(LTL<L> ltl) {
+        return new MultiColorAutomaton();
     }
 
     /**

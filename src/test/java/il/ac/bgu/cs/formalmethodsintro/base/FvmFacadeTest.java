@@ -6,6 +6,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavingActDef;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
+import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
@@ -233,6 +234,30 @@ public class FvmFacadeTest {
         Automaton actual = fvm.GNBA2NBA(p.getFirst());
         Automaton expected = p.getSecond();
         assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void testLTLToGNBA(){
+        Pair<LTL,MultiColorAutomaton> p = LTL1_GNBA1();
+        MultiColorAutomaton actual = fvm.toGNBA(p.getFirst());
+        MultiColorAutomaton expected = p.getSecond();
+        assertEquals(expected, actual);
+    }
+
+    private Pair<LTL, MultiColorAutomaton> LTL1_GNBA1() {
+        LTL a = new LTL() {
+            @Override
+            public String toString() {
+                return "a";
+            }
+        };
+        LTL eventualyNotA = LTL.until(LTL.true_(), LTL.not(a));
+        LTL ltl = LTL.until(
+                LTL.true_(),
+                LTL.not(eventualyNotA)
+        );
+        
     }
 
     private Pair<MultiColorAutomaton, Automaton> NBA1_GNBA1() {

@@ -1674,7 +1674,11 @@ public class FvmFacade {
      * @return An automaton A such that L_\omega(A)=Words(ltl)
      */
     public <L> Automaton<?, L> LTL2NBA(LTL<L> ltl) {
-        throw new java.lang.UnsupportedOperationException();
+        MultiColorAutomaton gnba = toGNBA(ltl);
+        return GNBA2NBA(gnba);
+    }
+
+    public <L> MultiColorAutomaton toGNBA(LTL<L> ltl) {
     }
 
     /**

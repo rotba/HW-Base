@@ -246,18 +246,91 @@ public class FvmFacadeTest {
     }
 
     private Pair<LTL, MultiColorAutomaton> LTL1_GNBA1() {
-        LTL a = new LTL() {
+        Object A_AP = "a";
+        LTL A = new LTL() {
             @Override
             public String toString() {
-                return "a";
+                return A_AP.toString();
             }
         };
-        LTL eventualyNotA = LTL.until(LTL.true_(), LTL.not(a));
-        LTL ltl = LTL.until(
+        LTL trueUntilNotA = LTL.until(LTL.true_(), LTL.not(A));
+        LTL eventuallyNotA =trueUntilNotA;
+        LTL alwaysA = LTL.not(eventuallyNotA);
+        LTL eventuallyAlwaysA = LTL.until(
                 LTL.true_(),
-                LTL.not(eventualyNotA)
+                alwaysA
         );
-        
+        LTL phi =eventuallyAlwaysA;
+        MultiColorAutomaton gnba = new MultiColorAutomaton();
+        //true, A, trueUntilNotA, phi  aka eventuallyAlwaysA
+        Object  _1111 = Set.of(LTL.true_(), A,trueUntilNotA, phi);
+        Object  _1101 = Set.of(LTL.true_(), A,LTL.not(trueUntilNotA), phi);
+        Object  _1110 = Set.of(LTL.true_(), A,trueUntilNotA, LTL.not(phi));
+//        Object  _1100 = Set.of(LTL.true_(), A,LTL.not(trueUntilNotA), LTL.not(phi)); Not Yesodi : phi suifx in and phi not it
+        Object  _1011 = Set.of(LTL.true_(), LTL.not(A),trueUntilNotA, phi);
+        Object  _1001 = Set.of(LTL.true_(), LTL.not(A),LTL.not(trueUntilNotA), phi);
+        Object  _1010 = Set.of(LTL.true_(), LTL.not(A),trueUntilNotA, LTL.not(phi));
+//        Object  _1000 = Set.of(LTL.true_(), LTL.not(A),LTL.not(trueUntilNotA), LTL.not(phi));Not Yesodi : phi suifx in and phi not it
+
+        for (Object o : Set.of(_1111,_1101,_1110,_1011, _1001, _1010)) {//states yesodiim
+            gnba.addState(o);
+        }
+        for (Object o : List.of(_1111,_1101,_1011, _1001)) {//states containing phi
+            gnba.setInitial(o);
+        }
+        final int TRUE_UNTIL_NOT_A =0;
+        final int PHI =1;
+        for (Object o :
+                Set.of(
+                        _1011, _1001, _1010, //Containing not a
+                        _1101, _1001        //Not containing trueUntilNotA
+                )
+        ) {//trueUntilNotA eccepting
+            gnba.setAccepting(o, TRUE_UNTIL_NOT_A);
+        }
+
+        for (Object o :
+                Set.of(
+                        _1101,_1001, //Containing not(trueUntilNotA)
+                        _1110,_1010        //Not containing trueUntilNotA
+                )
+        ) {//phi accepting
+            gnba.setAccepting(o, PHI);
+        }
+        Set deletionSet = Set.of(//states that dont have transitions between them
+                new Pair<>(_1111,_1110),
+                new Pair<>(_1111,_1010),
+                new Pair<>(_1011,_1110),
+                new Pair<>(_1011,_1010),
+                new Pair<>(_1110,_1111),
+                new Pair<>(_1110,_1101),
+                new Pair<>(_1110,_1011),
+                new Pair<>(_1110,_1001),
+                new Pair<>(_1010,_1111),
+                new Pair<>(_1010,_1101),
+                new Pair<>(_1010,_1011),
+                new Pair<>(_1010,_1001),
+                new Pair<>(_1101,_1111),
+                new Pair<>(_1101,_1110),
+                new Pair<>(_1101,_1011),
+                new Pair<>(_1101,_1010),
+                new Pair<>(_1001,_1111),
+                new Pair<>(_1001,_1110),
+                new Pair<>(_1001,_1011),
+                new Pair<>(_1001,_1010)
+        );
+        for (Object B: gnba.getStates()) {
+            for (Object B_tag: gnba.getStates()) {
+                if(!deletionSet.contains(new Pair<>(B,B_tag))){
+                    gnba.addTransition(
+                            B,
+                            Set.of(A_AP),
+                            B_tag
+                    );
+                }
+            }
+        }
+        return new Pair<>(phi, gnba);
     }
 
     private Pair<MultiColorAutomaton, Automaton> NBA1_GNBA1() {

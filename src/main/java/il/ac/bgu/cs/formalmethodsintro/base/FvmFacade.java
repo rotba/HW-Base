@@ -995,24 +995,34 @@ public class FvmFacade {
         }
     }
 
-    private <L, A> void spreadToReachables(Pair<L, Map<String, Object>> currState, ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs, TransitionSystem ts) {
-        for (PGTransition tran : pg.getTransitions()) {
-            if (tran.getFrom().equals(currState.getFirst())) {
-                for (ConditionDef cd : conditionDefs) {
-                    if (cd.evaluate(currState.getSecond(), tran.getCondition())) {
-                        for (ActionDef ad : actionDefs) {
-                            if (ad.isMatchingAction(tran.getAction())) {
-                                Pair<L, Map<String, Object>> newState = new Pair(tran.getTo(), ad.effect(currState.getSecond(), tran.getAction()));
-                                ts.addState(newState);
-                                ts.addTransition(new TSTransition(currState, tran.getAction(), newState));
-                                tagNewState(ts, newState);
-                                spreadToReachables(newState, pg, actionDefs, conditionDefs, ts);
+    private <L, A> void spreadToReachables(Pair<L, Map<String, Object>> state, ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs, TransitionSystem ts) {
+        Queue<Pair<L, Map<String, Object>>> q = new LinkedList();
+        q.add(state);
+        while (!q.isEmpty()){
+            Pair<L, Map<String, Object>> currState= q.poll();
+            for (PGTransition tran : pg.getTransitions()) {
+                if (tran.getFrom().equals(currState.getFirst())) {
+                    for (ConditionDef cd : conditionDefs) {
+                        if (cd.evaluate(currState.getSecond(), tran.getCondition())) {
+                            for (ActionDef ad : actionDefs) {
+                                if (ad.isMatchingAction(tran.getAction())) {
+                                    Pair<L, Map<String, Object>> newState = new Pair(tran.getTo(), ad.effect(currState.getSecond(), tran.getAction()));
+                                    if(!ts.getStates().contains(newState)){
+                                        ts.addState(newState);
+                                        ts.addTransition(new TSTransition(currState, tran.getAction(), newState));
+                                        tagNewState(ts, newState);
+                                        q.add(newState);
+                                    }
+
+//                                    spreadToReachables(newState, pg, actionDefs, conditionDefs, ts);
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
     }
 
 
@@ -1694,8 +1704,6 @@ public class FvmFacade {
         for (Set<LTL> B:states) {
             gnba.addState(B);
             if(initials.contains(B))
-                gnba.setInitial(B);
-            if(accepting.contains(B))
                 gnba.setInitial(B);
             if(accepting.contains(B))
                 gnba.setAccepting(B, colorsMap.get(B));

@@ -321,7 +321,7 @@ public class FvmFacadeTest {
                 if(!deletionSet.contains(new Pair<>(B,B_tag))){
                     gnba.addTransition(
                             B,
-                            Set.of(A_AP),
+                            Set.of(A),
                             B_tag
                     );
                 }

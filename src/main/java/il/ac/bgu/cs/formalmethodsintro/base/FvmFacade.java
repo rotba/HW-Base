@@ -10,6 +10,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
 import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ChannelSystem;
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
+import il.ac.bgu.cs.formalmethodsintro.base.fairness.FairnessCondition;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
@@ -468,6 +469,20 @@ public class FvmFacade {
      * @return An automaton A such that L_\omega(A)=Words(ltl)
      */
     public <L> Automaton<?, L> LTL2NBA(LTL<L> ltl) {
+        throw new java.lang.UnsupportedOperationException();
+    }
+
+    /**
+     * Verify that a system satisfies an LTL formula under fairness conditions.
+     * @param ts Transition system
+     * @param fc Fairness condition
+     * @param ltl An LTL formula
+     * @param <S>  Type of states in the transition system
+     * @param <A> Type of actions in the transition system
+     * @param <P> Type of atomic propositions in the transition system
+     * @return a VerificationSucceeded object or a VerificationFailed object with a counterexample.
+     */
+    public <S, A, P> VerificationResult<S> verifyFairLTLFormula(TransitionSystem<S, A, P> ts, FairnessCondition<A> fc, LTL<P> ltl){
         throw new java.lang.UnsupportedOperationException();
     }
 }

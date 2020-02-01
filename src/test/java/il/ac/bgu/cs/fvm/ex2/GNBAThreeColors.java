@@ -117,7 +117,7 @@ public class GNBAThreeColors {
 		aut.setAccepting("s5", GREEN);
 		aut.setAccepting("s6", GREEN);
 		aut.setAccepting("s7", GREEN);
-
+	
 		return aut;
 	}
 

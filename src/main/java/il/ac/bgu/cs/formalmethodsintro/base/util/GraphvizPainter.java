@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import il.ac.bgu.cs.formalmethodsintro.base.automata.MultiColorAutomaton;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
+import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
 
 /**
@@ -53,7 +56,55 @@ public class GraphvizPainter<S, A, P> {
         this.apPainter = apPainter;
     }
 
-    public String makeDotCode(TransitionSystem<S, A, P> ts) {
+    private TransitionSystem<S, String, String> pgAsTs(ProgramGraph<S, A> pg) {
+        TransitionSystem<S, String, String> TS = new TransitionSystem<>();
+        TS.setName("translated_pg");
+        pg.getTransitions().stream()
+    			.forEach(t->
+    						TS.addTransition(new TSTransition<S, String>(t.getFrom(), t.getCondition()+";"+t.getAction(), t.getTo())));
+        for(S s : pg.getInitialLocations()){
+            TS.addInitialState(s);
+        }
+        
+        S[] init = (S[]) pg.getInitialLocations().toArray();
+        if(init.length>0) {
+	        S first = init[0];
+	        for(List<String> l : pg.getInitalizations())
+	                TS.addToLabel(first, l.toString());
+        }
+        return TS;
+	}
+    
+    private TransitionSystem<A, String, Integer> autAsTs(MultiColorAutomaton<A, ?> aut) {
+        TransitionSystem<A, String, Integer> TS = new TransitionSystem<>();
+        TS.setName("translated_aut");
+        aut.getTransitions().entrySet().stream()
+    			.forEach(entry->
+    				entry.getValue().entrySet().stream().forEach(subEntry->
+    					subEntry.getValue().stream().forEach(to->{
+    						TS.addTransition(new TSTransition<A, String>(entry.getKey(), subEntry.getKey().toString(), to));
+                        })));
+        
+        for(A s : aut.getInitialStates()){
+            TS.addInitialState(s);
+        }
+
+        for(int color : aut.getColors()){
+            for(A s : aut.getAcceptingStates(color))
+                TS.addToLabel(s, color);
+        }
+        return TS;
+    }
+    
+    public String makeDotCode(MultiColorAutomaton<A, ?> aut) {
+        return GraphvizPainter.toStringPainter().makeDotCode(autAsTs(aut));
+    }
+
+	public String makeDotCode(ProgramGraph<S, A> pg) {
+        return GraphvizPainter.toStringPainter().makeDotCode(pgAsTs(pg));
+	}
+
+	public String makeDotCode(TransitionSystem<S, A, P> ts) {
         idByState.clear();
         StringBuilder sb = new StringBuilder();
         sb.append("digraph ts {\n");
@@ -99,7 +150,7 @@ public class GraphvizPainter<S, A, P> {
                         .append(" -> ")
                         .append(idByState.get(t.getTo()))
                         .append(" [label=\"")
-                        .append(actionPainter.apply(t.getAction()!=null ? t.getAction(): (A)"tau").replace("\"", "\\\"\\"))
+                        .append(actionPainter.apply(t.getAction()).replace("\"", "\\\"\\"))
                         .append("\"];\n")
         );
     }

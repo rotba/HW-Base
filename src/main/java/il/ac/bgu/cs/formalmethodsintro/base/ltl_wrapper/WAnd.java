@@ -9,31 +9,28 @@ import java.util.Set;
 public class WAnd extends LTLWrapper {
     private And ltl;
     public WAnd(And ltl) {
+        super(ltl);
         this.ltl = ltl;
     }
 
     @Override
-    public boolean derivesDeletion(Set<LTL> btag) {
+    public boolean derivesDeletion(Set<LTL> B, Set<LTL> btag) {
         return false;
     }
 
     @Override
     public Set<LTL> getSub() {
         Set ans = new HashSet();
-        Set s1 = createLTLWrapper(ltl.getLeft()).getSub();
-        Set s2 = createLTLWrapper(ltl.getRight()).getSub();
-        Set s3 = new HashSet();
-        s3.add(ltl);
-        s3.add(LTL.not(ltl));
-        ans.addAll(s1);
-        ans.addAll(s2);
-        ans.addAll(s3);
+        ans.addAll(createLTLWrapper(ltl.getLeft()).getSub());
+        ans.addAll(createLTLWrapper(ltl.getRight()).getSub());
+        ans.add(ltl);
+        ans.add(not(ltl));
         return ans;
     }
 
     @Override
     public boolean derivesNotYesodi(Set<LTL> s) {
-        return false;
+        return !(s.contains(ltl.getLeft()) && s.contains(ltl.getRight()));
     }
 
     @Override

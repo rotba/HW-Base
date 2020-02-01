@@ -2,6 +2,7 @@ package il.ac.bgu.cs.formalmethodsintro.base;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,8 +14,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavin
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
-import il.ac.bgu.cs.formalmethodsintro.base.ltl.AP;
-import il.ac.bgu.cs.formalmethodsintro.base.ltl.LTL;
+import il.ac.bgu.cs.formalmethodsintro.base.ltl.*;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl_wrapper.LTLWrapper;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaBaseListener;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
@@ -998,8 +998,8 @@ public class FvmFacade {
     private <L, A> void spreadToReachables(Pair<L, Map<String, Object>> state, ProgramGraph<L, A> pg, Set<ActionDef> actionDefs, Set<ConditionDef> conditionDefs, TransitionSystem ts) {
         Queue<Pair<L, Map<String, Object>>> q = new LinkedList();
         q.add(state);
-        while (!q.isEmpty()){
-            Pair<L, Map<String, Object>> currState= q.poll();
+        while (!q.isEmpty()) {
+            Pair<L, Map<String, Object>> currState = q.poll();
             for (PGTransition tran : pg.getTransitions()) {
                 if (tran.getFrom().equals(currState.getFirst())) {
                     for (ConditionDef cd : conditionDefs) {
@@ -1007,7 +1007,7 @@ public class FvmFacade {
                             for (ActionDef ad : actionDefs) {
                                 if (ad.isMatchingAction(tran.getAction())) {
                                     Pair<L, Map<String, Object>> newState = new Pair(tran.getTo(), ad.effect(currState.getSecond(), tran.getAction()));
-                                    if(!ts.getStates().contains(newState)){
+                                    if (!ts.getStates().contains(newState)) {
                                         ts.addState(newState);
                                         ts.addTransition(new TSTransition(currState, tran.getAction(), newState));
                                         tagNewState(ts, newState);
@@ -1554,8 +1554,8 @@ public class FvmFacade {
         for (Sts ts_state : ts.getStates()) {
             for (Saut a_state : a_states) {
                 Pair<Sts, Saut> new_state = new Pair(ts_state, a_state);
-                if(ts.getInitialStates().contains(ts_state)){
-                    if(aut.isSecondState(a_state, ts.getLabel(ts_state)))
+                if (ts.getInitialStates().contains(ts_state)) {
+                    if (aut.isSecondState(a_state, ts.getLabel(ts_state)))
                         ts_a.addInitialState(new_state);
                 }
                 ts_a.addState(new_state);
@@ -1568,13 +1568,13 @@ public class FvmFacade {
             for (Saut a_from_state : a_states) {
                 Map<Set<P>, Set<Saut>> a_trans = aut.getTransitions().get(a_from_state);
                 for (Set<P> l_set : a_trans.keySet()) {
-                        if(ts.getLabel(trans.getTo()).equals(l_set)) {
-                            for (Saut to_a_state : a_trans.get(l_set)) {
-                                Pair<Sts, Saut> from = new Pair(trans.getFrom(), a_from_state);
-                                Pair<Sts, Saut> to = new Pair(trans.getTo(), to_a_state);
-                                ts_a.addTransition(new TSTransition<>(from, trans.getAction(), to));
-                            }
+                    if (ts.getLabel(trans.getTo()).equals(l_set)) {
+                        for (Saut to_a_state : a_trans.get(l_set)) {
+                            Pair<Sts, Saut> from = new Pair(trans.getFrom(), a_from_state);
+                            Pair<Sts, Saut> to = new Pair(trans.getTo(), to_a_state);
+                            ts_a.addTransition(new TSTransition<>(from, trans.getAction(), to));
                         }
+                    }
                 }
             }
         }
@@ -1605,14 +1605,14 @@ public class FvmFacade {
         List<Pair<S, Saut>> v = new LinkedList<>(); // stack for inner DFS
         boolean cycle_found = false;
         Pair<S, Saut> s = getsNotInSet(ts_a.getInitialStates(), r);
-        while(s!=null && !cycle_found){
+        while (s != null && !cycle_found) {
             // reachable cycle
             u.add(0, s);
             r.add(s);
             boolean con = true;
-            while(con){
-                Pair<S,Saut> s_tag = u.get(0);
-                if(s_tag == null)
+            while (con) {
+                Pair<S, Saut> s_tag = u.get(0);
+                if (s_tag == null)
                     con = false;
                 else {
                     Set<Pair<S, Saut>> s_tag_post = post(ts_a, s_tag);
@@ -1631,9 +1631,9 @@ public class FvmFacade {
             }
             s = getsNotInSet(ts_a.getInitialStates(), r);
         }
-        if(!cycle_found)
+        if (!cycle_found)
             return new VerificationSucceeded<S>();
-        else{
+        else {
             VerificationFailed<S> fail = new VerificationFailed<>();
             Collections.reverse(v);
             Collections.reverse(u);
@@ -1644,14 +1644,14 @@ public class FvmFacade {
     }
 
 
-    private <Saut, S, A> boolean cycle_check(Pair<S,Saut> s, Set<Pair<S,Saut>> t, List<Pair<S,Saut>> v, TransitionSystem<Pair<S, Saut>, A, Saut> ts_a) {
+    private <Saut, S, A> boolean cycle_check(Pair<S, Saut> s, Set<Pair<S, Saut>> t, List<Pair<S, Saut>> v, TransitionSystem<Pair<S, Saut>, A, Saut> ts_a) {
         boolean cycle_found = false;
         v.add(0, s);
         t.add(s);
         boolean con = true;
-        while(con){
-            Pair<S,Saut> s_tag = v.get(0);
-            if(s_tag == null)
+        while (con) {
+            Pair<S, Saut> s_tag = v.get(0);
+            if (s_tag == null)
                 con = false;
             else {
                 Set<Pair<S, Saut>> post_s_tag = post(ts_a, s_tag);
@@ -1671,9 +1671,9 @@ public class FvmFacade {
         return cycle_found;
     }
 
-    private <Saut, S> Pair<S,Saut> getsNotInSet(Set<Pair<S,Saut>> initialStates, Set<Pair<S,Saut>> r) {
-        for(Pair<S,Saut> state : initialStates)
-            if(!r.contains(state))
+    private <Saut, S> Pair<S, Saut> getsNotInSet(Set<Pair<S, Saut>> initialStates, Set<Pair<S, Saut>> r) {
+        for (Pair<S, Saut> state : initialStates)
+            if (!r.contains(state))
                 return state;
         return null;
     }
@@ -1696,19 +1696,24 @@ public class FvmFacade {
         Set<LTL> closure = getClosure(ltl);
         Set<Set<LTL>> states = filterNotYesodi(closure);
         Set initials = getLTLGNBAInitials(states, ltl);
-        Set accepting = getLTLGNBAAcceptings(states);
-        Map<Set<LTL>, Integer> colorsMap = getColorsMap(states);
-        Set deletionSet = createDeletionSet(states);
+        Set<Until> untils = getUntils(closure);
+        Map<Set<LTL>, Integer> colorsMap = getColorsMap(states, untils);
+        Set<Next> nexts = getNexts(closure);
+        Set deletionSet = createDeletionSet(states, untils, nexts);
         Set<Pair> connectableStates = filterNotConnectable(states, deletionSet);
+        Set accepting = new HashSet();
+        for (Set s:colorsMap.keySet()) {
+            accepting.add(s);
+        }
         MultiColorAutomaton gnba = new MultiColorAutomaton();
-        for (Set<LTL> B:states) {
+        for (Set<LTL> B : states) {
             gnba.addState(B);
-            if(initials.contains(B))
+            if (initials.contains(B))
                 gnba.setInitial(B);
-            if(accepting.contains(B))
+            if (accepting.contains(B))
                 gnba.setAccepting(B, colorsMap.get(B));
-            for(Set<LTL> Btag: states){
-                if(!deletionSet.contains(new Pair<>(B, Btag))){
+            for (Set<LTL> Btag : states) {
+                if (!deletionSet.contains(new Pair<>(B, Btag))) {
                     gnba.addTransition(
                             B,
                             new HashSet(Arrays.asList(
@@ -1722,11 +1727,33 @@ public class FvmFacade {
         return gnba;
     }
 
+    private Set<Next> getNexts(Set<LTL> closure) {
+        HashSet<Next> ans = new HashSet<>();
+        for (LTL l : closure) {
+            if (LTLWrapper.createLTLWrapper(l).isNext()) {
+                ans.add((Next) l);
+            }
+        }
+        return ans;
+    }
+
+    private Set<Until> getUntils(Set<LTL> closure) {
+        Set<Until> ans = new HashSet();
+        for (LTL l : closure) {
+            if (LTLWrapper.createLTLWrapper(l).isUntil()) {
+                if (!ans.contains(l)) {
+                    ans.add((Until) l);
+                }
+            }
+        }
+        return ans;
+    }
+
     private <L> List<AP<L>> getAPOfState(Set<LTL> B) {
-        List ans  = new ArrayList();
-        for (LTL l: B) {
-            if(l instanceof AP){
-                ans.add((AP)l);
+        List ans = new ArrayList();
+        for (LTL l : B) {
+            if (l instanceof AP) {
+                ans.add((AP) l);
             }
         }
         return ans;
@@ -1734,10 +1761,10 @@ public class FvmFacade {
 
     private Set<Pair> filterNotConnectable(Set<Set<LTL>> states, Set deletionSet) {
         Set ans = new HashSet();
-        for (Set<LTL> B: states) {
-            for (Set<LTL> Btag: states) {
-                Pair candidate = new Pair<>(B,Btag);
-                if(!deletionSet.contains(candidate)){
+        for (Set<LTL> B : states) {
+            for (Set<LTL> Btag : states) {
+                Pair candidate = new Pair<>(B, Btag);
+                if (!deletionSet.contains(candidate)) {
                     ans.add(candidate);
                 }
             }
@@ -1745,12 +1772,21 @@ public class FvmFacade {
         return ans;
     }
 
-    private Set createDeletionSet(Set<Set<LTL>> states) {
+    private Set createDeletionSet(Set<Set<LTL>> states, Set<Until> untils, Set<Next> nexts) {
         Set ans = new HashSet();
-        for (Set<LTL> B: states) {
-            for (Set<LTL> Btag: states) {
-                for (LTL l: B) {
-                    if(LTLWrapper.createLTLWrapper(l).derivesDeletion(Btag)){
+        for (Set<LTL> B : states) {
+            for (Set<LTL> Btag : states) {
+                boolean needToBeDeleted = false;
+                for (LTL l : B) {
+                    for (Until u : untils) {
+                        needToBeDeleted |= B.contains(u) && !B.contains(u.getRight()) && !Btag.contains(u);
+                        needToBeDeleted |= !B.contains(u) && B.contains(u.getLeft()) && Btag.contains(u);
+                    }
+                    for (Next n : nexts) {
+                        needToBeDeleted |= B.contains(n) && !B.contains(n.getInner());
+                        needToBeDeleted |= !B.contains(n) && B.contains(n.getInner());
+                    }
+                    if (needToBeDeleted) {
                         ans.add(new Pair<>(B, Btag));
                     }
                 }
@@ -1759,26 +1795,27 @@ public class FvmFacade {
         return ans;
     }
 
-    private Map<Set<LTL>, Integer> getColorsMap(Set<Set<LTL>> states) {
+    private Map<Set<LTL>, Integer> getColorsMap(Set<Set<LTL>> states, Set<Until> untils) {
         int counter = 0;
         Map ans = new HashMap();
-        for (Set<LTL> s: states){
-            for (LTL l: s) {
-                if(LTLWrapper.createLTLWrapper(l).derivesAccepting(s)){
-                    if(!ans.keySet().contains(l)){
-                        ans.put(l, counter);
-                        counter++;                    }
+        for (Until until : untils) {
+            for (Set<LTL> s : states) {
+                boolean notIn = !s.contains(until);
+                boolean promiseFulfilled = s.contains(until.getRight());
+                if (notIn || promiseFulfilled) {
+                    ans.put(s, counter);
                 }
             }
+            counter++;
         }
         return ans;
     }
 
-    private Set getLTLGNBAAcceptings(Set<Set<LTL>> states) {
+    private Set getLTLGNBAAcceptings(Set<Set<LTL>> sets, Set<Set<LTL>> states) {
         Set ans = new HashSet();
-        for (Set<LTL> s: states){
-            for (LTL l: s) {
-                if(LTLWrapper.createLTLWrapper(l).derivesAccepting(s)){
+        for (Set<LTL> s : states) {
+            for (LTL l : s) {
+                if (LTLWrapper.createLTLWrapper(l).derivesAccepting(s)) {
                     ans.add(s);
                 }
             }
@@ -1788,8 +1825,8 @@ public class FvmFacade {
 
     private <L> Set getLTLGNBAInitials(Set<Set<LTL>> states, LTL<L> ltl) {
         Set ans = new HashSet();
-        for (Set<LTL> s: states) {
-            if(s.contains(ltl))
+        for (Set<LTL> s : states) {
+            if (s.contains(ltl))
                 ans.add(s);
         }
         return ans;
@@ -1797,9 +1834,16 @@ public class FvmFacade {
 
     private Set<Set<LTL>> filterNotYesodi(Set<LTL> closure) {
         Set ans = new HashSet();
-        for (Set<LTL> s: Util.powerSet(closure)) {
-            for (LTL l: s) {
-                if(!LTLWrapper.createLTLWrapper(l).derivesNotYesodi(s)){
+        for (Set<LTL> s : Util.powerSet(closure)) {
+            if (s.contains(LTL.true_())) {
+                boolean isYesodi = true;
+                for (LTL l : s) {
+                    isYesodi &= !LTLWrapper.createLTLWrapper(l).derivesNotYesodi(s);
+                }
+                for (LTL p : closure) {
+                    isYesodi &= !LTLWrapper.createLTLWrapper(p).derivesNotMaximal(s);
+                }
+                if (isYesodi) {
                     ans.add(s);
                 }
             }
@@ -1808,8 +1852,7 @@ public class FvmFacade {
     }
 
     private <L> Set getClosure(LTL<L> ltl) {
-        LTLWrapper wrapper = LTLWrapper.createLTLWrapper(ltl);
-        return wrapper.getSub();
+        return LTLWrapper.createLTLWrapper(ltl).getSub();
     }
 
     /**

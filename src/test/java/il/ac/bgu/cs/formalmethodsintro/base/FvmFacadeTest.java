@@ -243,7 +243,16 @@ public class FvmFacadeTest {
         Pair<LTL,MultiColorAutomaton> p = LTL1_GNBA1();
         MultiColorAutomaton actual = fvm.toGNBA(p.getFirst());
         MultiColorAutomaton expected = p.getSecond();
-        assertEquals(expected, actual);
+        try {
+            assertEquals(expected, actual);
+        }catch (AssertionError e){
+            boolean PRINT = true;
+            if(PRINT){
+                System.out.println(GraphvizPainter.toStringPainter().makeDotCode(expected));
+                System.out.println(GraphvizPainter.toStringPainter().makeDotCode(actual));
+            }
+            throw e;
+        }
     }
 
     private Pair<LTL, MultiColorAutomaton> LTL1_GNBA1() {
@@ -263,14 +272,14 @@ public class FvmFacadeTest {
         Object  _1110 = Set.of(LTL.true_(), A,trueUntilNotA, LTL.not(phi));
 //        Object  _1100 = Set.of(LTL.true_(), A,LTL.not(trueUntilNotA), LTL.not(phi)); Not Yesodi : phi suifx in and phi not it
         Object  _1011 = Set.of(LTL.true_(), LTL.not(A),trueUntilNotA, phi);
-        Object  _1001 = Set.of(LTL.true_(), LTL.not(A),LTL.not(trueUntilNotA), phi);
+//        Object  _1001 = Set.of(LTL.true_(), LTL.not(A),LTL.not(trueUntilNotA), phi);
         Object  _1010 = Set.of(LTL.true_(), LTL.not(A),trueUntilNotA, LTL.not(phi));
 //        Object  _1000 = Set.of(LTL.true_(), LTL.not(A),LTL.not(trueUntilNotA), LTL.not(phi));Not Yesodi : phi suifx in and phi not it
 
-        for (Object o : Set.of(_1111,_1101,_1110,_1011, _1001, _1010)) {//states yesodiim
+        for (Object o : Set.of(_1111,_1101,_1110,_1011, _1010)) {//states yesodiim
             gnba.addState(o);
         }
-        for (Object o : List.of(_1111,_1101,_1011, _1001)) {//states containing phi
+        for (Object o : List.of(_1111,_1101,_1011)) {//states containing phi
             gnba.setInitial(o);
         }
         final int TRUE_UNTIL_NOT_A =0;
@@ -278,8 +287,8 @@ public class FvmFacadeTest {
         for (Object o :
                 new HashSet<>(
                         List.of(
-                                _1011, _1001, _1010, //Containing not a
-                                _1101, _1001        //Not containing trueUntilNotA
+                                _1011, _1010, //Containing not a
+                                _1101        //Not containing trueUntilNotA
                         )
                 )
         ) {//trueUntilNotA eccepting
@@ -288,7 +297,7 @@ public class FvmFacadeTest {
 
         for (Object o :
                 Set.of(
-                        _1101,_1001, //Containing not(trueUntilNotA)
+                        _1101, //Containing not(trueUntilNotA)
                         _1110,_1010        //Not containing trueUntilNotA
                 )
         ) {//phi accepting
@@ -302,19 +311,19 @@ public class FvmFacadeTest {
                 new Pair<>(_1110,_1111),
                 new Pair<>(_1110,_1101),
                 new Pair<>(_1110,_1011),
-                new Pair<>(_1110,_1001),
+//                new Pair<>(_1110,_1001),
                 new Pair<>(_1010,_1111),
                 new Pair<>(_1010,_1101),
                 new Pair<>(_1010,_1011),
-                new Pair<>(_1010,_1001),
+//                new Pair<>(_1010,_1001),
                 new Pair<>(_1101,_1111),
                 new Pair<>(_1101,_1110),
                 new Pair<>(_1101,_1011),
-                new Pair<>(_1101,_1010),
-                new Pair<>(_1001,_1111),
-                new Pair<>(_1001,_1110),
-                new Pair<>(_1001,_1011),
-                new Pair<>(_1001,_1010)
+                new Pair<>(_1101,_1010)
+//                new Pair<>(_1001,_1111),
+//                new Pair<>(_1001,_1110),
+//                new Pair<>(_1001,_1011),
+//                new Pair<>(_1001,_1010)
         );
         for (Object B: gnba.getStates()) {
             for (Object B_tag: gnba.getStates()) {

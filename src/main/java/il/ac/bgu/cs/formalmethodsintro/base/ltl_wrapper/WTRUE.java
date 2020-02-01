@@ -9,12 +9,13 @@ public class WTRUE extends LTLWrapper {
     private final TRUE ltl;
 
     public WTRUE(TRUE ltl) {
+        super(ltl);
         this.ltl = ltl;
     }
 
     @Override
     public Set<LTL> getSub() {
-        return null;
+        return Set.of(ltl);
     }
 
     @Override
@@ -23,7 +24,7 @@ public class WTRUE extends LTLWrapper {
     }
 
     @Override
-    public boolean derivesDeletion(Set<LTL> btag) {
+    public boolean derivesDeletion(Set<LTL> B, Set<LTL> btag) {
         return false;
     }
 

@@ -30,7 +30,9 @@ public class GNBAThreeColors {
 
 	MultiColorAutomaton<String, String> getMCAut() {
 		MultiColorAutomaton<String, String> aut = new MultiColorAutomaton<>();
-
+		final int BLUE = 0;
+		final int RED = 1;
+		final int GREEN = 2;
 		for (Set<String> s : Util.powerSet(set("a", "b", "c"))) {
 			aut.addTransition("s0", s, "s4");
 			aut.addTransition("s1", s, "s4");
@@ -101,23 +103,22 @@ public class GNBAThreeColors {
 
 		aut.setInitial("s0");
 
-		aut.setAccepting("s0", 11);
-		aut.setAccepting("s3", 11);
-		aut.setAccepting("s5", 11);
-		aut.setAccepting("s7", 11);
+		aut.setAccepting("s0", BLUE);
+		aut.setAccepting("s3", BLUE);
+		aut.setAccepting("s5", BLUE);
+		aut.setAccepting("s7", BLUE);
 
-		aut.setAccepting("s1", 22);
-		aut.setAccepting("s3", 22);
-		aut.setAccepting("s6", 22);
-		aut.setAccepting("s7", 22);
+		aut.setAccepting("s1", RED);
+		aut.setAccepting("s3", RED);
+		aut.setAccepting("s6", RED);
+		aut.setAccepting("s7", RED);
 
-		aut.setAccepting("s2", 33);
-		aut.setAccepting("s5", 33);
-		aut.setAccepting("s6", 33);
-		aut.setAccepting("s7", 33);
+		aut.setAccepting("s2", GREEN);
+		aut.setAccepting("s5", GREEN);
+		aut.setAccepting("s6", GREEN);
+		aut.setAccepting("s7", GREEN);
 
 		return aut;
-
 	}
 
 	@SuppressWarnings("unchecked")

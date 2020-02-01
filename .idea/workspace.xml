@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBAThreeColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBAThreeColors.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,23 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="1013" column="56" selection-start-line="1013" selection-start-column="56" selection-end-line="1013" selection-end-column="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="960">
+              <caret line="1016" column="102" lean-forward="true" selection-start-line="1016" selection-start-column="102" selection-end-line="1016" selection-end-column="102" />
             </state>
           </provider>
         </entry>
@@ -42,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="73">
-              <caret line="495" column="16" selection-start-line="495" selection-start-column="16" selection-end-line="495" selection-end-column="16" />
+            <state relative-caret-position="-238">
+              <caret line="335" column="28" lean-forward="true" selection-start-line="335" selection-start-column="28" selection-end-line="335" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -51,29 +37,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBAThreeColors.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="24" column="48" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="48" />
+            <state relative-caret-position="169">
+              <caret line="120" column="19" selection-start-line="120" selection-start-column="19" selection-end-line="120" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/VerificationTests.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="112" selection-start-line="112" selection-end-line="112" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/examples/PetersonProgramGraphBuilder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-408">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="115">
+              <caret line="29" column="40" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -174,6 +154,7 @@
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl_wrapper/WAnd.java" />
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" />
+        <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBAThreeColors.java" />
       </list>
     </option>
   </component>
@@ -352,7 +333,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.VerificationTests">
+  <component name="RunManager" selected="JUnit.GNBAThreeColors.threeColorTest">
     <configuration name="FvmFacadeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
@@ -440,11 +421,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.GNBAThreeColors.threeColorTest" />
         <item itemvalue="JUnit.VerificationTests" />
         <item itemvalue="JUnit.FvmFacadeTest" />
         <item itemvalue="JUnit.VerificationTests.peterson" />
         <item itemvalue="JUnit.FvmFacadeTest.testTransitionSystemFromProgramGraph" />
-        <item itemvalue="JUnit.GNBAThreeColors.threeColorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -470,24 +451,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="GNBAThreeColors_threeColorTest - 2020.01.20 at 22h 02m 08s.xml">
-      <configuration name="GNBAThreeColors.threeColorTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="VerificationTests_peterson - 2020.01.20 at 22h 03m 23s.xml">
-      <configuration name="VerificationTests.peterson" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="VerificationTests_peterson - 2020.01.20 at 22h 04m 43s.xml">
-      <configuration name="VerificationTests.peterson" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="VerificationTests_peterson - 2020.01.20 at 22h 12m 55s.xml">
-      <configuration name="VerificationTests.peterson" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="VerificationTests_peterson - 2020.01.20 at 22h 13m 01s.xml">
-      <configuration name="VerificationTests.peterson" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FvmFacadeTest - 2020.01.20 at 22h 13m 08s.xml">
-      <configuration name="FvmFacadeTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="VerificationTests_peterson - 2020.01.20 at 22h 17m 39s.xml">
       <configuration name="VerificationTests.peterson" configurationId="JUnit" />
     </history-entry>
@@ -500,15 +463,32 @@
     <history-entry file="FvmFacadeTest_testTransitionSystemFromProgramGraph - 2020.01.20 at 22h 23m 17s.xml">
       <configuration name="FvmFacadeTest.testTransitionSystemFromProgramGraph" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="FvmFacadeTest_testTransitionSystemFromProgramGraph - 2020.01.20 at 22h 30m 26s.xml">
+      <configuration name="FvmFacadeTest.testTransitionSystemFromProgramGraph" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="VerificationTests_peterson - 2020.01.20 at 22h 30m 34s.xml">
+      <configuration name="VerificationTests.peterson" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FvmFacadeTest - 2020.01.20 at 22h 31m 24s.xml">
+      <configuration name="FvmFacadeTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="VerificationTests - 2020.01.20 at 22h 33m 24s.xml">
+      <configuration name="VerificationTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="GNBAThreeColors_threeColorTest - 2020.01.20 at 22h 39m 38s.xml">
+      <configuration name="GNBAThreeColors.threeColorTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="GNBAThreeColors_threeColorTest - 2020.01.20 at 22h 42m 16s.xml">
+      <configuration name="GNBAThreeColors.threeColorTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118960000" />
+    <option name="totallyTimeSpent" value="119919000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.024291499" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25101215" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -518,8 +498,8 @@
       <window_info id="simpleUML" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5168739" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4724689" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.72646534" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29307282" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -599,17 +579,13 @@
           <properties />
           <option name="timeStamp" value="71" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java</url>
-          <line>968</line>
-          <properties />
-          <option name="timeStamp" value="73" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JUnit">
         <watch expression="other" />
+        <watch expression="aut" />
+        <watch expression="aut" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
@@ -1041,13 +1017,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBAThreeColors.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="24" column="48" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/util/Pair.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="70">
@@ -1055,16 +1024,6 @@
           <folding>
             <element signature="e#559#560#0" expanded="true" />
             <element signature="e#621#622#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1078,25 +1037,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/VerificationTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
+        <state relative-caret-position="1428">
           <caret line="112" selection-start-line="112" selection-end-line="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="960">
+          <caret line="1016" column="102" lean-forward="true" selection-start-line="1016" selection-start-column="102" selection-end-line="1016" selection-end-column="102" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="495" column="16" selection-start-line="495" selection-start-column="16" selection-end-line="495" selection-end-column="16" />
+        <state relative-caret-position="-238">
+          <caret line="335" column="28" lean-forward="true" selection-start-line="335" selection-start-column="28" selection-end-line="335" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBACritSectionTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="1013" column="56" selection-start-line="1013" selection-start-column="56" selection-end-line="1013" selection-end-column="56" />
+        <state relative-caret-position="115">
+          <caret line="29" column="40" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/GNBAThreeColors.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="120" column="19" selection-start-line="120" selection-start-column="19" selection-end-line="120" selection-end-column="19" />
         </state>
       </provider>
     </entry>

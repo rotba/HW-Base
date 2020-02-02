@@ -1697,10 +1697,10 @@ public class FvmFacade {
         Set<Set<LTL>> states = filterNotYesodi(closure);
         Set initials = getLTLGNBAInitials(states, ltl);
         Set<Until> untils = getUntils(closure);
-        Map<Set<LTL>, Integer> colorsMap = getColorsMap(states, untils);
+        Map<Set<LTL>, Set<Integer>> colorsMap = getColorsMap(states, untils);
         Set<Next> nexts = getNexts(closure);
         Set deletionSet = createDeletionSet(states, untils, nexts);
-        Set<Pair> connectableStates = filterNotConnectable(states, deletionSet);
+//        Set<Pair> connectableStates = filterNotConnectable(states, deletionSet);
         Set accepting = new HashSet();
         for (Set s:colorsMap.keySet()) {
             accepting.add(s);
@@ -1711,14 +1711,14 @@ public class FvmFacade {
             if (initials.contains(B))
                 gnba.setInitial(B);
             if (accepting.contains(B))
-                gnba.setAccepting(B, colorsMap.get(B));
+                for (Integer color:colorsMap.get(B)) {
+                    gnba.setAccepting(B, color);
+                }
             for (Set<LTL> Btag : states) {
                 if (!deletionSet.contains(new Pair<>(B, Btag))) {
                     gnba.addTransition(
                             B,
-                            new HashSet(Arrays.asList(
-                                    getAPOfState(B)
-                            )),
+                            getAPOfState(B),
                             Btag
                     );
                 }
@@ -1749,8 +1749,8 @@ public class FvmFacade {
         return ans;
     }
 
-    private <L> List<AP<L>> getAPOfState(Set<LTL> B) {
-        List ans = new ArrayList();
+    private <L> Set<AP<L>> getAPOfState(Set<LTL> B) {
+        HashSet ans = new HashSet();
         for (LTL l : B) {
             if (l instanceof AP) {
                 ans.add((AP) l);
@@ -1795,15 +1795,19 @@ public class FvmFacade {
         return ans;
     }
 
-    private Map<Set<LTL>, Integer> getColorsMap(Set<Set<LTL>> states, Set<Until> untils) {
+    private Map<Set<LTL>, Set<Integer>> getColorsMap(Set<Set<LTL>> states, Set<Until> untils) {
         int counter = 0;
-        Map ans = new HashMap();
+        Map<Set<LTL>, Set<Integer>> ans = new HashMap();
         for (Until until : untils) {
             for (Set<LTL> s : states) {
                 boolean notIn = !s.contains(until);
                 boolean promiseFulfilled = s.contains(until.getRight());
                 if (notIn || promiseFulfilled) {
-                    ans.put(s, counter);
+                    if(ans.keySet().contains(s)){
+                        ans.get(s).add(counter);
+                    }else{
+                        ans.put(s, new HashSet<Integer>(Arrays.asList(counter)));
+                    }
                 }
             }
             counter++;

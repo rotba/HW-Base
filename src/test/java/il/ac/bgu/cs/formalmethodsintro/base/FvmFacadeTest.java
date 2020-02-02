@@ -282,8 +282,8 @@ public class FvmFacadeTest {
         for (Object o : List.of(_1111,_1101,_1011)) {//states containing phi
             gnba.setInitial(o);
         }
-        final int TRUE_UNTIL_NOT_A =0;
-        final int PHI =1;
+        final int PHI =0;
+        final int TRUE_UNTIL_NOT_A =1;
         for (Object o :
                 new HashSet<>(
                         List.of(
@@ -306,6 +306,7 @@ public class FvmFacadeTest {
         Set deletionSet = Set.of(//states that dont have transitions between them
                 new Pair<>(_1111,_1110),
                 new Pair<>(_1111,_1010),
+                new Pair<>(_1111,_1101),
                 new Pair<>(_1011,_1110),
                 new Pair<>(_1011,_1010),
                 new Pair<>(_1110,_1111),
@@ -330,7 +331,7 @@ public class FvmFacadeTest {
                 if(!deletionSet.contains(new Pair<>(B,B_tag))){
                     gnba.addTransition(
                             B,
-                            Set.of(A),
+                            ((Set)B).contains(A)? Set.of(A):Set.of(),
                             B_tag
                     );
                 }

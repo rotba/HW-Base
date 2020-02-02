@@ -46,6 +46,7 @@ import org.svvrl.goal.core.util.Sets;
 public class FvmFacade {
 
     private static FvmFacade INSTANCE = null;
+    private static final boolean PATCH = true;
 
     /**
      * @return an instance of this class.
@@ -1798,6 +1799,13 @@ public class FvmFacade {
     private Map<Set<LTL>, Set<Integer>> getColorsMap(Set<Set<LTL>> states, Set<Until> untils) {
         int counter = 0;
         Map<Set<LTL>, Set<Integer>> ans = new HashMap();
+        if(untils.size()==0){
+            Set colors = new HashSet<Integer>(Arrays.asList(counter));
+            for (Set<LTL> s : states) {
+                ans.put(s, colors);
+            }
+            return ans;
+        }
         for (Until until : untils) {
             for (Set<LTL> s : states) {
                 boolean notIn = !s.contains(until);
@@ -1839,7 +1847,7 @@ public class FvmFacade {
     private Set<Set<LTL>> filterNotYesodi(Set<LTL> closure) {
         Set ans = new HashSet();
         for (Set<LTL> s : Util.powerSet(closure)) {
-            if (s.contains(LTL.true_())) {
+            if (!closure.contains(LTL.true_()) || s.contains(LTL.true_())) {
                 boolean isYesodi = true;
                 for (LTL l : s) {
                     isYesodi &= !LTLWrapper.createLTLWrapper(l).derivesNotYesodi(s);

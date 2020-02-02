@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="392eaa9b-7c8b-4078-9a76-5ae17add086a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,13 +17,40 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="71">
+              <caret line="1691" column="53" selection-start-line="1691" selection-start-column="53" selection-end-line="1691" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/LTLTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="33" column="60" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="246" selection-start-line="246" selection-end-line="246" />
+            <state relative-caret-position="68">
+              <caret line="34" column="44" lean-forward="true" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/AutomatonTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-272">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -61,15 +87,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl/AP.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="34" selection-start-line="34" selection-end-line="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/ImmutableCollections.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="88">
@@ -87,7 +104,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/AbstractMap.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="126">
@@ -108,27 +125,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl/Until.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="55" selection-start-line="55" selection-end-line="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl/TRUE.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
-              <folding>
-                <element signature="e#160#161#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -141,7 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getVa</find>
       <find>addLa</find>
       <find>graph</find>
       <find>dot</find>
@@ -171,6 +166,7 @@
       <find>peter</find>
       <find>getLTLGNBAAcceptings</find>
       <find>graphV</find>
+      <find>LTL2NBA</find>
     </findStrings>
     <replaceStrings>
       <replace>il.ac.bgu.cs.formalmethodsintro.base</replace>
@@ -225,8 +221,8 @@
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl_wrapper/LTLWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl_wrapper/WNot.java" />
         <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl_wrapper/WNext.java" />
-        <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" />
         <option value="$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java" />
       </list>
     </option>
   </component>
@@ -255,6 +251,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -301,15 +299,6 @@
               <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
               <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HW-Base" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -334,7 +323,7 @@
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="cs" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="fvm" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="FormalMethodsIntro-Base" type="b2602c69:ProjectViewProjectNode" />
@@ -343,15 +332,13 @@
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="cs" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-              <item name="sanity" type="462c0819:PsiDirectoryNode" />
+              <item name="fvm" type="462c0819:PsiDirectoryNode" />
+              <item name="ex2" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -395,7 +382,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.FvmFacadeTest">
+  <component name="RunManager" selected="JUnit.LTLTest.test">
     <configuration name="FvmFacadeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
@@ -443,6 +430,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LTLTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FormalMethodsIntro-Base" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="il.ac.bgu.cs.fvm.ex2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="il.ac.bgu.cs.fvm.ex2" />
+      <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.fvm.ex2.LTLTest" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="VerificationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FormalMethodsIntro-Base" />
       <extension name="coverage">
@@ -458,36 +461,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VerificationTests.peterson" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FormalMethodsIntro-Base" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="il.ac.bgu.cs.fvm.ex2.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="il.ac.bgu.cs.fvm.ex2" />
-      <option name="MAIN_CLASS_NAME" value="il.ac.bgu.cs.fvm.ex2.VerificationTests" />
-      <option name="METHOD_NAME" value="peterson" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="JUnit.GNBAThreeColors.threeColorTest" />
-      <item itemvalue="JUnit.VerificationTests.peterson" />
       <item itemvalue="JUnit.FvmFacadeTest" />
       <item itemvalue="JUnit.VerificationTests" />
       <item itemvalue="JUnit.FvmFacadeTest.testLTLToGNBA" />
+      <item itemvalue="JUnit.LTLTest.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LTLTest.test" />
         <item itemvalue="JUnit.FvmFacadeTest" />
         <item itemvalue="JUnit.FvmFacadeTest.testLTLToGNBA" />
         <item itemvalue="JUnit.GNBAThreeColors.threeColorTest" />
         <item itemvalue="JUnit.VerificationTests" />
-        <item itemvalue="JUnit.VerificationTests.peterson" />
       </list>
     </recent_temporary>
   </component>
@@ -510,49 +497,49 @@
       <workItem from="1579076137911" duration="11159000" />
       <workItem from="1579524191515" duration="2449000" />
       <workItem from="1580568135948" duration="10494000" />
-      <workItem from="1580632189989" duration="5508000" />
+      <workItem from="1580632189989" duration="7060000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 44m 15s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 08m 04s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 45m 58s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 08m 15s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 46m 26s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 08m 42s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 52m 17s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 09m 12s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 52m 21s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 10m 06s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 52m 37s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 11m 17s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 56m 27s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 12m 16s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 57m 15s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 12m 40s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 57m 58s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 14m 13s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FvmFacadeTest_testLTLToGNBA - 2020.02.02 at 11h 58m 49s.xml">
-      <configuration name="FvmFacadeTest.testLTLToGNBA" configurationId="JUnit" />
+    <history-entry file="LTLTest_test - 2020.02.02 at 12h 28m 00s.xml">
+      <configuration name="LTLTest.test" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135921000" />
+    <option name="totallyTimeSpent" value="137473000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25373134" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2534413" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -562,8 +549,8 @@
       <window_info id="simpleUML" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.37833038" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.5097691" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.5612789" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.57548845" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -639,21 +626,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java</url>
-          <line>718</line>
+          <line>719</line>
           <properties />
           <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java</url>
-          <line>246</line>
-          <properties />
-          <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/Assert.java</url>
-          <line>130</line>
-          <properties />
-          <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/AbstractMap.java</url>
@@ -744,6 +719,11 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>expected()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>m.get(key)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -783,28 +763,9 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>B,B_tag</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/channelsystem/ParserBasedInterleavingActDef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="37" column="63" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/nanopromela/NanoPromelaParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8347">
-          <caret line="588" selection-start-line="588" selection-end-line="588" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/channelsystem/InterleavingActDef.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1080,13 +1041,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="1816" selection-start-line="1816" selection-end-line="1816" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/ltl/TRUE.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1143,13 +1097,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/HashMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="551" selection-start-line="551" selection-end-line="551" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/AbstractMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="478" selection-start-line="478" selection-end-line="478" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacadeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="246" selection-start-line="246" selection-end-line="246" />
+        <state relative-caret-position="68">
+          <caret line="34" column="44" lean-forward="true" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/AutomatonTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-272">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1165,17 +1140,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/HashMap.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/il/ac/bgu/cs/formalmethodsintro/base/FvmFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="551" selection-start-line="551" selection-end-line="551" />
+        <state relative-caret-position="71">
+          <caret line="1691" column="53" selection-start-line="1691" selection-start-column="53" selection-end-line="1691" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.1/lib/src.zip!/java.base/java/util/AbstractMap.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/il/ac/bgu/cs/fvm/ex2/LTLTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="478" selection-start-line="478" selection-end-line="478" />
+        <state relative-caret-position="68">
+          <caret line="33" column="60" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="60" />
         </state>
       </provider>
     </entry>

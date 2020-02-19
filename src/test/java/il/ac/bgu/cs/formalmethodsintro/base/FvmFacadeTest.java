@@ -255,6 +255,9 @@ public class FvmFacadeTest {
         }
     }
 
+
+
+
     private Pair<LTL, MultiColorAutomaton> LTL1_GNBA1() {
         LTL A = new AP("a");
         LTL trueUntilNotA = LTL.until(LTL.true_(), LTL.not(A));

@@ -19,10 +19,7 @@ import il.ac.bgu.cs.formalmethodsintro.base.ltl_wrapper.LTLWrapper;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaBaseListener;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
-import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ActionDef;
-import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ConditionDef;
-import il.ac.bgu.cs.formalmethodsintro.base.programgraph.PGTransition;
-import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ProgramGraph;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TransitionSystem;
@@ -721,6 +718,32 @@ public class FvmFacade {
         return ts;
     }
 
+//    public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
+//            ChannelSystem<L, A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions) {
+//        TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> ts = createTransitionSystem();
+//        findInitialStates(cs, actions, ts);
+//        spreadReachables(cs, actions, conditions, ts);
+//        return ts;
+//    }
+
+
+
+    /**
+     * Creates a transition system representing channel system {@code cs}.
+     *
+     * @param <L> Type of locations in the channel system.
+     * @param <A> Type of actions in the channel system.
+     * @param cs The channel system to be translated into a transition system.
+     * @return A transition system representing {@code cs}.
+     */
+    public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
+            ChannelSystem<L, A> cs ) {
+
+        Set<ActionDef> actions = Collections.singleton(new ParserBasedActDef());
+        Set<ConditionDef> conditions = Collections.singleton(new ParserBasedCondDef());
+        return transitionSystemFromChannelSystem(cs, actions, conditions);
+    }
+
     public <L, A> TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> transitionSystemFromChannelSystem(
             ChannelSystem<L, A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions) {
         TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> ts = createTransitionSystem();
@@ -728,6 +751,8 @@ public class FvmFacade {
         spreadReachables(cs, actions, conditions, ts);
         return ts;
     }
+
+
 
     private <A, L> void spreadReachables(ChannelSystem<L, A> cs, Set<ActionDef> actions, Set<ConditionDef> conditions, TransitionSystem<Pair<List<L>, Map<String, Object>>, A, String> ts) {
         for (Pair<List<L>, Map<String, Object>> initialState : ts.getInitialStates()) {

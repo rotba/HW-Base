@@ -14,11 +14,14 @@ import il.ac.bgu.cs.formalmethodsintro.base.channelsystem.ParserBasedInterleavin
 import il.ac.bgu.cs.formalmethodsintro.base.circuits.Circuit;
 import il.ac.bgu.cs.formalmethodsintro.base.exceptions.StateNotFoundException;
 import il.ac.bgu.cs.formalmethodsintro.base.goal.GoalStructure;
+import il.ac.bgu.cs.formalmethodsintro.base.fairness.FairnessCondition;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl.*;
 import il.ac.bgu.cs.formalmethodsintro.base.ltl_wrapper.LTLWrapper;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaBaseListener;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaFileReader;
 import il.ac.bgu.cs.formalmethodsintro.base.nanopromela.NanoPromelaParser;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ParserBasedActDef;
+import il.ac.bgu.cs.formalmethodsintro.base.programgraph.ParserBasedCondDef;
 import il.ac.bgu.cs.formalmethodsintro.base.programgraph.*;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.AlternatingSequence;
 import il.ac.bgu.cs.formalmethodsintro.base.transitionsystem.TSTransition;
@@ -31,6 +34,8 @@ import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationFailed;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationResult;
 import il.ac.bgu.cs.formalmethodsintro.base.verification.VerificationSucceeded;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import java.util.Collection;
+import java.util.Collections;
 import org.antlr.v4.runtime.misc.Utils;
 import org.svvrl.goal.core.util.Sets;
 
@@ -728,6 +733,11 @@ public class FvmFacade {
 
 
 
+    
+    
+    
+    
+    
     /**
      * Creates a transition system representing channel system {@code cs}.
      *
@@ -1119,7 +1129,8 @@ public class FvmFacade {
         for (PGTransition<L, A> trans : unNeededTrans)
             pg.removeTransition(trans);
     }
-
+    
+    
     /**
      * Construct a program graph from nanopromela code.
      *
@@ -1696,7 +1707,7 @@ public class FvmFacade {
         }
         return cycle_found;
     }
-
+    
     private <Saut, S> Pair<S, Saut> getsNotInSet(Set<Pair<S, Saut>> initialStates, Set<Pair<S, Saut>> r) {
         for (Pair<S, Saut> state : initialStates)
             if (!r.contains(state))
@@ -1704,6 +1715,18 @@ public class FvmFacade {
         return null;
     }
 
+
+//    /**
+//     * A translation of a Generalized Büchi Automaton (GNBA) to a
+//     * Nondeterministic Büchi Automaton (NBA).
+//     *
+//     * @param <L> Type of resultant automaton transition alphabet
+//     * @param mulAut An automaton with a set of accepting states (colors).
+//     * @return An equivalent automaton with a single set of accepting states.
+//     */
+//    public <L> Automaton<?, L> GNBA2NBA(MultiColorAutomaton<?, L> mulAut) {
+//        throw new java.lang.UnsupportedOperationException();
+//    }
 
     /**
      * Translation of Linear Temporal Logic (LTL) formula to a Nondeterministic
@@ -1893,8 +1916,8 @@ public class FvmFacade {
     }
 
     /**
-     * A translation of a Generalized Büchi Automaton (GNBA) to a
-     * Nondeterministic Büchi Automaton (NBA).
+     * A translation of a Generalized B�chi Automaton (GNBA) to a
+     * Nondeterministic B�chi Automaton (NBA).
      *
      * @param <L>    Type of resultant automaton transition alphabet
      * @param mulAut An automaton with a set of accepting states (colors).
@@ -1957,7 +1980,6 @@ public class FvmFacade {
             }
         }
     }
-
     private <L> Automaton createReplications(Automaton ans, MultiColorAutomaton<?, L> mulAut) {
         for (int color : mulAut.getColors()) {
             addStates(ans, generateStates(color, mulAut));
@@ -1981,5 +2003,18 @@ public class FvmFacade {
 
     public <S, A, AP> TransitionSystem<S, A, AP> createTransitionSystem() {
         return new TransitionSystem<>();
+    }
+    /**
+     * Verify that a system satisfies an LTL formula under fairness conditions.
+     * @param ts Transition system
+     * @param fc Fairness condition
+     * @param ltl An LTL formula
+     * @param <S>  Type of states in the transition system
+     * @param <A> Type of actions in the transition system
+     * @param <P> Type of atomic propositions in the transition system
+     * @return a VerificationSucceeded object or a VerificationFailed object with a counterexample.
+     */
+    public <S, A, P> VerificationResult<S> verifyFairLTLFormula(TransitionSystem<S, A, P> ts, FairnessCondition<A> fc, LTL<P> ltl){
+        throw new java.lang.UnsupportedOperationException();
     }
 }
